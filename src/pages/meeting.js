@@ -24,6 +24,7 @@ const meeting = () => {
     const joinMeeting = () => {
         const meetingId = router.query.meetingId;
             const meetingPassword = router.query.meetingPassword;
+            const access_token = router.query.accessToken;
             console.log(meetingId);
             console.log(meetingPassword);
 
