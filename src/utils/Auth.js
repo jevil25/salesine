@@ -2,7 +2,7 @@ import isTokenExpired from "./ExpirationChecker";
 
 function getNewToken()
 {
-    fetch('http://localhost:5000/api/newAccessToken', {
+    fetch('https://salestine.onrender.com/api/newAccessToken', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'

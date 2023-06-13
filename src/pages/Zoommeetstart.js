@@ -67,7 +67,8 @@ export default function Zoommeetstart() {
       .then((meet)=>{
         console.log("this is meetinfo")
         console.log(meet.result.start_url);
-        setLink(`${meet.result.start_url}`)
+        setLink(`${meet.result.start_url}`);
+        router.push(`${meet.result.start_url}`);
         console.log("after window open")
       })
       .catch((err) => console.log("Error:" + err));
