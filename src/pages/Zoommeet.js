@@ -15,32 +15,37 @@ export default function Zoommeet() {
       alert("Please enter meeting id and password");
       return;
     }
-    if(isTokenExpired(localStorage.getItem("accessToken"))){
-      fetch('https://salestine.onrender.com/api/newAccessToken', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({ refreshToken:value })
-        })
-        .then(res => res.json())
-        .then(data => {
-          console.log(data);
-          localStorage.removeItem("accessToken")
-          localStorage.removeItem("refreshToken")
-          localStorage.removeItem("expiresIn")
-          localStorage.setItem("accessToken",data.access_token)
-          localStorage.setItem("refreshToken",data.refresh_token)
-          localStorage.setItem("expiresIn",data.expiryTime)
-        })
-    }
-    const payload = {
-      meetingId: meetingId,
-      meetingPassword: meetingPassword,
-      accessToken: localStorage.getItem("accessToken"),
-    };
-    const params = new URLSearchParams(payload).toString();
-    router.push(`/meeting?${params}`);
+    fetch('https://salestine.onrender.com/api/newAccessToken', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ refreshToken:value })
+      })
+      .then(res => res.json())
+      .then(data => {
+        console.log(data);
+        localStorage.removeItem("accessToken")
+        localStorage.removeItem("refreshToken")
+        localStorage.removeItem("expiresIn")
+        localStorage.setItem("accessToken",data.access_token)
+        localStorage.setItem("refreshToken",data.refresh_token)
+        localStorage.setItem("expiresIn",data.expiryTime)
+        const payload = {
+          meetingId: meetingId,
+          meetingPassword: meetingPassword,
+          accessToken: data.access_token,
+        };
+        const params = new URLSearchParams(payload).toString();
+        router.push(`/meeting?${params}`);
+      })
+    // const payload = {
+    //   meetingId: meetingId,
+    //   meetingPassword: meetingPassword,
+    //   accessToken: localStorage.getItem("accessToken"),
+    // };
+    // const params = new URLSearchParams(payload).toString();
+    // router.push(`/meeting?${params}`);
   };
 
   return (

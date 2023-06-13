@@ -3,6 +3,7 @@
 import Navbar from "../components/Navbar";
 import styles from "../styles/StartMeeting.module.css";
 import { useState,useEffect } from "react"
+import { useRouter } from "next/router";
 // dotenv.config();
 
 export default function Zoommeetstart() {
@@ -13,6 +14,7 @@ export default function Zoommeetstart() {
   const [meetingTime, setMeetingTime] = useState("");
   const [autoRecording, setAutoRecording] = useState("yes");
   const [link, setLink] = useState("");
+  const router = useRouter();
   // function to check status of whether auth code has been fetched
   // function checkisFetched() {
   //   const isFetched = useLocalStorage("isFetched", "getvalue");
