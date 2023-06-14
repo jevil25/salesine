@@ -60,7 +60,7 @@ export default function Zoommeetstart() {
   async function startmeet(accessToken) {
     let meetInfo = await fetch("https://salestine.onrender.com/api/start-meet", {
       method: "POST",
-      body: JSON.stringify({ accessToken: "eyJzdiI6IjAwMDAwMSIsImFsZyI6IkhTNTEyIiwidiI6IjIuMCIsImtpZCI6IjQzYWZlNjU2LTc2NjItNDY4NS1hYmNkLWVjZWQxNDZiYTY3YiJ9.eyJ2ZXIiOjksImF1aWQiOiJkMGNhZjZjMzNlN2E5MDMyMWY2YWM1NzdhNjYyYWFhZSIsImNvZGUiOiJ1R3ppSFZOdVk0ZDY3SzlZcHJjUV91VjdBZFFlUFlNVkEiLCJpc3MiOiJ6bTpjaWQ6elh0Y2Q2elhRM0NvM0s0ekdaSUtWQSIsImdubyI6MCwidHlwZSI6MCwidGlkIjowLCJhdWQiOiJodHRwczovL29hdXRoLnpvb20udXMiLCJ1aWQiOiJqbnJKNzRpb1RvdXpIU0x0UlBoWV9BIiwibmJmIjoxNjg2Njg0OTEyLCJleHAiOjE2ODY2ODg1MTIsImlhdCI6MTY4NjY4NDkxMiwiYWlkIjoieWs2ajkyM2VRTlM5UTMzOUUyaVhzZyJ9.rMIknb67UVKvESkGNTp6v_7hNDPfL5gs-BL4abpgHIIlaDNobcVvf6ZPc0QJCBiEQh2zNhaguxsF0Jvt7AjI7w", meetingTopic: meetingTopic, meetingDate: meetingDate+"T"+meetingTime+"00", meetingDuration: meetingHours*60+meetingMins, autoRecording: autoRecording }),
+      body: JSON.stringify({ accessToken: accessToken, meetingTopic: meetingTopic, meetingDate: meetingDate+"T"+meetingTime+"00", meetingDuration: meetingHours*60+meetingMins, autoRecording: autoRecording }),
       headers: {
         "Content-Type": "application/json",
       },
@@ -68,7 +68,7 @@ export default function Zoommeetstart() {
       .then((res) => res.json())
       .then((meet)=>{
         console.log("this is meetinfo")
-        console.log(meet.result.start_url);
+        console.log(meet);
         setLink(`${meet.result.start_url}`);
         router.push(`${meet.result.start_url}`);
         console.log("after window open")
