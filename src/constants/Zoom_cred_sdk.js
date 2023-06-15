@@ -9,8 +9,8 @@
 
 const Zoom_cred_sdk = {
     SDK:{
-        KEY:'LfrciLp7QSGivjgjYYL1IQ',
-        SECRET:'Chu7EwoPkxN188a7nDiQtTCtiymWsE3U'
+        KEY:'0CP3e8ERcSaADLhPoxanA',
+        SECRET:'tVm4ITZe25oFVg5TOm28T93rpoiDjHDh'
     }
 }
 

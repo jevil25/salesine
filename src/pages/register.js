@@ -14,24 +14,70 @@ import {
 import Link from 'next/link';
 import { useState } from 'react';
 import { useRouter } from 'next/router'
-import { getServerSideProps } from './test';
+import { useEffect } from 'react';
+import Navbar from '../components/Navbar';
 
 
 export default function AuthenticationTitle({ url, authUrl }) {
   const [already, setAlready] = useState(false)
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [name, setName] = useState('')
   const router = useRouter()
-  const {
-    query: { code },
-  } = router
+  const code = router.query.code;
+  const operation = router.query.operation;
+  const backEndURl = 'http://localhost:5000';
+
+  useEffect(() => {
+    setActive(0)
+    if(!router.isReady) return;
+    const code = router.query.code;
+    const newemail = router.query.email;
+    const google = router.query.type;
+    if(code !== undefined && code !== null){
+      // console.log(code);
+      if (code) {
+        //give call to /api/accessToken
+        fetch(`${backEndURl}/api/accessToken`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ code:code,operation:"signup",email:newemail })
+        })
+        .then(res => res.json())
+        .then(data => {
+          console.log(data);
+          localStorage.removeItem("accessToken")
+          localStorage.removeItem("refreshToken")
+          localStorage.removeItem("expiresIn")
+          localStorage.setItem("accessToken",data.access_token)
+          localStorage.setItem("refreshToken",data.refresh_token)
+          localStorage.setItem("expiresIn",data.expiryTime)
+        })
+      }
+    }
+    console.log(email)
+    if(code===undefined && email!==undefined && email!==null){
+      console.log(email)
+      setActive(0)
+    }
+    console.log(google)
+    if(google==="google"){
+      setActive(2)
+    }
+  }, [router.isReady])
+
   const [active, setActive] = useState(0);
   const [load, setLoad] = useState(false)
   const nextStep = () => {
     console.log('next')
-    fetch('https://salestine.onrender.com/api/zoomLogin', {
+    fetch(`${backEndURl}/api/zoomLogin`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
-        }
+        },
+      body: JSON.stringify({ operation:"register",email:email }),
       })
       .then(res => res.json())
       .then(data => {
@@ -40,12 +86,10 @@ export default function AuthenticationTitle({ url, authUrl }) {
     )
   }
   // const prevStep = () => setActive((current) => (current > 0 && localStorage.getItem('token') == undefined  ? current - 1 : current));
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [name, setName] = useState('')
   const registerHandler = async () => {
     setLoad(true)
-    fetch('https://salestine.onrender.com/api/register', {
+    localStorage.setItem('email', email)
+    fetch(`${backEndURl}/api/register`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -59,18 +103,19 @@ export default function AuthenticationTitle({ url, authUrl }) {
         else
           setActive(1)
           setLoad(false)
+          setEmail(data.email)
     })  
   }
   const pushHome = () => {
     window.location.href = `https://salesine.vercel.app/api/googleAuth`
   }
   setTimeout(() => {
-    if(code != undefined){
+    if(operation != undefined){
       localStorage.setItem('code', code)
-      setActive(2)
     }
   }, 1000)
-  return (
+  return (<>    
+  <Navbar />
     <Container size={800} my={80} >
        <Stepper active={active} onStepClick={setActive} breakpoint="sm" allowNextStepsSelect={false}>
         <Stepper.Step label="First step" description="Create an account">
@@ -174,6 +219,7 @@ export default function AuthenticationTitle({ url, authUrl }) {
         </Stepper.Completed>
       </Stepper>
     </Container>
+    </>
   );
 }
 

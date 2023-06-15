@@ -14,7 +14,9 @@ export default function Zoommeetstart() {
   const [meetingTime, setMeetingTime] = useState("");
   const [autoRecording, setAutoRecording] = useState("yes");
   const [link, setLink] = useState("");
+  const [redirecting, setRedirecting] = useState(false);
   const router = useRouter();
+  const backEndURl = 'http://localhost:5000';
   // function to check status of whether auth code has been fetched
   // function checkisFetched() {
   //   const isFetched = useLocalStorage("isFetched", "getvalue");
@@ -25,7 +27,7 @@ export default function Zoommeetstart() {
   // function to get the auth code
   async function fetchauthdata() {
     // Fetch the authorization endpoint
-    const urlnew = await fetch("https://salestine.onrender.com/api/authorize").then(
+    const urlnew = await fetch(`${backEndURl}/api/authorize`).then(
       (res) => res.json()
     );
     console.log("url is");
@@ -36,7 +38,7 @@ export default function Zoommeetstart() {
 
   async function fetchAccessToken(code){
     console.log("fecthing access token")
-    let response = await fetch("https://salestine.onrender.com/api/callback", {
+    let response = await fetch(`${backEndURl}/api/callback`, {
       method: "POST",
       body: JSON.stringify({
         code: code
@@ -58,7 +60,7 @@ export default function Zoommeetstart() {
   }
 
   async function startmeet(accessToken) {
-    let meetInfo = await fetch("https://salestine.onrender.com/api/start-meet", {
+    let meetInfo = await fetch(`${backEndURl}/api/start-meet`, {
       method: "POST",
       body: JSON.stringify({ accessToken: accessToken, meetingTopic: meetingTopic, meetingDate: meetingDate+"T"+meetingTime+"00", meetingDuration: meetingHours*60+meetingMins, autoRecording: autoRecording }),
       headers: {
@@ -68,9 +70,9 @@ export default function Zoommeetstart() {
       .then((res) => res.json())
       .then((meet)=>{
         console.log("this is meetinfo")
-        console.log(meet);
-        setLink(`${meet.result.start_url}`);
-        router.push(`${meet.result.start_url}`);
+        console.log(meet.result.start_url);
+        setLink(`${meet.result.start_url}`)
+        router.push(`${meet.result.start_url}`)
         console.log("after window open")
       })
       .catch((err) => console.log("Error:" + err));
@@ -91,13 +93,11 @@ export default function Zoommeetstart() {
   }
 
   async function fetchData() {
-    // const router = useRouter();
-    // const { code } = router.query;
-    // console.log(code);
     const params = new URLSearchParams(window.location.search);
     const code = params.get('code');
     console.log(code);
     if (code) {
+      setRedirecting(true);
       let resp = await fetchAccessToken(code);
       let result = JSON.parse(localStorage.getItem("ak"))
       // let { access_token } = resp;
@@ -106,6 +106,7 @@ export default function Zoommeetstart() {
     }
   }
   useEffect(() => {
+    setRedirecting(false);
     fetchData();
   }, []);
   // fetchData();
@@ -113,6 +114,12 @@ export default function Zoommeetstart() {
   return (
     <>
     <Navbar />
+    {redirecting ? (
+      <div className={styles.main}>
+        <h1>Redirecting to Zoom...</h1>
+      </div>
+    )
+    :(
     <div className={styles.main}>
           <h1>Zoom Meeting</h1>
           <div className={styles.form}>
@@ -167,6 +174,7 @@ export default function Zoommeetstart() {
 
           </div>
         </div>
+    )}
       </>
   );
 }

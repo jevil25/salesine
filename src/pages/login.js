@@ -16,6 +16,7 @@ import { useRouter } from 'next/router'
 import styles from '../styles/Login.module.css'
 import isTokenExpired from '../utils/ExpirationChecker';
 import Navbar from '../components/Navbar';
+import dotenv from 'dotenv'
 
 
 export default function AuthenticationTitle() {
@@ -29,6 +30,11 @@ export default function AuthenticationTitle() {
   const [remember, setRemember] = useState(false)
   const [loggedIn, setLoggedIn] = useState(false);
   const [redirect, setRedirect] = useState(false);
+  dotenv.config({
+    path: "../../env"
+  })
+
+  const backEndURl = 'http://localhost:5000'
 
 
   useEffect(() => {
@@ -37,12 +43,12 @@ export default function AuthenticationTitle() {
     if(!router.isReady) return;
     const code = router.query.code;
     const value = localStorage.getItem('refreshToken')
-    // console.log(value)
-    if (value!== undefined && value!== null) {
+    console.log(value)
+    if (value!== "undefined" && value!== null) {
       setLoggedIn(true)
       //check if access token has expried
       if(isTokenExpired(localStorage.getItem('expiresIn'))){
-        fetch('https://salestine.onrender.com/api/newAccessToken', {
+        fetch(`${backEndURl}/api/newAccessToken`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
@@ -58,19 +64,23 @@ export default function AuthenticationTitle() {
           localStorage.setItem("accessToken",data.access_token)
           localStorage.setItem("refreshToken",data.refresh_token)
           localStorage.setItem("expiresIn",data.expiryTime)
+          console.log("1")
           router.push('/')
         })
       }else{
         // console.log("not expired")
+        console.log("2")
         router.push("/")
       }
     }else if(code !== undefined && code !== null){
       // console.log(code);
       setRedirect(true)
+      const email=localStorage.getItem("email")
+      localStorage.removeItem("email")
       if (code) {
         //give call to /api/accessToken
         console.log("inside code");
-        fetch('https://salestine.onrender.com/api/accessToken', {
+        fetch(`${backEndURl}/api/accessToken`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
@@ -85,6 +95,10 @@ export default function AuthenticationTitle() {
           localStorage.setItem("accessToken",data.access_token)
           localStorage.setItem("refreshToken",data.refresh_token)
           localStorage.setItem("expiresIn",data.expiryTime)
+          console.log("3")
+          if(email)
+            router.push(`http://localhost:4000/register?email=${email}&type=google`)
+          else
           router.push('/')
         })
       }
@@ -92,7 +106,7 @@ export default function AuthenticationTitle() {
   }, [router.isReady])
 
   const loginHandler = async () => {
-    fetch('https://salestine.onrender.com/api/zoomLogin', {
+    fetch(`${backEndURl}/api/zoomLogin`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -109,7 +123,7 @@ export default function AuthenticationTitle() {
   }
 
   const loginSalestineHandler = async () => {
-    fetch('https://salestine.onrender.com/api/salestineLogin', {
+    fetch(`${backEndURl}/api/salestineLogin`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'

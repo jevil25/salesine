@@ -4,6 +4,7 @@ import { Zoom_cred_sdk } from '../constants/Zoom_cred_sdk';
 
 const meeting = () => {
     const router = useRouter();
+    const backEndURl = 'http://localhost:5000';
     useEffect(() => {
         if(!router.isReady) return;
         const loadZoom = async () => {
@@ -24,11 +25,10 @@ const meeting = () => {
     const joinMeeting = () => {
         const meetingId = router.query.meetingId;
             const meetingPassword = router.query.meetingPassword;
-            const access_token = router.query.accessToken;
             console.log(meetingId);
             console.log(meetingPassword);
 
-            fetch('https://salestine.onrender.com/api/generate', {
+            fetch(`${backEndURl}/api/generate`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -47,7 +47,7 @@ const meeting = () => {
 
             const startMeeting = async (res) => {
                 ZoomMtg.init({
-                    leaveUrl: 'https://salestine.vercel.app/calls',
+                    leaveUrl: 'http://localhost:4000/calls',
                     success: async (data) => {
                         console.log('Zoom SDK initialized.');
                         const result = fetch("https://api.zoom.us/v2/users/me", {
@@ -59,7 +59,7 @@ const meeting = () => {
                                         });
                                         if (result.ok) {
                                             const data = await result.json();
-                                            fetch('https://salestine.onrender.com/api/storeMeetId', {
+                                            fetch(`${backEndURl}/api/storeMeetId`, {
                                                 method: 'POST',
                                                 headers: { 'Content-Type': 'application/json' },
                                                 body: JSON.stringify({

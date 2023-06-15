@@ -2,7 +2,7 @@ import isTokenExpired from "./ExpirationChecker";
 
 function getNewToken()
 {
-    fetch('https://salestine.onrender.com/api/newAccessToken', {
+    fetch('http://localhost:5000/api/newAccessToken', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
@@ -23,7 +23,9 @@ function getNewToken()
 
 export function Auth()
 {   
-    if(typeof window !== 'undefined' && localStorage.getItem("expiresIn")){
+    console.log("inside auth")
+    console.log(localStorage)
+    if(typeof window !== 'undefined' && localStorage.getItem("expiresIn")!==null && localStorage.getItem("expiresIn")!==undefined){
         if(isTokenExpired(localStorage.getItem("expiresIn"))){
             getNewToken()
             return true
