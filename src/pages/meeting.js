@@ -4,7 +4,7 @@ import { Zoom_cred_sdk } from '../constants/Zoom_cred_sdk';
 
 const meeting = () => {
     const router = useRouter();
-    const backEndURl = 'http://localhost:5000';
+    const backEndURl = 'https://salestine.onrender.com/';
     useEffect(() => {
         if(!router.isReady) return;
         const loadZoom = async () => {
@@ -47,7 +47,7 @@ const meeting = () => {
 
             const startMeeting = async (res) => {
                 ZoomMtg.init({
-                    leaveUrl: 'http://localhost:4000/calls',
+                    leaveUrl: `${backEndUrl}/calls`,
                     success: async (data) => {
                         console.log('Zoom SDK initialized.');
                         const result = fetch("https://api.zoom.us/v2/users/me", {
