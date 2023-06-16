@@ -8,7 +8,7 @@ import isTokenExpired from "../utils/ExpirationChecker";
 export default function Zoommeet() {
   const [meetingId, setMeetingId] = useState("");
   const [meetingPassword, setMeetingPassword] = useState("");
-  const backEndURl = 'https://salestine.onrender.com';
+  const backEndURl = 'http://localhost:5000';
 
   const joinMeeting = (e) => {
     e.preventDefault();

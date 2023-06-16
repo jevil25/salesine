@@ -26,7 +26,7 @@ export default function AuthenticationTitle({ url, authUrl }) {
   const router = useRouter()
   const code = router.query.code;
   const operation = router.query.operation;
-  const backEndURl = 'https://salestine.onrender.com';
+  const backEndURl = 'http://localhost:5000';
 
   useEffect(() => {
     setActive(0)
@@ -107,7 +107,18 @@ export default function AuthenticationTitle({ url, authUrl }) {
     })  
   }
   const pushHome = () => {
-    window.location.href = `https://salesine.vercel.app/api/googleAuth`
+    fetch(`${backEndURl}/api/googleCalender`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+    })
+    .then(res => res.json())
+    .then(data => {
+      console.log(data)
+      router.push(data.url)
+    }
+    )
   }
   setTimeout(() => {
     if(operation != undefined){

@@ -34,7 +34,8 @@ export default function AuthenticationTitle() {
     path: "../../env"
   })
 
-  const backEndURl = 'https://salestine.onrender.com'
+  const backEndURl = 'http://localhost:5000'
+  const frontEndURl = 'http://localhost:4000'
 
 
   useEffect(() => {
@@ -96,8 +97,25 @@ export default function AuthenticationTitle() {
           localStorage.setItem("refreshToken",data.refresh_token)
           localStorage.setItem("expiresIn",data.expiryTime)
           console.log("3")
-          if(email)
-            router.push(`http://localhost:4000/register?email=${email}&type=google`)
+          if(email){
+            localStorage.removeItem("email")
+            localStorage.setItem("email",email)
+            fetch(`${backEndURl}/api/updateDb`,{
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({ 
+                email:email,
+                accessToken:data.access_token,
+                refreshToken:data.refresh_token,
+                expiresIn:data.expiryTime
+              })
+            }).then(res => (
+              console.log(res)
+            ))
+            router.push(`${frontEndURl}/register?email=${email}&type=google`)
+          }
           else
           router.push('/')
         })

@@ -41,7 +41,7 @@ function getNewToken()
 function Auth()
 {   
     if(typeof window !== 'undefined' && window.localStorage){
-        if(localStorage.getItem("expiresIn")==="undefined"){
+        if(localStorage.getItem("expiresIn")==="undefined" || localStorage.getItem("expiresIn")===null){
             return false
         } 
         console.log("inside auth")

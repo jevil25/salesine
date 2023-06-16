@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react';
 import { useRouter } from 'next/router';
-import { Zoom_cred_sdk } from '../constants/Zoom_cred_sdk';
+import { Zoom_cred_sdk } from '../constants/Zoom_cred_sdk1';
 
 const meeting = () => {
     const router = useRouter();
-    const backEndURl = 'https://salestine.onrender.com';
+    const backEndURl = 'http://localhost:5000';
     useEffect(() => {
         if(!router.isReady) return;
         const loadZoom = async () => {

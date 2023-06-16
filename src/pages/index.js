@@ -36,11 +36,28 @@ const Home = () => {
     const { 
         query: { code } 
     } = router;
-    // if(typeof window !== 'undefined') {
-    //     if(localStorage.getItem('token') === null) {
-    //         router.push('/login');
-    //     }
-    // }
+    
+    useEffect(() => {
+        if(!router.isReady) return;
+        if(!window.localStorage ) return;
+        const code = router.query.code;
+        const scope = router.query.scope;
+        const email = localStorage.getItem('email');
+
+        if(code && scope) {
+            fetch(`http://localhost:5000/api/googleCalenderCode`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ code:code, scope:scope, email:email })
+            })
+            .then(res => res.json())
+            .then(data => {
+                console.log(data);
+            })
+        }
+    }, [router.isReady]);
     
     return (
         <>
