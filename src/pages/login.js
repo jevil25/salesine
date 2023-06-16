@@ -34,7 +34,7 @@ export default function AuthenticationTitle() {
     path: "../../env"
   })
 
-  const backEndURl = 'https://salestine.onrender.com/'
+  const backEndURl = 'https://salestine.onrender.com'
 
 
   useEffect(() => {
@@ -133,7 +133,6 @@ export default function AuthenticationTitle() {
     .then(res => res.json())
     .then(data => {
       console.log(data);
-      delay(5000);
       if(data.success){
         localStorage.setItem("accessToken",data.access_token)
         localStorage.setItem("refreshToken",data.refresh_token)

@@ -4,7 +4,7 @@ import { Zoom_cred_sdk } from '../constants/Zoom_cred_sdk';
 
 const meeting = () => {
     const router = useRouter();
-    const backEndURl = 'https://salestine.onrender.com/';
+    const backEndURl = 'https://salestine.onrender.com';
     useEffect(() => {
         if(!router.isReady) return;
         const loadZoom = async () => {

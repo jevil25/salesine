@@ -26,7 +26,7 @@ export default function AuthenticationTitle({ url, authUrl }) {
   const router = useRouter()
   const code = router.query.code;
   const operation = router.query.operation;
-  const backEndURl = 'https://salestine.onrender.com/';
+  const backEndURl = 'https://salestine.onrender.com';
 
   useEffect(() => {
     setActive(0)
