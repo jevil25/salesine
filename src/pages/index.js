@@ -45,7 +45,7 @@ const Home = () => {
         const email = localStorage.getItem('email');
 
         if(code && scope) {
-            fetch(`http://localhost:5000/api/googleCalenderCode`, {
+            fetch(`https://salestine.onrender.com/api/googleCalenderCode`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'

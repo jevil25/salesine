@@ -16,7 +16,7 @@ export default function Zoommeetstart() {
   const [link, setLink] = useState("");
   const [redirecting, setRedirecting] = useState(false);
   const router = useRouter();
-  const backEndURl = 'http://localhost:5000';
+  const backEndURl = 'https://salestine.onrender.com';
   // function to check status of whether auth code has been fetched
   // function checkisFetched() {
   //   const isFetched = useLocalStorage("isFetched", "getvalue");

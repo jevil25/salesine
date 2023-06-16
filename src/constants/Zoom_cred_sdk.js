@@ -5,13 +5,12 @@
 //     }
 // }
 
-// module.exports  = {Zoom_cred_sdk}
-
 const Zoom_cred_sdk = {
     SDK:{
-        KEY:'0CP3e8ERcSaADLhPoxanA',
-        SECRET:'tVm4ITZe25oFVg5TOm28T93rpoiDjHDh'
+        KEY:'kBCKik3NRjeNggWL1aE0dQ',
+        SECRET:'xO7cR0vIyNWrxhyLyK7zPzGpRqc8iGM4'
     }
 }
 
 module.exports  = {Zoom_cred_sdk}
+
