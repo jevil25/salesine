@@ -43,6 +43,7 @@ const Home = () => {
         const code = router.query.code;
         const scope = router.query.scope;
         const email = localStorage.getItem('email');
+        localStorage.removeItem('email');
 
         if(code && scope) {
             fetch(`https://salestine.onrender.com/api/googleCalenderCode`, {
