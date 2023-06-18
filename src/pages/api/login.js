@@ -17,7 +17,9 @@ export default async function handler(req, res) {
     if (user.password !== password) {
       return res.status(401).json({ message: 'Invalid credentials' });
     }
-
+    const token = jwt.sign({ email }, JWT_SECRET, { expiresIn: '7d' });
+    user.token = token;
+    await user.save();
     res.status(200).json({ message: 'Login successful', user});
   } catch (error) {
     console.error(error);

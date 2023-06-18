@@ -1,4 +1,5 @@
 import { google } from "googleapis";
+import UserModel from "../../models/UserModel";
 
 export default async function handler(req, res) {
   if (req.method === "GET") {
@@ -27,6 +28,8 @@ export default async function handler(req, res) {
       process.env.GOOGLE_REDIRECT_URI
     );
     const { tokens } = await oAuth2Client.getToken(code);
+    const email = localStorage.getItem("email");
+    const user = await UserModel.findOne({ email });
     res.redirect(url.format({
       pathname:"/",
       query: {

@@ -8,6 +8,7 @@ import msg2 from '../../public/assets/msg2.png'
 import phone from '../../public/assets/phone.png'
 import { Pie } from 'react-chartjs-2'
 import { useRouter } from 'next/router'
+import { useEffect } from 'react';
 
 
 ChartJS.register(ArcElement, Tooltip, Legend);
@@ -29,6 +30,41 @@ export const myChart = {
 }
 
 const Home = () => {
+    const router = useRouter();
+
+    useEffect (() => {
+        if(typeof window !== 'undefined') {
+            if(localStorage.getItem('token')){
+                const token = localStorage.getItem('token');
+                const email = localStorage.getItem('email');
+
+                fetch("/api/validate", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify({ token, email }),
+                        })
+                        .then((res) => res.json())
+                        .then((data) => {
+                            console.log(data);
+                            if (data.status === 200) {
+                                console.log("success")
+                            }
+                            if(data.status === 401){
+                                localStorage.removeItem('token');
+                                localStorage.removeItem('email');
+                                router.push('/login');
+                            }
+                        })
+                        .catch((err) => {
+                            console.log(err);
+                        }
+                    );
+            }
+        }
+    }, [typeof window])
+
    
     // const router = useRouter();
     // const { 
