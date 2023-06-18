@@ -8,8 +8,6 @@ import msg2 from '../../public/assets/msg2.png'
 import phone from '../../public/assets/phone.png'
 import { Pie } from 'react-chartjs-2'
 import { useRouter } from 'next/router'
-import { useEffect } from 'react'
-import axios from 'axios'
 
 
 ChartJS.register(ArcElement, Tooltip, Legend);
@@ -32,15 +30,15 @@ export const myChart = {
 
 const Home = () => {
    
-    const router = useRouter();
-    const { 
-        query: { code } 
-    } = router;
-    if(typeof window !== 'undefined') {
-        if(localStorage.getItem('token') === null) {
-            router.push('/login');
-        }
-    }
+    // const router = useRouter();
+    // const { 
+    //     query: { code } 
+    // } = router;
+    // if(typeof window !== 'undefined') {
+    //     if(localStorage.getItem('token') === null) {
+    //         router.push('/login');
+    //     }
+    // }
     
     return (
         <>

@@ -23,6 +23,7 @@ export default function AuthenticationTitle() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [remember, setRemember] = useState(false)
+  const [invalid, setInvalid] = useState(false)
   const loginHandler = async () => {
     fetch('/api/login', {
       method: 'POST',
@@ -34,12 +35,17 @@ export default function AuthenticationTitle() {
     .then(res => res.json())
     .then(data => {
       // console.log(data)
-      router.push('/')
+      if(data.message === "Invalid credentials"){
+        setInvalid(true)
+        return
+      }
       if (data.user.token) {
         localStorage.setItem('token', data.user.token)
         localStorage.setItem('email', data.user.email)
         router.push('/')
       }
+    }).catch(err => {
+      console.log(err)
     })  
   }
   return (
@@ -64,6 +70,7 @@ export default function AuthenticationTitle() {
             </Text>
 
             <Paper withBorder shadow="md" p={30} mt={30} radius="md">
+              {invalid && <Text color="red" align="center">Invalid credentials</Text>}
               <TextInput 
                 label="Email" 
                 name="email" 

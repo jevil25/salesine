@@ -43,12 +43,12 @@ export default function AuthenticationTitle({ url, authUrl }) {
     .then(res => res.json())
     .then(data => {
         console.log(data)
-        router.push('/login')
-        // setActive(1)
-        // setLoad(false)
+        // router.push('/login')
+        setActive(1)
+        setLoad(false)
     }).catch(err => {
       console.log(err)
-      // setLoad(false)
+      setLoad(false)
     }
     )
   }
@@ -129,7 +129,7 @@ export default function AuthenticationTitle({ url, authUrl }) {
               </Button>
             </Paper>
         </Stepper.Step>
-        <Stepper.Step label="Second step" description="Grant Zoom">
+        {/* <Stepper.Step label="Second step" description="Grant Zoom">
           <Paper withBorder shadow="md" p={30} mt={30} radius="md">
              <Title align="center" sx={(theme) => ({ fontFamily: `Greycliff CF, ${theme.fontFamily}`, fontWeight: 700 })}>
                Grant Access to Zoom Meetings
@@ -141,7 +141,7 @@ export default function AuthenticationTitle({ url, authUrl }) {
                Proceed
              </Button>
           </Paper>
-        </Stepper.Step>
+        </Stepper.Step> */}
         <Stepper.Step label="Final step" description="Grant Google Calendar">
         <Paper withBorder shadow="md" p={30} mt={30} radius="md">
              <Title align="center" sx={(theme) => ({ fontFamily: `Greycliff CF, ${theme.fontFamily}`, fontWeight: 700 })}>

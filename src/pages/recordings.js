@@ -4,11 +4,11 @@ import { useState } from 'react';
 
 export default function Recordings(props) {
   const router = useRouter()
-  // if (typeof window !== 'undefined') {
-  //   if(localStorage.getItem('token') === null) {
-  //     router.push('/login');
-  //   }
-  // }
+  if (typeof window !== 'undefined') {
+    if(localStorage.getItem('token') === null) {
+      router.push('/login');
+    }
+  }
   const [btn, setBtn] = useState('Transcript');
   const toggleHandler = () => {
     if (btn === 'Recording') {
