@@ -8,8 +8,7 @@ import msg2 from '../../public/assets/msg2.png'
 import phone from '../../public/assets/phone.png'
 import { Pie } from 'react-chartjs-2'
 import { useRouter } from 'next/router'
-import { useEffect } from 'react'
-import axios from 'axios'
+import { useEffect } from 'react';
 
 
 ChartJS.register(ArcElement, Tooltip, Legend);
@@ -31,34 +30,51 @@ export const myChart = {
 }
 
 const Home = () => {
-   
     const router = useRouter();
-    const { 
-        query: { code } 
-    } = router;
-    
-    useEffect(() => {
-        if(!router.isReady) return;
-        if(!window.localStorage ) return;
-        const code = router.query.code;
-        const scope = router.query.scope;
-        const email = localStorage.getItem('email');
-        localStorage.removeItem('email');
 
-        if(code && scope) {
-            fetch(`https://salestine.onrender.com/api/googleCalenderCode`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({ code:code, scope:scope, email:email })
-            })
-            .then(res => res.json())
-            .then(data => {
-                console.log(data);
-            })
+    useEffect (() => {
+        if(typeof window !== 'undefined') {
+            if(localStorage.getItem('token')){
+                const token = localStorage.getItem('token');
+                const email = localStorage.getItem('email');
+
+                fetch("/api/validate", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify({ token, email }),
+                        })
+                        .then((res) => res.json())
+                        .then((data) => {
+                            console.log(data);
+                            if (data.status === 200) {
+                                console.log("success")
+                            }
+                            if(data.status === 401){
+                                localStorage.removeItem('token');
+                                localStorage.removeItem('email');
+                                router.push('/login');
+                            }
+                        })
+                        .catch((err) => {
+                            console.log(err);
+                        }
+                    );
+            }
         }
-    }, [router.isReady]);
+    }, [typeof window])
+
+   
+    // const router = useRouter();
+    // const { 
+    //     query: { code } 
+    // } = router;
+    // if(typeof window !== 'undefined') {
+    //     if(localStorage.getItem('token') === null) {
+    //         router.push('/login');
+    //     }
+    // }
     
     return (
         <>

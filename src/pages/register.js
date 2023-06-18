@@ -14,82 +14,26 @@ import {
 import Link from 'next/link';
 import { useState } from 'react';
 import { useRouter } from 'next/router'
-import { useEffect } from 'react';
-import Navbar from '../components/Navbar';
+import { getServerSideProps } from './test';
 
 
 export default function AuthenticationTitle({ url, authUrl }) {
-  const [already, setAlready] = useState(false)
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [name, setName] = useState('')
   const router = useRouter()
-  const code = router.query.code;
-  const operation = router.query.operation;
-  const backEndURl = 'https://salestine.onrender.com';
-
-  useEffect(() => {
-    setActive(0)
-    if(!router.isReady) return;
-    const code = router.query.code;
-    const newemail = router.query.email;
-    const google = router.query.type;
-    if(code !== undefined && code !== null){
-      // console.log(code);
-      if (code) {
-        //give call to /api/accessToken
-        fetch(`${backEndURl}/api/accessToken`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({ code:code,operation:"signup",email:newemail })
-        })
-        .then(res => res.json())
-        .then(data => {
-          console.log(data);
-          localStorage.removeItem("accessToken")
-          localStorage.removeItem("refreshToken")
-          localStorage.removeItem("expiresIn")
-          localStorage.setItem("accessToken",data.access_token)
-          localStorage.setItem("refreshToken",data.refresh_token)
-          localStorage.setItem("expiresIn",data.expiryTime)
-        })
-      }
-    }
-    console.log(email)
-    if(code===undefined && email!==undefined && email!==null){
-      console.log(email)
-      setActive(0)
-    }
-    console.log(google)
-    if(google==="google"){
-      setActive(2)
-    }
-  }, [router.isReady])
-
+  const {
+    query: { code },
+  } = router
   const [active, setActive] = useState(0);
   const [load, setLoad] = useState(false)
   const nextStep = () => {
-    console.log('next')
-    fetch(`${backEndURl}/api/zoomLogin`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-        },
-      body: JSON.stringify({ operation:"register",email:email }),
-      })
-      .then(res => res.json())
-      .then(data => {
-        router.push(data)
-      }
-    )
+    window.location.href = `https://salesine.vercel.app/api/zoomAuth`
   }
-  // const prevStep = () => setActive((current) => (current > 0 && localStorage.getItem('token') == undefined  ? current - 1 : current));
+  const prevStep = () => setActive((current) => (current > 0 && localStorage.getItem('token') == undefined  ? current - 1 : current));
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [name, setName] = useState('')
   const registerHandler = async () => {
     setLoad(true)
-    localStorage.setItem('email', email)
-    fetch(`${backEndURl}/api/register`, {
+    fetch('/api/register', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -98,35 +42,35 @@ export default function AuthenticationTitle({ url, authUrl }) {
     })
     .then(res => res.json())
     .then(data => {
-        if(data.message === 'Email already registered')
-          setAlready(true)
-        else
-          setActive(1)
-          setLoad(false)
-          setEmail(data.email)
-    })  
+        console.log(data)
+        // router.push('/login')
+        setActive(1)
+        setLoad(false)
+    }).catch(err => {
+      console.log(err)
+      setLoad(false)
+    }
+    )
   }
   const pushHome = () => {
-    fetch(`${backEndURl}/api/googleCalender`, {
-      method: 'POST',
+    fetch('/api/googleAuth', {
+      method:'GET',
       headers: {
         'Content-Type': 'application/json'
       },
     })
     .then(res => res.json())
     .then(data => {
-      console.log(data)
       router.push(data.url)
-    }
-    )
+    })
   }
   setTimeout(() => {
-    if(operation != undefined){
+    if(code != undefined){
       localStorage.setItem('code', code)
+      setActive(2)
     }
   }, 1000)
-  return (<>    
-  <Navbar />
+  return (
     <Container size={800} my={80} >
        <Stepper active={active} onStepClick={setActive} breakpoint="sm" allowNextStepsSelect={false}>
         <Stepper.Step label="First step" description="Create an account">
@@ -146,15 +90,10 @@ export default function AuthenticationTitle({ url, authUrl }) {
               </Anchor>
             </Text>
 
-            <Text color="red" size="lg" align="center" mt={5}>
-                {
-                  already ? 'Email already registered' : ''
-                }
-            </Text>
             <Paper withBorder shadow="md" p={30} mt={30} radius="md">
               <TextInput 
-                  label="Name" 
-                  name="Name" 
+                  label="Username" 
+                  name="username" 
                   value={name}
                   onChange={(e) => setName(e.target.value)} 
                   placeholder="username" 
@@ -163,7 +102,7 @@ export default function AuthenticationTitle({ url, authUrl }) {
               />
               <br />
               <TextInput 
-                label="Zoom Email" 
+                label="Email" 
                 name="email" 
                 value={email}
                 onChange={(e) => setEmail(e.target.value)} 
@@ -199,19 +138,19 @@ export default function AuthenticationTitle({ url, authUrl }) {
               </Button>
             </Paper>
         </Stepper.Step>
-        <Stepper.Step label="Second step" description="Grant Zoom">
+        {/* <Stepper.Step label="Second step" description="Grant Zoom">
           <Paper withBorder shadow="md" p={30} mt={30} radius="md">
              <Title align="center" sx={(theme) => ({ fontFamily: `Greycliff CF, ${theme.fontFamily}`, fontWeight: 700 })}>
-               Grant Access to Zoom
+               Grant Access to Zoom Meetings
              </Title>
              <br />
              <img src="../../assets/Zoom.jpeg" height="100px" width="100px" style={{marginLeft: '43%'}}/>
-             <br /><br />
+             <br /><br /> 
              <Button fullWidth mt="xl" size="md" onClick={nextStep} color="indigo">
                Proceed
              </Button>
           </Paper>
-        </Stepper.Step>
+        </Stepper.Step> */}
         <Stepper.Step label="Final step" description="Grant Google Calendar">
         <Paper withBorder shadow="md" p={30} mt={30} radius="md">
              <Title align="center" sx={(theme) => ({ fontFamily: `Greycliff CF, ${theme.fontFamily}`, fontWeight: 700 })}>
@@ -230,7 +169,6 @@ export default function AuthenticationTitle({ url, authUrl }) {
         </Stepper.Completed>
       </Stepper>
     </Container>
-    </>
   );
 }
 

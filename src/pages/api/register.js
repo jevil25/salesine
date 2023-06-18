@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken';
 import UserModel from '../../models/User';
-// const { JWT_SECRET } = process.env;
+const { JWT_SECRET } = process.env;
 
 export default async function handler(req, res) {
   console.log(req.body)
@@ -13,7 +13,7 @@ export default async function handler(req, res) {
     if (existingUser) {
       return res.status(400).json({ message: 'Email already registered' });
     }
-    const token = jwt.sign({ email }, JWT_SECRET, { expiresIn: '100d' });
+    const token = jwt.sign({ email }, JWT_SECRET, { expiresIn: '7d' });
     const user = new UserModel({
       username: name,
       email: email,
