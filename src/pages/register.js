@@ -14,8 +14,6 @@ import {
 import Link from 'next/link';
 import { useState } from 'react';
 import { useRouter } from 'next/router'
-import { getServerSideProps } from './test';
-
 
 export default function AuthenticationTitle({ url, authUrl }) {
   const router = useRouter()

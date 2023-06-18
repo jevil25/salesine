@@ -26,20 +26,15 @@ export default async function handler(req, res) {
       process.env.GOOGLE_CLIENT_SECRET,
       process.env.GOOGLE_REDIRECT_URI
     );
-    const data = await oAuth2Client.getToken(code);
-    const user = await UserModel.findOne({ email });
-    user.google = {
-      accessToken: data.tokens.access_token,
-      refreshToken: data.tokens.refresh_token,
-    }
-    // console.log(data);
-    // res.send(url.format({
-    //   pathname:"/",
-    //   query: {
-    //      "access_token": tokens.access_token,
-    //      "refresh_token": tokens.refresh_token,
-    //    }
-    // }))
-    res.send( data.tokens );
+    oAuth2Client.getToken(code).then(async (res) => {
+      const user = await UserModel.findOne({ email });
+      user.google = {
+        accessToken: res.tokens.access_token,
+        refreshToken: res.tokens.refresh_token,
+      }
+    res.send( res.tokens );
+    }).catch((err) => {
+      res.send("Error authenticating", err);
+    });
   }
 }

@@ -1,8 +1,14 @@
 import { Divider, Card, Button, Group, Badge } from '@mantine/core';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import Navbar from '../components/Navbar';
+import ReactPlayer from 'react-player';
 
-export default function Recordings(props) {
+export default function Recordings() {
+  const [topic, setTopic] = useState('');
+  const [id, setId] = useState('');
+  const [recording_drive_link, setRecording_drive_link] = useState('');
+  const [trans, setTrans] = useState('');
   const router = useRouter()
   if (typeof window !== 'undefined') {
     if(localStorage.getItem('token') === null) {
@@ -18,13 +24,19 @@ export default function Recordings(props) {
     } 
   }
 
-  const {
-    query: { topic, id, video, trans, rec },
-  } = router
-  console.log(rec)
-  const set = "/Recordings/" + video
+  useEffect(() => {
+    const data = JSON.parse(localStorage.getItem('recording'));
+    console.log(data);
+    setTopic(data.topic);
+    setId(data.id);
+    setRecording_drive_link(data.recording_drive_link);
+    setTrans(data.trans)
+    console.log(topic)
+  }, [typeof window]);
+
   return (
     <>
+    <Navbar type = 'recording' />
       <div style={{margin: '20px'}}>
         <h1>Recording for {topic}</h1>
           <h2>ID : {id} </h2>
@@ -32,9 +44,8 @@ export default function Recordings(props) {
         <br/>
         <div style={{display: 'flex',  alignItems: 'center'}}>
           { btn === 'Transcript' ?
-            <video width='55%' height='40%' controls>
-                <source src={set} type="video/mp4" />
-            </video> : 
+            <ReactPlayer url={"https://drive.google.com/uc?export=download&id=1i9O27or_AIZhFmdnHpno8sBsYCeuCA1j"} width="55%" height="40%" controls={true} />
+            : 
             <Card shadow="sm" padding="xs"  radius="md"   withBorder style={{height: '400px', cursor: 'pointer', width: '60%' }}>
               <h2 style={{textAlign: 'center'}}>Transcript</h2>
               <h3>{trans}</h3>

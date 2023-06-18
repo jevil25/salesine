@@ -83,6 +83,7 @@
   align-items: center;
   padding-bottom: 20px;
   border-bottom: 1px solid #F4F8FF;
+  margin-left: 40px;
 }
 
 .allBlank{
@@ -108,4 +109,8 @@
   font-style: Arial;
   font-weight: 400;
   font-size: 16px;
+}
+
+.initiateButton{
+  margin-left: 20px;
 }

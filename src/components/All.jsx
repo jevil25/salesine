@@ -22,19 +22,13 @@ import { useDisclosure } from '@mantine/hooks';
 
 
 const All = (props) => {
-  const [calls, setCalls] = useState([
-    
-  ]);
+  const [calls, setCalls] = useState([]);
   const player = useRef();
   const [url, setUrl] = useState('');
   const [btn, setBtn] = useState(false);
   const theme = useMantineTheme();
   const [opened, { open, close }] = useDisclosure(false);
-//   if(typeof window !== 'undefined') {
-//     if(localStorage.getItem('calls').length > 0) {
-//         setCalls(JSON.parse(localStorage.getItem('calls')))
-//     }
-// }
+
   const router = useRouter();
   let obj = []
   const {
@@ -65,37 +59,39 @@ const All = (props) => {
         console.log(err);
       })
     }
+
+    const formatDate = (date) => {
+      const res = date.split('T')
+      return res[0]
+    }
   
 
   useEffect(() => {
 
     const sync = () => {
-       axios.post('api/calendar',{code: code})
-       .then((response) => {
-          console.log(response)
-          setSyncCalls(response.data)
-          console.log(syncCalls)
-        })
-        .catch((err) => {
-          console.log(err);
-        })
+      //  axios.post('api/calendar',{code: code})
+      //  .then((response) => {
+      //     console.log(response)
+      //     setSyncCalls(response.data)
+      //     console.log(syncCalls)
+      //   })
+      //   .catch((err) => {
+      //     console.log(err);
+      //   })
     }
 
     const populateCalls = () => {
-      const data = axios.post('api/meetings', {email: localStorage.getItem('email')})
-        .then((response) => {
-          setCalls(response.data.recordings)
-          console.log(calls)
-        })
-        .catch((err) => {
-          console.log(err);
-        })
-      }
+      axios.post('api/calls',{email: localStorage.getItem('email')})
+      .then((response) => {
+        console.log(response)
+        setCalls(response.data)
+        console.log(calls)
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+    }
 
-    // if (code) {
-    //   console.log("got code")
-    //   sync()
-    // }
     populateCalls();
     
   }, [])
@@ -111,78 +107,12 @@ const All = (props) => {
 
   return (
     <div className={styles.allContainer}>
-      <Modal 
-      opened={opened} 
-      onClose={close} 
-      
-      overlayProps={{
-        color: theme.colorScheme === 'dark' ? theme.colors.dark[9] : theme.colors.gray[2],
-        opacity: 0.55,
-        blur: 3,
-      }}
-      centered>
-        <h1>
-          Initiate Meeting
-        </h1>
-        <Paper withBorder shadow="md" p={30} mt={30} radius="md">
-            <Input
-                  onChange={(e) => {
-                    console.log(e.target.value)
-                    setName(e.target.value)}}
-              
-                  label="Meeting Name"
-                  placeholder="Meeting Name"
-                  size="md"
-                />
-                <br/>
-                <Input
-                  onChange={(e) => setStartTime(e.target.value)}
-                
-                  placeholder="Start Time (in 24 hour format)"
-                  max={24}
-                  min={0}
-                  size="md"
-                />
-            
-              <br/>
-            
-                <Input  
-                  onChange={(e) => setDuration(e.target.value)}
-                
-                  placeholder="Duration (in minutes)"
-                  max={60}
-                  min={30}
-                  size="md"
-                />
-                <br/>
-                <Input component="select" size="md" onChange={(e) => setRepeat(e.target.value)}>
-                    <option value="1">Daily</option>
-                    <option value="2">Weekly</option>
-                    <option value="3">Monthly</option>
-                  </Input>
-                
-          
-              <br/>
-          
-          <Group >
-              <Button size="lg" onClick={initiateMeeting}>
-                Initiate
-              </Button>
-              
-                {
-                  btn == true ?
-                    <Button size="lg" onClick={joinHandler} variant="outline">
-                      Join Meeting
-                    </Button>
-                  : null
-                }
-            
-          </Group> 
-            </Paper>
-      </Modal>
       <div className={styles.allContainerHeading}>
         <p>All Calls</p>
       </div>
+      <div class={styles.initiateButton}>
+          <Button onClick={open} color="indigo">Initiate New Meeting</Button>
+        </div>
       <div className={styles.allSortBy}>
         <div className={styles.allSortBy1}>Sort By</div>
         <div className={selected.date ? styles.allSort2Selected : styles.allSortBy2} style={{ cursor: 'pointer' }} onClick={() => setSelected({
@@ -202,9 +132,6 @@ const All = (props) => {
         <div styles={{marginLeft: '10px'}}>  
           
         </div>
-        <div>
-          <Button onClick={open} color="indigo">Initiate Meeting</Button>
-        </div>
       </div>
       
       <div className={styles.allCalls}>
@@ -220,6 +147,7 @@ const All = (props) => {
                   <div className={styles.allInfo}>
                     <div className={styles.allHeading}>{item.topic}</div>
                     <div className={styles.allSubInfo}>{item.start_time}</div>
+                    <div className={styles.allSubInfo}>{formatDate(item.date)}</div>
                   </div>
                   <Badge color="indigo">
                     <Text size="sm" weight={500}>
@@ -229,7 +157,7 @@ const All = (props) => {
               
                      <Button color="indigo" onClick={() => {
                       localStorage.setItem('recording', JSON.stringify(item))
-                      router.push('/recording')}
+                      router.push('/recordings')}
                      }> Recording </Button>
               
                 </div>
