@@ -17,6 +17,13 @@ const UserSchema = new mongoose.Schema({
   verified: { type: Boolean, default: false },
   role: { type: String, default: 'user', required: true},
   createdAt: { type: Date, default: Date.now },
+  google: {
+    type: Object,
+    default: {
+      accessToken: null,
+      refreshToken: null,
+    }
+  },
   organization: {
     type: Array,
     default: []

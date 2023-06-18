@@ -53,7 +53,16 @@ export default function AuthenticationTitle({ url, authUrl }) {
     )
   }
   const pushHome = () => {
-    window.location.href = `https://salesine.vercel.app/api/googleAuth`
+    fetch('/api/googleAuth', {
+      method:'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+    })
+    .then(res => res.json())
+    .then(data => {
+      router.push(data.url)
+    })
   }
   setTimeout(() => {
     if(code != undefined){
