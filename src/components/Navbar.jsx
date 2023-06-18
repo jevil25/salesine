@@ -1,61 +1,9 @@
-"use client";
 import styles from '../styles/Navbar.module.css'
 import logo2 from '../../public/assets/logo2.png'
 import Link from 'next/link'
 import { useState } from 'react';
-import { Button } from '@mantine/core';
-import isTokenExpired from "../utils/ExpirationChecker"
-
 const Navbar = (props) => {
     const [toggleMenu, setToggleMenu] = useState(false);
-    const [loggedIN, setLoggedIn] = useState(true)
-
-    const logout = () => {
-        setLoggedIn(false)
-        localStorage.removeItem("accessToken")
-        localStorage.removeItem("refreshToken")
-        localStorage.removeItem("expiresIn")
-    }
-
-function getNewToken()
-{
-    fetch('http://localhost:5000/api/newAccessToken', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({ refreshToken:localStorage.getItem("refreshToken") })
-        })
-        .then(res => res.json())
-        .then(data => {
-          console.log(data);
-          localStorage.removeItem("accessToken")
-          localStorage.removeItem("refreshToken")
-          localStorage.removeItem("expiresIn")
-          localStorage.setItem("accessToken",data.access_token)
-          localStorage.setItem("refreshToken",data.refresh_token)
-          localStorage.setItem("expiresIn",data.expiryTime)
-        })
-}
-
-function Auth()
-{   
-    if(typeof window !== 'undefined' && window.localStorage){
-        if(localStorage.getItem("expiresIn")==="undefined" || localStorage.getItem("expiresIn")===null){
-            return false
-        } 
-        console.log("inside auth")
-        console.log(localStorage.getItem("expiresIn"))
-        if(isTokenExpired(localStorage.getItem("expiresIn"))){
-            getNewToken()
-            return true
-        }else{
-            return true
-        }
-    }else{
-        return false
-    }
-}
 
     return (
         <div className={styles.navbarContainer}>
@@ -76,18 +24,7 @@ function Auth()
                 <img src="https://img.icons8.com/ios-filled/24/ffffff/search--v1.png" alt="search" />
             </div>
             <ul className={styles.navLinks}>
-                {
-                    Auth() && loggedIN ?
-                    <>
-                        <li><Link href="/account">MY ACCOUNT</Link></li> 
-                        <li><Button onClick={logout}>Logout</Button></li>
-                    </>
-                        : 
-                    <>
-                        <li><Link href="/register">Signup</Link></li> 
-                        <li><Link href="/login">Login</Link></li> 
-                    </>
-                }
+                <li><Link href="/account">MY ACCOUNT</Link></li>
             </ul>
             <div className={styles.navHelp}>
                 <img src="https://img.icons8.com/ios-glyphs/35/ffffff/help.png" alt='img' />

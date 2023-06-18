@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken';
 import UserModel from '../../models/User';
-// const { JWT_SECRET } = process.env;
+const { JWT_SECRET } = process.env;
 
 export default async function handler(req, res) {
   console.log(req.body)
