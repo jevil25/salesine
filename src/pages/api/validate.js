@@ -1,6 +1,5 @@
 import jwt from 'jsonwebtoken';
 const { JWT_SECRET } = process.env;
-import UserModel from '../../models/User';
 
 export default async function handler(req, res) {
     if (req.method !== 'POST') {

@@ -1,5 +1,5 @@
 import { google } from "googleapis";
-import UserModel from "../../models/UserModel";
+import UserModel from "../../models/User";
 
 export default async function handler(req, res) {
   if (req.method === "GET") {
