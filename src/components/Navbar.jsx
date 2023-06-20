@@ -22,6 +22,7 @@ const Navbar = (props) => {
             <ul className={styles.navLinks}>
                 <li><Link href="/" className={props.type === 'home' ? styles.active : null} >HOME</Link></li>
                 <li><Link href="/calls" className={props.type === 'calls' ? styles.active : null}>CALLS</Link></li>
+                <li><Link href="/team" className={props.type === 'teams' ? styles.active : null}>Scheduled</Link></li>
                 <li><Link href="/recordings" className={props.type === 'recording' ? styles.active : null}>RECORDING</Link></li>
                 <li><Link href="/deals" className={props.type === 'deals' ? styles.active : null}>DEALS</Link></li>
                 <li><Link href="/team" className={props.type === 'teams' ? styles.active : null}>TEAM</Link></li>
