@@ -9,10 +9,37 @@ mongoose.connect(MONGODB_URI, {
 });
 
 const UserSchema = new mongoose.Schema({
-  username: { type: String, required: true, unique: true },
+  username: { type: String, required: true},
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
-  recordings: { type: Array, default: []},
+  meetings: {
+    type: Array,
+    default: [
+      {
+        id: {
+          type: String
+        },
+        password: {
+          type: String
+        },
+        topic: {
+          type: String
+        },
+        date: {
+          type: Date
+        },
+        start_time: {
+          type: String
+        },
+        duration: {
+          type: Number
+        },
+        recording_drive_link: {
+          type: String
+        }
+      }
+    ]
+  },  
   token: { type: String },
   verified: { type: Boolean, default: false },
   role: { type: String, default: 'user', required: true},
@@ -20,8 +47,12 @@ const UserSchema = new mongoose.Schema({
   google: {
     type: Object,
     default: {
-      accessToken: null,
-      refreshToken: null,
+      accessToken: {
+        type: String
+      },
+      refreshToken: {
+        type: String
+      },
     }
   },
   organization: {
