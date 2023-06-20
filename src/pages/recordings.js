@@ -44,7 +44,7 @@ export default function Recordings() {
         <br/>
         <div style={{display: 'flex',  alignItems: 'center'}}>
           { btn === 'Transcript' ?
-            <ReactPlayer url={"https://drive.google.com/uc?export=download&id=1i9O27or_AIZhFmdnHpno8sBsYCeuCA1j"} width="55%" height="40%" controls={true} />
+            <iframe src={`https://drive.google.com/file/d/${recording_drive_link}/preview`} width="740" height="400" allow='autoplay'></iframe>
             : 
             <Card shadow="sm" padding="xs"  radius="md"   withBorder style={{height: '400px', cursor: 'pointer', width: '60%' }}>
               <h2 style={{textAlign: 'center'}}>Transcript</h2>
