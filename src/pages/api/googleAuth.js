@@ -1,5 +1,5 @@
 import { google } from "googleapis";
-import UserModel from "../../models/User";
+import User from "../../models/User";
 
 export default async function handler(req, res) {
   if (req.method === "GET") {
@@ -26,15 +26,15 @@ export default async function handler(req, res) {
       process.env.GOOGLE_CLIENT_SECRET,
       process.env.GOOGLE_REDIRECT_URI
     );
-    oAuth2Client.getToken(code).then(async (res) => {
-      const user = await UserModel.findOne({ email });
-      user.google = {
-        accessToken: res.tokens.access_token,
-        refreshToken: res.tokens.refresh_token,
+    oAuth2Client.getToken(code, (err,authToken) => {
+      if(err){
+        console.log(err);
+        res.send({message: err})
       }
-    res.send( res.tokens );
-    }).catch((err) => {
-      res.send("Error authenticating", err);
-    });
+      const user = await User.findOne({email: email});
+      user.google.accessToken = authToken.access_token;
+      user.google.refreshToken = authToken.refresh_token;
+      res.send(authToken)
+    })
   }
 }
