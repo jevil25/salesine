@@ -29,9 +29,11 @@ export default function AuthenticationTitle({ url, authUrl }) {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [name, setName] = useState('')
+  
+  const BACK_END_URL = "http://localhost:4000";
   const registerHandler = async () => {
     setLoad(true)
-    fetch('/api/register', {
+    fetch(`${BACK_END_URL}/register`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -51,7 +53,7 @@ export default function AuthenticationTitle({ url, authUrl }) {
     )
   }
   const pushHome = () => {
-    fetch('/api/googleAuth', {
+    fetch(`${BACK_END_URL}/googleAuth`, {
       method:'GET',
       headers: {
         'Content-Type': 'application/json'

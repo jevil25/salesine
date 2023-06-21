@@ -4,12 +4,13 @@ import fetch from "node-fetch"
 
 const google = () => {
 
+    const BACK_END_URL = "http://localhost:4000";
     const router = useRouter()
     useEffect(() => {
         if(!router.isReady) return;
         const email = localStorage.getItem('email')
         const { code } = router.query
-        fetch("api/googleAuth", {
+        fetch(`${BACK_END_URL}/googleAuth`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"

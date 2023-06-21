@@ -9,6 +9,7 @@ import phone from '../../public/assets/phone.png'
 import { Pie } from 'react-chartjs-2'
 import { useRouter } from 'next/router'
 import { useEffect } from 'react';
+import fetch from 'node-fetch';
 
 
 ChartJS.register(ArcElement, Tooltip, Legend);
@@ -31,14 +32,14 @@ export const myChart = {
 
 const Home = () => {
     const router = useRouter();
-
+    const BACKEND_URL="http://localhost:4000";
     useEffect (() => {
         if(typeof window !== 'undefined') {
             if(localStorage.getItem('token')){
                 const token = localStorage.getItem('token');
                 const email = localStorage.getItem('email');
 
-                fetch("/api/validate", {
+                fetch(`${BACKEND_URL}/validate`, {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",

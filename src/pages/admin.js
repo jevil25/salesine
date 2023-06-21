@@ -1,19 +1,8 @@
 import React from 'react'
 import Navbar from '../components/Navbar'
 import styles from '../styles/Index.module.css'
-import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
-import performer from '../../public/assets/performer.png'
-import call from '../../public/assets/call.png'
-import msg2 from '../../public/assets/msg2.png'
-import phone from '../../public/assets/phone.png'
-import { Pie } from 'react-chartjs-2'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
-import axios from 'axios'
-import { createStyles, rem, Text } from '@mantine/core';
-import { useListState } from '@mantine/hooks';
-import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
-import { IconGripVertical } from '@tabler/icons-react';
 import { Table, Checkbox, Button, MultiSelect, Group } from '@mantine/core';
 
 const Admin = () => {
@@ -22,9 +11,10 @@ const Admin = () => {
   const [check, setCheck] = useState(false);
   const [selected, setSelected] = useState([]);
   const [data, setData] = useState([]);
+  const BACK_END_URL = "http://localhost:4000";
   useEffect(() => {
      const populateOrg = () => {
-          fetch('/api/admin', {
+          fetch(`${BACK_END_URL}/api/admin`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json'
@@ -86,7 +76,7 @@ const Admin = () => {
     const addMember = () => {
       console.log(searchValue)
       console.log(data)
-      fetch('/api/admin', {
+      fetch(`${BACK_END_URL}/api/admin`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -102,7 +92,7 @@ const Admin = () => {
     }
     const removeMembers = () => {
       console.log(selected)
-      fetch('/api/admin', {
+      fetch(`${BACK_END_URL}/api/admin`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

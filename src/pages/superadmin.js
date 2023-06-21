@@ -21,9 +21,11 @@ const Admin = () => {
   const [emails, setEmails] = useState([]);
   const [check, setCheck] = useState(false);
   const [selected, setSelected] = useState([]);
+  
+  const BACK_END_URL = "http://localhost:4000";
   useEffect(() => {
      const populateOrg = () => {
-          fetch('/api/superadmin', {
+          fetch(`${BACK_END_URL}/superadmin`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json'
@@ -78,7 +80,7 @@ const Admin = () => {
     const [searchValue, onSearchChange] = useState('');
     const addMember = () => {
       console.log(searchValue)
-      fetch('/api/superadmin', {
+      fetch(`${BACK_END_URL}/superadmin`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -93,7 +95,7 @@ const Admin = () => {
     }
     const removeMembers = () => {
       console.log(selected)
-      fetch('/api/superadmin', {
+      fetch(`${BACK_END_URL}/superadmin`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

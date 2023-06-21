@@ -24,8 +24,9 @@ export default function AuthenticationTitle() {
   const [password, setPassword] = useState('')
   const [remember, setRemember] = useState(false)
   const [invalid, setInvalid] = useState(false)
+  const BACK_END_URL = "http://localhost:4000";
   const loginHandler = async () => {
-    fetch('/api/login', {
+    fetch(`${BACK_END_URL}/login`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
