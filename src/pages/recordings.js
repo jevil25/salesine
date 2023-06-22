@@ -73,13 +73,33 @@ export default function Recordings() {
           </div>
           <div id="chatbox">
             <div id="messages" style={{ height: "300px", overflowY: "auto" }}>
-              <Message />
-              <Message />
-              <Message />
-              <Message />
-              <Message />
+              <Message
+                messageText="I like what Jim had to say about the startegy to bring in the new goods"
+                author="Parth"
+                timestamp="10:12 AM,Today"
+              />
+              <Message
+                messageText="I like what Jim had to say about the startegy to bring in the new goods"
+                author="Parth"
+                timestamp="10:12 AM,Today"
+              />
+              <Message
+                messageText="I like what Jim had to say about the startegy to bring in the new goods"
+                author="Parth"
+                timestamp="10:12 AM,Today"
+              />
+              <Message
+                messageText="I like what Jim had to say about the startegy to bring in the new goods"
+                author="Parth"
+                timestamp="10:12 AM,Today"
+              />
+              <Message
+                messageText="I like what Jim had to say about the startegy to bring in the new goods"
+                author="Parth"
+                timestamp="10:12 AM,Today"
+              />
             </div>
-            <div className="messageInput" style={{marginTop:"10px"}}>
+            <div className="messageInput" style={{ marginTop: "10px" }}>
               <input type="text" placeholder="Enter a message" />
               <button>Send</button>
             </div>
@@ -94,7 +114,6 @@ export default function Recordings() {
             Toggle {btn}
           </Button>
         </Group>
-        
       </div>
     </>
   );

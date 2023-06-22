@@ -1,12 +1,12 @@
-export default function Message(){
+export default function Message(props){
     return(
         <div>
         <div id="messageInfo" style={{display:"flex"}}>
-          <p id="messageAuthor">Parth - </p>
-          <p id="timestamp" style={{color:"grey"}}> 10:12 AM,Today</p>
+          <p id="messageAuthor">{props.author} - </p>
+          <p id="timestamp" style={{color:"grey"}}> {props.timestamp}</p>
         </div>
-        <div style={{ height: "40px", backgroundColor: "#87bb72",width:"450px" }}>
-          I like what Jim had to say about the startegy to vring in the new goods
+        <div style={{ height: "fit-content",padding:"5px", backgroundColor: "#87bb72",width:"450px" }}>
+          {props.messageText}
         </div>
       </div>
     )
