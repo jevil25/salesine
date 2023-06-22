@@ -2,10 +2,10 @@ import { Divider, Card, Button, Group, Badge } from "@mantine/core";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
-import ReactPlayer from "react-player";
+// import ReactPlayer from "react-player";
 import Message from "../components/Message";
 
-export default function Recordings() {
+export default function Recordings(){
   const [topic, setTopic] = useState("");
   const [id, setId] = useState("");
   const [recording_drive_link, setRecording_drive_link] = useState("");

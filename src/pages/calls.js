@@ -12,12 +12,19 @@ const Calls = ({ authUrl }) => {
         router.push('/login');
     }
   }
+  
+  async function getRecordings(){
+  const messages = await fetch("api/recordings").then((res)=>res.json())
+  console.log(messages)
+  }
+  getRecordings();
+
   return (
     <>
       <Navbar type = 'calls' />
       <div style={{display: 'flex', width: '100%'}}>
           <Contacts />
-          <All url={authUrl}/>
+          <All messages={messages} length={messages.length} url={authUrl}/>
           <Calling />
       </div>
     </>

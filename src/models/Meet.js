@@ -11,20 +11,22 @@ mongoose.connect(MONGODB_URI, {
 const CommentSchema = new mongoose.Schema({
     author: { type: String },
     text: { type: String },
-    timestamp: { type: Date }
+    // timestamp: { type: Date }
+    timestamp: { type:String, required:true },
   });   
 
 const MeetSchema = new mongoose.Schema({
-    id: { type: String, required: true },
+    _id: { type: String, required: true },
     recordingLink: { type: String, required: true },
     meetHostId: { type:String, required:true },
     meetPassword: { type:String, required:true },
-    duration: { type: Number },
-    startTime: { type: Date },
+    // duration: { type: Number },
+    duration: { type:String, required:true },
+    startTime: { type:String, required:true },
     topic: { type:String, required:true, default:"Meeting" },
-    companyId: { type:String, required:true },
+    companyid: { type:String, required:true },
     comments: { type: [CommentSchema],default:[] },
-    meetId:{ type: String, required: true }
+    meetid:{ type: String, required: true }
 });
 
-export default mongoose.models.meeting || mongoose.model('meeting', MeetSchema);
+export default mongoose.models.meeting || mongoose.model("meeting", MeetSchema);
