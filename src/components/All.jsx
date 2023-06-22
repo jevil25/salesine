@@ -139,7 +139,7 @@ const All = (props) => {
 
       {
         calls.length > 0 ?
-              calls.map((item, index) =>  {
+              calls.map((item, index) =>{
                 return (
 
                 <div className={styles.allCall} key={index}>
