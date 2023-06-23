@@ -27,7 +27,9 @@ const All = (props) => {
   const [btn, setBtn] = useState(false);
   const theme = useMantineTheme();
   const [opened, { open, close }] = useDisclosure(false);
-
+  const [recordings,setRecordings] = useState(props.messages)
+  console.log("this is props var");
+  console.log(props.recordings[0])
   const router = useRouter();
   let obj = [];
   const {
@@ -155,7 +157,7 @@ const All = (props) => {
 
       <div className={styles.allCalls}>
         {calls.length > 0 ? (
-          calls.map((props.messages,props.length) => {
+          calls.map((item, index) => {
             return (
               <div className={styles.allCall} key={index}>
                 <div>

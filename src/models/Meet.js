@@ -29,4 +29,4 @@ const MeetSchema = new mongoose.Schema({
     meetid:{ type: String, required: true }
 });
 
-export default mongoose.models.meeting || mongoose.model("meeting", MeetSchema);
+export default mongoose.models.meetings || mongoose.model("meetings", MeetSchema);

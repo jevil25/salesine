@@ -3,6 +3,7 @@ import Calling from '../components/Calling'
 import Navbar from '../components/Navbar'
 import Contacts from '../components/Contact'
 import {useRouter} from 'next/router'
+import { useEffect } from 'react'
 
 
 const Calls = ({ authUrl }) => {
@@ -13,18 +14,22 @@ const Calls = ({ authUrl }) => {
     }
   }
   
+  useEffect(()=>{
+    const recordings = getRecordings();
+  },[])
+
   async function getRecordings(){
-  const messages = await fetch("api/recordings").then((res)=>res.json())
-  console.log(messages)
+  let recordings = await fetch("api/recordings").then((res)=>res.json())
+  console.log(recordings)
+  return recordings;
   }
-  getRecordings();
 
   return (
     <>
       <Navbar type = 'calls' />
       <div style={{display: 'flex', width: '100%'}}>
           <Contacts />
-          <All messages={messages} length={messages.length} url={authUrl}/>
+          <All recordings={{recordings}} url={authUrl}/>
           <Calling />
       </div>
     </>
