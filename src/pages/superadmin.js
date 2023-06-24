@@ -4,6 +4,7 @@ import styles from '../styles/Index.module.css'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { Table, Checkbox, Button, MultiSelect, Group } from '@mantine/core';
+import { isWindowDefined } from 'swr/_internal'
 
 const Admin = () => {
   const [org, setOrg] = useState([]);
@@ -13,6 +14,15 @@ const Admin = () => {
   const [modal,setModal] = useState(false);
   const [emailId,setEmailId] = useState('');
   const [name,setName] = useState('');
+  const [pass,setPass] = useState('');
+  const [width,setWidth] = useState(1000);
+  const [options,setOptions] = useState(false);
+
+  useEffect(() => {
+    if(window!==undefined) {
+      setWidth(window.innerWidth)
+    }
+  },[isWindowDefined])
   
   const BACK_END_URL = "http://localhost:4000";
   useEffect(() => {
@@ -35,16 +45,17 @@ const Admin = () => {
   }, [check])
 
   const ths = (
-    <tr>
+    <tr className={styles.table}>
       <th></th>
       <th>Head of the Organization</th>
       <th>Email ID</th>
       <th>Name of the Organization</th>
+      <th>options</th>
     </tr>
   );
 
   const rows = org !== undefined ? org.map((element) => (
-    <tr key={element.email}>
+    <tr key={element.email} className={styles.table}>
       <td>
         <Checkbox
           value={element.id}
@@ -58,6 +69,22 @@ const Admin = () => {
       <td>{element.users[0].name}</td>
       <td>{element.email}</td>
       <td>{element.name}</td>
+      <EditModal />
+      <Button onClick={() => {
+        fetch(`${BACK_END_URL}/superadmin/deletecompany`, {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          //get values from selected array
+          body: JSON.stringify({ company_email: element.email })
+        })
+          .then(res => res.json())
+          .then(data => {
+            console.log(data)
+            window.location.reload()
+          })
+      } }>Delete</Button>
     </tr>
   )) : "You are not authorized to interact with this page";
    
@@ -76,12 +103,12 @@ const Admin = () => {
       console.log(searchValue)
       console.log(emailId)
       console.log(name)
-      fetch(`${BACK_END_URL}/superadmin`, {
+      fetch(`${BACK_END_URL}/superadmin/updateOwner`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ company_email: selected,user_email: emailId, name: name })
+        body: JSON.stringify({ company_email: searchValue,user_email: emailId, name: name,password: pass })
       })
       .then(res => res.json())
       .then(data => {
@@ -110,6 +137,7 @@ const Admin = () => {
       <form className={styles.form}>
         <input type="text" placeholder="Enter the email id of the owner" onChange={e=>setEmailId(e.currentTarget.value)} />
         <input type="text" placeholder="Enter the name of the owner" onChange={e => setName(e.currentTarget.value)} />
+        <input type="text" placeholder="Enter the password" onChange={e => setPass(e.currentTarget.value)} />
         <Button onClick={addMember}>Add</Button>
       </form>
     )
@@ -147,7 +175,7 @@ const Admin = () => {
                     Remove below Selected Members
                   </Button>}
                   <Table striped verticalSpacing="lg">
-                    <thead>{ths}</thead>
+                    { width < 600 ? null: <thead>{ths}</thead>}
                     <tbody>{rows}</tbody>
                   </Table>
                 </div>
