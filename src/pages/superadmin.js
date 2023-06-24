@@ -41,7 +41,7 @@ const Admin = () => {
       })
   },[isWindowDefined])
   
-  const BACK_END_URL = "http://localhost:4000";
+  const BACK_END_URL = process.env.BACKEND_URL || "http://localhost:4000" ;
   useEffect(() => {
      const populateOrg = () => {
           fetch(`${BACK_END_URL}/superadmin/getcompanies`, {

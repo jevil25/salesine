@@ -11,7 +11,7 @@ const Admin = () => {
   const [check, setCheck] = useState(false);
   const [selected, setSelected] = useState([]);
   const [data, setData] = useState([]);
-  const BACK_END_URL = "http://localhost:4000";
+  const BACK_END_URL = process.env.BACKEND_URL || "http://localhost:4000" ;
   useEffect(() => {
      const populateOrg = () => {
           fetch(`${BACK_END_URL}/api/admin`, {

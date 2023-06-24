@@ -4,7 +4,7 @@ import fetch from "node-fetch"
 
 const google = () => {
 
-    const BACK_END_URL = "http://localhost:4000";
+    const BACK_END_URL = process.env.BACKEND_URL || "http://localhost:4000" ;
     const router = useRouter()
     useEffect(() => {
         if(!router.isReady) return;
