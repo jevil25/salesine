@@ -24,6 +24,21 @@ const Admin = () => {
     if(window!==undefined) {
       setWidth(window.innerWidth)
     }
+    //check if user is superadmin
+    fetch(`${BACK_END_URL}/superadmin/checksuperadmin`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ email: localStorage.getItem('email') })
+    })
+      .then(res => res.json())
+      .then(data => {
+        console.log(data)
+        if (data === false) {
+          router.push('/')
+        }
+      })
   },[isWindowDefined])
   
   const BACK_END_URL = "http://localhost:4000";
