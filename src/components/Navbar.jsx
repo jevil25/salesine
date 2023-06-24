@@ -2,10 +2,14 @@ import styles from '../styles/Navbar.module.css'
 import logo2 from '../../public/assets/logo2.png'
 import Link from 'next/link'
 import { useState,useEffect } from 'react';
+import { Button } from "@mantine/core";
+import { useRouter } from "next/router";
+
 const Navbar = (props) => {
     const [toggleMenu, setToggleMenu] = useState(false);
     const [loggedIn, setLoggedIn] = useState(false);
     const [role, setRole] = useState('');
+    const router = useRouter();
     
     useEffect(() => {
         if (typeof window !== 'undefined') {
@@ -16,6 +20,13 @@ const Navbar = (props) => {
             console.log(role);
         }
     }, [typeof window]);
+
+    const logout = () => {
+        localStorage.removeItem('token');
+        localStorage.removeItem('role');
+        localStorage.removeItem('email');
+        router.push('/login');
+    }
 
     return (
         <div className={styles.navbarContainer}>
@@ -31,12 +42,8 @@ const Navbar = (props) => {
                 <li><Link href="/activity" className={props.type === 'activity' ? styles.active : null}>ACTIVITY</Link></li>
                 <li><Link href="/library" className={props.type === 'library' ? styles.active : null}>LIBRARY</Link></li>
             </ul>
-            <div className={styles.navSearch}>
-                <input type="text" placeholder='Search' className={styles.navInput} />
-                <img src="https://img.icons8.com/ios-filled/24/ffffff/search--v1.png" alt="search" />
-            </div>
             <div className={styles.navLinks}>
-                {loggedIn ? role==="SUPERADMIN" ? <li><Link href="/superadmin">DASHBOARD</Link></li> : <li><Link href="/account">MY ACCOUNT</Link></li> : <li><Link href="/login" className="">Login</Link></li>}
+                {loggedIn ? role==="SUPERADMIN" ? <><li><Link href="/superadmin" class={styles.dashboard}>DASHBOARD</Link></li> <Button onClick={logout} className={styles.button}>Logout</Button></> : <><li><Link href="/account">MY ACCOUNT</Link></li> <Button onClick={logout} className={styles.button}>Logout</Button></> : <li><Link href="/login" className="">Login</Link></li>}
             </div>
             <div className={styles.navSmallScreen}>
                 <img src="https://img.icons8.com/ios-glyphs/30/ffffff/menu--v1.png" alt="" onClick={() => setToggleMenu(true)} />

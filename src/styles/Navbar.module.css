@@ -118,6 +118,14 @@
   border-radius: 20px;
 }
 
+.button{
+  margin-bottom: 20px;
+}
+
+.dashboard{
+  margin-top: 20px;
+}
+
 
 @media only screen and (max-width: 650px) {
   .navbarContainer{
