@@ -24,7 +24,7 @@ export default function AuthenticationTitle() {
   const [password, setPassword] = useState('')
   const [remember, setRemember] = useState(false)
   const [invalid, setInvalid] = useState(false)
-  const BACK_END_URL = process.env.BACKEND_URL || "http://localhost:4000" ;
+  const BACK_END_URL = process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:4000" ;
   const loginHandler = async () => {
     fetch(`${BACK_END_URL}/login`, {
       method: 'POST',
@@ -35,7 +35,11 @@ export default function AuthenticationTitle() {
     })
     .then(res => res.json())
     .then(data => {
-      // console.log(data)
+      console.log(data)
+      if(data.message === "Method not allowed"){
+        console.log("Method not allowed")
+        return
+      }
       if(data.message === "Invalid credentials"){
         setInvalid(true)
         return

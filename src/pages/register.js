@@ -30,7 +30,7 @@ export default function AuthenticationTitle({ url, authUrl }) {
   const [password, setPassword] = useState('')
   const [name, setName] = useState('')
   
-  const BACK_END_URL = process.env.BACKEND_URL || "http://localhost:4000" ;
+  const BACK_END_URL = process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:4000" ;
   const registerHandler = async () => {
     setLoad(true)
     fetch(`${BACK_END_URL}/register`, {

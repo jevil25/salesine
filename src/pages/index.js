@@ -32,7 +32,8 @@ export const myChart = {
 
 const Home = () => {
     const router = useRouter();
-    const BACK_END_URL = process.env.BACKEND_URL || "http://localhost:4000" ;
+    const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:4000" ;
+    console.log(BACKEND_URL);
     useEffect (() => {
         if(typeof window !== 'undefined') {
             if(localStorage.getItem('token')){
