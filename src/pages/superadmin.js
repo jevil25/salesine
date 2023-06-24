@@ -1,42 +1,34 @@
 import React from 'react'
 import Navbar from '../components/Navbar'
 import styles from '../styles/Index.module.css'
-import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
-import performer from '../../public/assets/performer.png'
-import call from '../../public/assets/call.png'
-import msg2 from '../../public/assets/msg2.png'
-import phone from '../../public/assets/phone.png'
-import { Pie } from 'react-chartjs-2'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
-import axios from 'axios'
-import { createStyles, rem, Text } from '@mantine/core';
-import { useListState } from '@mantine/hooks';
-import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
-import { IconGripVertical } from '@tabler/icons-react';
 import { Table, Checkbox, Button, MultiSelect, Group } from '@mantine/core';
 
 const Admin = () => {
   const [org, setOrg] = useState([]);
-  const [emails, setEmails] = useState([]);
   const [check, setCheck] = useState(false);
   const [selected, setSelected] = useState([]);
+  const [emails,setEmails] = useState([]);
+  const [modal,setModal] = useState(false);
+  const [emailId,setEmailId] = useState('');
+  const [name,setName] = useState('');
   
   const BACK_END_URL = "http://localhost:4000";
   useEffect(() => {
      const populateOrg = () => {
-          fetch(`${BACK_END_URL}/superadmin`, {
-            method: 'POST',
+          fetch(`${BACK_END_URL}/superadmin/getcompanies`, {
+            method: 'GET',
             headers: {
               'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ email: localStorage.getItem('email'), flag: 'getOrg' })
+            //body: JSON.stringify({ email: localStorage.getItem('email'), flag: 'getOrg' })
           })
           .then(res => res.json())
           .then(data => {
               console.log(data)
-              setOrg(data.organization)
-              setEmails(data.emails)
+              setOrg(data)
+              setEmails(data.map((element) => element.email))
           }) 
       }
      populateOrg();
@@ -55,16 +47,17 @@ const Admin = () => {
     <tr key={element.email}>
       <td>
         <Checkbox
-          value={element.email}
+          value={element.id}
           onChange={(event) => {
             setSelected([...selected, event.currentTarget.value]);
-            console.log(event.currentTarget.value);
+            // console.log(selected);
+            // console.log(event.currentTarget.value);
           }}
         />
       </td>
-      <td>{element.username}</td>
+      <td>{element.users[0].name}</td>
       <td>{element.email}</td>
-      <td>{element.organization}</td>
+      <td>{element.name}</td>
     </tr>
   )) : "You are not authorized to interact with this page";
    
@@ -79,13 +72,16 @@ const Admin = () => {
     }
     const [searchValue, onSearchChange] = useState('');
     const addMember = () => {
+      setModal(false)
       console.log(searchValue)
+      console.log(emailId)
+      console.log(name)
       fetch(`${BACK_END_URL}/superadmin`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ email: localStorage.getItem('email'), userEmail: searchValue, flag: 'updateOrg' })
+        body: JSON.stringify({ company_email: selected,user_email: emailId, name: name })
       })
       .then(res => res.json())
       .then(data => {
@@ -95,12 +91,13 @@ const Admin = () => {
     }
     const removeMembers = () => {
       console.log(selected)
-      fetch(`${BACK_END_URL}/superadmin`, {
-        method: 'POST',
+      fetch(`${BACK_END_URL}/superadmin/deletecompany`, {
+        method: 'DELETE',
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ email: localStorage.getItem('email'), userEmail: selected, flag: 'removeOrg' })
+        //get values from selected array
+        body: JSON.stringify({ company_email: selected })
       })
       .then(res => res.json())
       .then(data => {
@@ -108,6 +105,14 @@ const Admin = () => {
           window.location.reload()
       })
     }
+
+    const headModal = (
+      <form className={styles.form}>
+        <input type="text" placeholder="Enter the email id of the owner" onChange={e=>setEmailId(e.currentTarget.value)} />
+        <input type="text" placeholder="Enter the name of the owner" onChange={e => setName(e.currentTarget.value)} />
+        <Button onClick={addMember}>Add</Button>
+      </form>
+    )
     return (
         <>
             <Navbar/>
@@ -115,8 +120,6 @@ const Admin = () => {
                 <div className={styles.homeHeader}>
                     <div className={styles.homeHeaderHeading}>Super Admin Portal for Salesine</div>
                 </div>
-                
-
                 <div style={{marginLeft: '10%', marginRight: '10%'}}>
                   <Group>
                       <MultiSelect
@@ -130,10 +133,13 @@ const Admin = () => {
                       nothingFound="Nothing found"
                       maxSelectedValues={1}
                     />
-                    <Button onClick={addMember}>
+                    <Button onClick={e => setModal(true)}>
                       Add organization Head
                     </Button>
                   </Group>
+                  {
+                      modal ? headModal : null
+                    }
                   <br/>
                   {selected.length > 0 ? <Button variant='outline' onClick={removeMembers}>
                     Remove below Selected Members
