@@ -28,10 +28,11 @@ export default function Recordings(){
   useEffect(() => {
     const data = JSON.parse(localStorage.getItem("recording"));
     console.log(data);
-    setTopic(data.topic);
-    setId(data.id);
-    setRecording_drive_link(data.recording_drive_link);
-    setTrans(data.trans);
+    // setTopic(data.topic);
+    // setId(data.id);
+    // setRecording_drive_link(data.recording_drive_link);
+    // setTrans(data.trans);
+    
     console.log(topic);
   }, [typeof window]);
 
@@ -52,12 +53,12 @@ export default function Recordings(){
         >
           <div style={{ display: "flex", alignItems: "center" }}>
             {btn === "Transcript" ? (
-              <iframe
+              {/* <iframe
                 src={`https://drive.google.com/file/d/${recording_drive_link}/preview`}
                 width="740"
                 height="400"
                 allow="autoplay"
-              ></iframe>
+              ></iframe> */}
             ) : (
               <Card
                 shadow="sm"

@@ -13,23 +13,13 @@ const Calls = ({ authUrl }) => {
         router.push('/login');
     }
   }
-  
-  useEffect(()=>{
-    const recordings = getRecordings();
-  },[])
-
-  async function getRecordings(){
-  let recordings = await fetch("api/recordings").then((res)=>res.json())
-  console.log(recordings)
-  return recordings;
-  }
 
   return (
     <>
       <Navbar type = 'calls' />
       <div style={{display: 'flex', width: '100%'}}>
           <Contacts />
-          <All recordings={{recordings}} url={authUrl}/>
+          <All url={authUrl}/>
           <Calling />
       </div>
     </>

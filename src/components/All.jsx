@@ -27,9 +27,9 @@ const All = (props) => {
   const [btn, setBtn] = useState(false);
   const theme = useMantineTheme();
   const [opened, { open, close }] = useDisclosure(false);
-  const [recordings,setRecordings] = useState(props.messages)
-  console.log("this is props var");
-  console.log(props.recordings[0])
+  const [recordings,setRecordings] = useState({})
+  // console.log("this is props var");
+  // console.log(props);
   const router = useRouter();
   let obj = [];
   const {
@@ -67,16 +67,13 @@ const All = (props) => {
   };
 
   useEffect(() => {
-    const sync = () => {
-      //  axios.post('api/calendar',{code: code})
-      //  .then((response) => {
-      //     console.log(response)
-      //     setSyncCalls(response.data)
-      //     console.log(syncCalls)
-      //   })
-      //   .catch((err) => {
-      //     console.log(err);
-      //   })
+    const getRecordings = async () => {
+      let recordings = await fetch("api/recordings")
+    .then((res) => res.json())
+    .then((recordings) => {
+      return recordings.recordings;
+    });
+    setRecordings(recordings);
     };
 
     const populateCalls = () => {
@@ -93,6 +90,8 @@ const All = (props) => {
     };
 
     populateCalls();
+    getRecordings();
+    console.log(recordings)
   }, []);
   const [name, setName] = useState("");
   const [startTime, setStartTime] = useState("");
@@ -102,6 +101,7 @@ const All = (props) => {
   const joinHandler = () => {
     window.location.href = url;
   };
+  
 
   return (
     <div className={styles.allContainer}>
@@ -156,19 +156,19 @@ const All = (props) => {
       </div>
 
       <div className={styles.allCalls}>
-        {calls.length > 0 ? (
-          calls.map((item, index) => {
+        {recordings.length > 0 ? (
+          recordings.map((recording) => {
             return (
-              <div className={styles.allCall} key={index}>
+              <div className={styles.allCall} key={recording._id}>
                 <div>
                   {" "}
                   <Video size={35} />{" "}
                 </div>
                 <div className={styles.allInfo}>
-                  <div className={styles.allHeading}>{item.topic}</div>
-                  <div className={styles.allSubInfo}>{item.start_time}</div>
+                  <div className={styles.allHeading}>{recording.topic}</div>
+                  <div className={styles.allSubInfo}>{recording.startTime}</div>
                   <div className={styles.allSubInfo}>
-                    {formatDate(item.date)}
+                    {recording.duration}
                   </div>
                 </div>
                 <Badge color="indigo">
@@ -180,7 +180,7 @@ const All = (props) => {
                 <Button
                   color="indigo"
                   onClick={() => {
-                    localStorage.setItem("recording", JSON.stringify(item));
+                    localStorage.setItem("recording", JSON.stringify(recording._id));
                     router.push("/recordings");
                   }}
                 >
