@@ -47,6 +47,7 @@ export default function AuthenticationTitle() {
       if (data.user.token) {
         localStorage.setItem('token', data.user.token)
         localStorage.setItem('email', data.user.email)
+        localStorage.setItem('role', data.user.role)
         router.push('/')
       }
     }).catch(err => {

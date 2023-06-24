@@ -5,12 +5,15 @@ import { useState,useEffect } from 'react';
 const Navbar = (props) => {
     const [toggleMenu, setToggleMenu] = useState(false);
     const [loggedIn, setLoggedIn] = useState(false);
+    const [role, setRole] = useState('');
     
     useEffect(() => {
         if (typeof window !== 'undefined') {
             if(localStorage.getItem('token') !== null) {
             setLoggedIn(true);
             }
+            setRole(localStorage.getItem('role'));
+            console.log(role);
         }
     }, [typeof window]);
 
@@ -22,8 +25,7 @@ const Navbar = (props) => {
             <ul className={styles.navLinks}>
                 <li><Link href="/" className={props.type === 'home' ? styles.active : null} >HOME</Link></li>
                 <li><Link href="/calls" className={props.type === 'calls' ? styles.active : null}>CALLS</Link></li>
-                <li><Link href="/team" className={props.type === 'teams' ? styles.active : null}>Scheduled</Link></li>
-                <li><Link href="/recordings" className={props.type === 'recording' ? styles.active : null}>RECORDING</Link></li>
+                <li><Link href="/team" className={props.type === 'teams' ? styles.active : null}>SCHEDULED</Link></li>
                 <li><Link href="/deals" className={props.type === 'deals' ? styles.active : null}>DEALS</Link></li>
                 <li><Link href="/team" className={props.type === 'teams' ? styles.active : null}>TEAM</Link></li>
                 <li><Link href="/activity" className={props.type === 'activity' ? styles.active : null}>ACTIVITY</Link></li>
@@ -34,7 +36,7 @@ const Navbar = (props) => {
                 <img src="https://img.icons8.com/ios-filled/24/ffffff/search--v1.png" alt="search" />
             </div>
             <div className={styles.navLinks}>
-                {loggedIn ? <li><Link href="/account">MY ACCOUNT</Link></li> : <li><Link href="/login" className="">Login</Link></li>}
+                {loggedIn ? role==="SUPERADMIN" ? <li><Link href="/superadmin">DASHBOARD</Link></li> : <li><Link href="/account">MY ACCOUNT</Link></li> : <li><Link href="/login" className="">Login</Link></li>}
             </div>
             <div className={styles.navSmallScreen}>
                 <img src="https://img.icons8.com/ios-glyphs/30/ffffff/menu--v1.png" alt="" onClick={() => setToggleMenu(true)} />
@@ -43,12 +45,15 @@ const Navbar = (props) => {
                         <img src="https://img.icons8.com/ios-glyphs/30/ffffff/macos-close.png" alt="" onClick={()=> setToggleMenu(false)} />
                         <ul className={styles.navlinks}>
                             <li><Link href="/" className={props.type === 'home' ? styles.active : null} >HOME</Link></li>
-                            <li><Link href="/recordings" className={props.type === 'recording' ? styles.active : null}>RECORDING</Link></li>
                             <li><Link href="/calls" className={props.type === 'calls' ? styles.active : null}>CALLS</Link></li>
+                            <li><Link href="/team" className={props.type === 'teams' ? styles.active : null}>SCHEDULED</Link></li>
                             <li><Link href="/deals" className={props.type === 'deals' ? styles.active : null}>DEALS</Link></li>
                             <li><Link href="/team" className={props.type === 'teams' ? styles.active : null}>TEAM</Link></li>
                             <li><Link href="/activity" className={props.type === 'activity' ? styles.active : null}>ACTIVITY</Link></li>
                             <li><Link href="/library" className={props.type === 'library' ? styles.active : null}>LIBRARY</Link></li>
+                            {/* <div className={styles.navLinks}> */}
+                                {loggedIn ? role==="SUPERADMIN" ? <li><Link href="/superadmin">DASHBOARD</Link></li> : <li><Link href="/account">MY ACCOUNT</Link></li> : <li><Link href="/login" className="">Login</Link></li>}
+                            {/* </div> */}
                         </ul>
                     </div>
                 )}
