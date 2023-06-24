@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react'
 import { Table, Checkbox, Button, MultiSelect, Group } from '@mantine/core';
 import { isWindowDefined } from 'swr/_internal'
 import EditModal from '../components/EditModal'
+import AddCompany from '../components/AddCompany'
 
 const Admin = () => {
   const [org, setOrg] = useState([]);
@@ -224,9 +225,7 @@ const Admin = () => {
                   </Button> : <Button variant='outline' onClick={removeMembers} disabled>
                     Remove below Selected Members
                   </Button>}
-                  <Button variant='filled' className={styles.addCompany}>
-                    Add Company
-                  </Button>
+                  <AddCompany />
                   <Table striped verticalSpacing="lg">
                     { width < 600 ? null: <thead>{ths}</thead>}
                     <tbody>{rows}</tbody>
