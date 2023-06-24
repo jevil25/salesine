@@ -5,6 +5,7 @@ import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { Table, Checkbox, Button, MultiSelect, Group } from '@mantine/core';
 import { isWindowDefined } from 'swr/_internal'
+import EditModal from '../components/EditModal'
 
 const Admin = () => {
   const [org, setOrg] = useState([]);
@@ -50,41 +51,90 @@ const Admin = () => {
       <th>Head of the Organization</th>
       <th>Email ID</th>
       <th>Name of the Organization</th>
-      <th>options</th>
+      <th>Edit</th>
+      <th>Delete</th>
+      <th>Active/Inactive</th>
     </tr>
   );
+
+  const Active = (id,active) => {
+    if(active) {
+      active = false;
+    }else{
+      active = true;
+    }
+    fetch(`${BACK_END_URL}/superadmin/activecompany`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ company_id: id, active:active  })
+    })
+      .then(res => res.json())
+      .then(data => {
+        console.log(data)
+        window.location.reload();
+      })
+  }
 
   const rows = org !== undefined ? org.map((element) => (
     <tr key={element.email} className={styles.table}>
       <td>
-        <Checkbox
-          value={element.id}
-          onChange={(event) => {
-            setSelected([...selected, event.currentTarget.value]);
-            // console.log(selected);
-            // console.log(event.currentTarget.value);
-          }}
-        />
+      <Checkbox
+        value={element.id}
+        onChange={(event) => {
+          const isChecked = event.currentTarget.checked;
+          const checkboxValue = event.currentTarget.value;
+          setSelected((prevSelected) => {
+            if (isChecked) {
+              // Add the value to the selected array if it's checked
+              return [...prevSelected, checkboxValue];
+            } else {
+              // Remove the value from the selected array if it's unchecked
+              return prevSelected.filter((value) => value !== checkboxValue);
+            }
+          });
+        }}
+      />
       </td>
       <td>{element.users[0].name}</td>
       <td>{element.email}</td>
       <td>{element.name}</td>
-      <EditModal />
-      <Button onClick={() => {
-        fetch(`${BACK_END_URL}/superadmin/deletecompany`, {
-          method: 'DELETE',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          //get values from selected array
-          body: JSON.stringify({ company_email: element.email })
-        })
-          .then(res => res.json())
-          .then(data => {
-            console.log(data)
-            window.location.reload()
+      <td>
+        <EditModal 
+          id = {element.id}
+          name = {element.name}
+          email = {element.email}
+          total = {element.totalUsers}
+          details = {element.details}
+        />
+      </td>
+      <td>
+        <Button onClick={() => {
+          fetch(`${BACK_END_URL}/superadmin/deletecompany`, {
+            method: 'DELETE',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            //get values from selected array
+            body: JSON.stringify({ company_id: element.id })
           })
-      } }>Delete</Button>
+            .then(res => res.json())
+            .then(data => {
+              console.log(data)
+              window.location.reload()
+            })
+        } }>
+          Delete
+        </Button>
+      </td>
+      <td>
+        <Button className={element.active ? styles.green : styles.red}
+          onClick={() => Active(element.id, element.active)}
+        >
+          {element.active ? "Active" : "Not Active"}
+        </Button>
+      </td>
     </tr>
   )) : "You are not authorized to interact with this page";
    
@@ -174,6 +224,9 @@ const Admin = () => {
                   </Button> : <Button variant='outline' onClick={removeMembers} disabled>
                     Remove below Selected Members
                   </Button>}
+                  <Button variant='filled' className={styles.addCompany}>
+                    Add Company
+                  </Button>
                   <Table striped verticalSpacing="lg">
                     { width < 600 ? null: <thead>{ths}</thead>}
                     <tbody>{rows}</tbody>

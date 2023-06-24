@@ -303,6 +303,26 @@
   justify-content: center;
   }
 
+  .green{
+    background-color: green;
+  }
+
+  .green:hover{
+    background-color: #4CAF50;
+  }
+
+  .red{
+    background-color: red;
+  }
+
+  .red:hover{
+    background-color: #f44336;
+  }
+
+  .addCompany{
+    margin-left: 15px ;
+  }
+
 @media only screen and (max-width: 650px)  {
    .homeBody{
       flex-direction: column;
