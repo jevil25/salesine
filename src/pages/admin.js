@@ -5,6 +5,7 @@ import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { Table, Checkbox, Button, MultiSelect, Group } from '@mantine/core';
 import { isWindowDefined } from 'swr/_internal'
+import AddMember from '../components/AddMember'
 
 const Admin = () => {
   const [org, setOrg] = useState([]);
@@ -13,6 +14,7 @@ const Admin = () => {
   const [selected, setSelected] = useState([]);
   const [data, setData] = useState([]);
   const [width, setWidth] = useState(1000);
+  const [emailId, setEmailId] = useState('');
 
 
   const BACK_END_URL = process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:4000" ;
@@ -61,6 +63,7 @@ const Admin = () => {
         }
         const token = localStorage.getItem('token');
         const email = localStorage.getItem('email');
+        setEmailId(email)
 
         fetch(`${BACK_END_URL}/validate`, {
             method: "POST",
@@ -159,7 +162,7 @@ const Admin = () => {
     const removeMembers = () => {
       console.log(selected)
       fetch(`${BACK_END_URL}/admin/deleteuser`, {
-        method: 'POST',
+        method: 'DELETE',
         headers: {
           'Content-Type': 'application/json'
         },
@@ -203,9 +206,9 @@ const Admin = () => {
                   </Button> : <Button variant='outline' onClick={removeMembers} disabled>
                     Remove below Selected Members
                   </Button>}
-                  <Button onClick={addMember} className={styles.addCompany}>
-                    Add Member
-                  </Button>
+                  <AddMember 
+                    adminEmail={emailId}
+                  />
                   <Table striped verticalSpacing="lg">
                     <thead>{ths}</thead>
                     <tbody>{rows}</tbody>
