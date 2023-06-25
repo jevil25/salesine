@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react'
 import { Table, Checkbox, Button, MultiSelect, Group } from '@mantine/core';
 import { isWindowDefined } from 'swr/_internal'
 import AddMember from '../components/AddMember'
+import EditMember from '../components/EditMember'
 
 const Admin = () => {
   const [org, setOrg] = useState([]);
@@ -15,6 +16,9 @@ const Admin = () => {
   const [data, setData] = useState([]);
   const [width, setWidth] = useState(1000);
   const [emailId, setEmailId] = useState('');
+  const [orgName, setOrgName] = useState('');
+  const [orgEmail, setOrgEmail] = useState('');
+  const [orgRole, setOrgRole] = useState('');
 
 
   const BACK_END_URL = process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:4000" ;
@@ -174,6 +178,17 @@ const Admin = () => {
         window.location.reload();
       })
     }
+
+   useEffect(() => {
+    org.map((element) => {
+      if(element.email === searchValue) {
+        setOrgName(element.name)
+        setOrgEmail(element.email)
+        setOrgRole(element.role)
+      }
+    })
+    }, [searchValue])
+
     return (
         <>
             <Navbar/>
@@ -196,9 +211,12 @@ const Admin = () => {
                         nothingFound="Nothing found"
                         maxSelectedValues={1}
                       />
-                    <Button>
-                      Edit Member
-                    </Button>
+                    <EditMember
+                      name={orgName}
+                      email={orgEmail}
+                      role={orgRole}
+                      searchValue={searchValue}
+                    />
                   </Group>
                   <br/>
                   {selected.length > 0 ? <Button variant='outline' onClick={removeMembers}>
