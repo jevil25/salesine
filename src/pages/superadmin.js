@@ -139,7 +139,7 @@ const Admin = () => {
         }}
       />
       </td>
-      <td>{element.users[0].name}</td>
+      {element.users[0] === undefined ? <td>Yet to be added</td> : <td>{element.users[0].name}</td>}
       <td>{element.email}</td>
       <td>{element.name}</td>
       <td>

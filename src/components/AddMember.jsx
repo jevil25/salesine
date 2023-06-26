@@ -4,7 +4,7 @@ import { Button } from "@mantine/core";
 import styles from "../styles/Modal.module.css";
 
 const AddMember = (adminEmail) => {
-    const BACK_END_URL = process.env.BACKEND_URL || "http://localhost:4000" ;
+    const BACK_END_URL = process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:4000" ;
     const [isOpened, setIsOpened] = useState(false);
     const [name1, setName] = useState("");
     const [email1, setEmail] = useState("");
