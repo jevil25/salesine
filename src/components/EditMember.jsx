@@ -4,7 +4,7 @@ import { Button } from "@mantine/core";
 import styles from "../styles/Modal.module.css";
 
 export default function EditMember({ email,name,role,searchValue }) {
-    const BACK_END_URL = process.env.BACKEND_URL || "http://localhost:4000" ;
+    const BACK_END_URL = process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:4000" ;
     console.log(email,name,role,searchValue);
     const [isOpened, setIsOpened] = useState(false);
     const [email1, setEmail] = useState(email);
