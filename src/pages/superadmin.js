@@ -38,6 +38,32 @@ const Admin = () => {
         if (data === false) {
           router.push('/')
         }
+        const token = localStorage.getItem('token');
+        const email = localStorage.getItem('email');
+
+        fetch(`${BACK_END_URL}/validate`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ token, email }),
+                })
+                .then((res) => res.json())
+                .then((data) => {
+                    console.log(data);
+                    if (data.status === 200) {
+                        console.log("success")
+                    }
+                    if(data.status === 401){
+                        localStorage.removeItem('token');
+                        localStorage.removeItem('email');
+                        router.push('/login');
+                    }
+                })
+                .catch((err) => {
+                    console.log(err);
+                }
+            );
       })
   },[isWindowDefined])
   

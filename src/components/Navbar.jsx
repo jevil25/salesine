@@ -43,7 +43,7 @@ const Navbar = (props) => {
                 <li><Link href="/library" className={props.type === 'library' ? styles.active : null}>LIBRARY</Link></li>
             </ul>
             <div className={styles.navLinks}>
-                {loggedIn ? role==="SUPERADMIN" ? <><li><Link href="/superadmin" class={styles.dashboard}>DASHBOARD</Link></li> <Button onClick={logout} className={styles.button}>Logout</Button></> : <><li><Link href="/account">MY ACCOUNT</Link></li> <Button onClick={logout} className={styles.button}>Logout</Button></> : <li><Link href="/login" className="">Login</Link></li>}
+                {loggedIn ? role==="SUPERADMIN" || role==="ADMIN" ? <><li><Link href={`/${role.toLowerCase()}`} class={styles.dashboard}>DASHBOARD</Link></li> <Button onClick={logout} className={styles.button}>Logout</Button></> : <><li><Link href="/account">MY ACCOUNT</Link></li> <Button onClick={logout} className={styles.button}>Logout</Button></> : <li><Link href="/login" className="">Login</Link></li>}
             </div>
             <div className={styles.navSmallScreen}>
                 <img src="https://img.icons8.com/ios-glyphs/30/ffffff/menu--v1.png" alt="" onClick={() => setToggleMenu(true)} />

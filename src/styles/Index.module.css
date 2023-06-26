@@ -323,6 +323,10 @@
     margin-left: 15px ;
   }
 
+  .homeWrapper td,.homeWrapper th{
+    text-align: center;
+  }
+
 @media only screen and (max-width: 650px)  {
    .homeBody{
       flex-direction: column;
