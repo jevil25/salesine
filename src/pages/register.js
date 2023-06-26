@@ -29,6 +29,11 @@ export default function AuthenticationTitle({ url, authUrl }) {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [name, setName] = useState('')
+  const [company_name, setCompany_name] = useState('')
+  const [company_email, setCompany_email] = useState('')
+  const [company_details, setCompany_details] = useState('')
+  const [invalid, setInvalid] = useState(false)
+  const [msg, setMsg] = useState('')
   
   const BACK_END_URL = process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:4000" ;
   const registerHandler = async () => {
@@ -38,14 +43,20 @@ export default function AuthenticationTitle({ url, authUrl }) {
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({ email, password, name })
+      body: JSON.stringify({ email, password, name,company_name,company_email,company_details })
     })
     .then(res => res.json())
     .then(data => {
         console.log(data)
-        // router.push('/login')
-        setActive(1)
-        setLoad(false)
+        if(data.message === "User registered successfully")
+        {
+          localStorage.setItem("email", email);
+          setActive(1)
+          setLoad(false)
+        }else{
+          setInvalid(true)
+          setMsg(data.message)
+        }
     }).catch(err => {
       console.log(err)
       setLoad(false)
@@ -89,7 +100,12 @@ export default function AuthenticationTitle({ url, authUrl }) {
                 
               </Anchor>
             </Text>
-
+            <Title
+              align="center"
+              sx={(theme) => ({ fontFamily: `Greycliff CF, ${theme.fontFamily}`, fontWeight: 600, fontSize: 12,color: 'red' })}
+            >
+              Note: Only company Admins must signup
+            </Title>
             <Paper withBorder shadow="md" p={30} mt={30} radius="md">
               <TextInput 
                   label="Username" 
@@ -119,12 +135,38 @@ export default function AuthenticationTitle({ url, authUrl }) {
                 size="md"
                 required mt="md" 
               />
-             
-              
+              <TextInput
+                label="Company Name"
+                name="companyName"
+                placeholder="Company Name"
+                size="md"
+                required
+                value={company_name}
+                onChange={(e) => setCompany_name(e.target.value)}
+              />
+              <TextInput
+                label="Company Email"
+                name="companyEmail"
+                placeholder="Company Email"
+                size="md"
+                required
+                value={company_email}
+                onChange={(e) => setCompany_email(e.target.value)}
+              />
+              <TextInput
+                label="Company Details"
+                name="companyDetails"
+                placeholder="Company Details"
+                size="md"
+                required
+                value={company_details}
+                onChange={(e) => setCompany_details(e.target.value)}
+              />
               <Group position="apart" mt="lg">
       
                
               </Group>
+              {invalid && <Text color="red">{msg}</Text>}
               <Button fullWidth mt="xl" size="md" onClick={registerHandler} color="indigo">
              
                    {
