@@ -3,7 +3,6 @@ const { JWT_SECRET } = process.env;
 import MeetModel from "../../models/Meet";
 
 export default async function handler(req, res) {
-  console.log("in getnerecord endpoint")
   const meet_id = req.body.meet_id;
   try {
     const meeting = await MeetModel.findOne({ _id: meet_id });

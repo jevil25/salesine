@@ -25,7 +25,7 @@ const MeetSchema = new mongoose.Schema({
     startTime: { type:String, required:true },
     topic: { type:String, required:true, default:"Meeting" },
     companyid: { type:String, required:true },
-    comments: { type: [CommentSchema],default:[] },
+    comments: [{ type: CommentSchema,default:[] }],
     meetid:{ type: String, required: true }
 });
 

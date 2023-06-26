@@ -10,6 +10,7 @@ export default function Recordings() {
   const [id, setId] = useState("");
   const [recording_drive_link, setRecording_drive_link] = useState("");
   const [comments, setComments] = useState([]);
+  const [email, setEmail] = useState("");
   const router = useRouter();
   if (typeof window !== "undefined") {
     if (localStorage.getItem("token") === null) {
@@ -27,6 +28,7 @@ export default function Recordings() {
 
   useEffect(() => {
     async function getdata() {
+      setEmail(localStorage.getItem("email"));
       const data = JSON.parse(localStorage.getItem("recording"));
       console.log(data);
       let meet_data = await fetch("/api/getonerecord", {
@@ -46,31 +48,30 @@ export default function Recordings() {
       setId(meet_data._id);
       setRecording_drive_link(meet_data.recordingLink);
       setComments(() => {
-        let wrapped_comments = meet_data.comments;
-        let new_comments = [];
-        for (let i = 0; i < wrapped_comments.length; i++) {
-          new_comments[i] = `<Message
-             messageText="${wrapped_comments[i].text}"
-             author="${wrapped_comments[i].author}"
-             timestamp="${wrapped_comments[i].timestamp}"
-           />`;
-        }
-        // wrapped_comments.map((comment) => {
-        //     return `<Message
-        //   messageText=${comment.text}
-        //   author=${comment.author}
-        //   timestamp=${comment.timestamp}
-        // />`;
-        // });
-        // console.log("this is wrapped comments");
-        // console.log(new_comments);
-        return new_comments;
+        return meet_data.comments;
       });
-      console.log(comments[0]);
     }
     getdata();
   }, []);
   // setTrans(meet_data.trans);
+
+  async function sendMessage() {
+    console.log(email);
+    let text = document.getElementById("commentinput").value
+    let timestamp = Date.now();
+    const updated_meet = await fetch("/api/Sendmessage",{
+      method:'POST',
+      headers:{
+        'Content-Type':"application/json"
+      },
+      body:JSON.stringify({
+        meet_id:id,
+        text:text,
+        author:email,
+        timestamp:timestamp
+      })
+    }).then((res)=>res.json()).then((data)=>console.log(data))
+  }
 
   return (
     <>
@@ -110,41 +111,21 @@ export default function Recordings() {
           </div>
           <div id="chatbox">
             <div id="messages" style={{ height: "300px", overflowY: "auto" }}>
-              <Message
-                messageText="I like what Jim had to say about the startegy to bring in the new goods"
-                author="Parth"
-                timestamp="10:12 AM,Today"
-              />
-              {[...comments]}
-              {/* <Message
-                messageText="I like what Jim had to say about the startegy to bring in the new goods"
-                author="Parth"
-                timestamp="10:12 AM,Today"
-              />
-              <Message
-                messageText="I like what Jim had to say about the startegy to bring in the new goods"
-                author="Parth"
-                timestamp="10:12 AM,Today"
-              />
-              <Message
-                messageText="I like what Jim had to say about the startegy to bring in the new goods"
-                author="Parth"
-                timestamp="10:12 AM,Today"
-              />
-              <Message
-                messageText="I like what Jim had to say about the startegy to bring in the new goods"
-                author="Parth"
-                timestamp="10:12 AM,Today"
-              />
-              <Message
-                messageText="I like what Jim had to say about the startegy to bring in the new goods"
-                author="Parth"
-                timestamp="10:12 AM,Today"
-              /> */}
+              {comments.length > 0 ? (
+                comments.map((comment) => (
+                  <Message
+                    messageText={comment.text}
+                    author={comment.author}
+                    timestamp={comment.timestamp}
+                  />
+                ))
+              ) : (
+                <p>"no comments"</p>
+              )}
             </div>
             <div className="messageInput" style={{ marginTop: "10px" }}>
-              <input type="text" placeholder="Enter a message" />
-              <button>Send</button>
+              <input type="text" id="commentinput" placeholder="Enter a message" />
+              <button onClick={sendMessage}>Send</button>
             </div>
           </div>
         </div>
