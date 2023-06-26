@@ -9,6 +9,7 @@ const google = () => {
     useEffect(() => {
         if(!router.isReady) return;
         const email = localStorage.getItem('email')
+        console.log(email)
         const { code } = router.query
         fetch(`${BACK_END_URL}/googleAuth`, {
             method: "POST",
