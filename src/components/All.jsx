@@ -20,14 +20,14 @@ import {
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 
-const All = (props) => {
+const All = () => {
   const [calls, setCalls] = useState([]);
   const player = useRef();
   const [url, setUrl] = useState("");
   const [btn, setBtn] = useState(false);
   const theme = useMantineTheme();
   const [opened, { open, close }] = useDisclosure(false);
-  const [recordings,setRecordings] = useState({})
+  const [recordings,setRecordings] = useState([])
   // console.log("this is props var");
   // console.log(props);
   const router = useRouter();
@@ -71,6 +71,7 @@ const All = (props) => {
       let recordings = await fetch("api/recordings")
     .then((res) => res.json())
     .then((recordings) => {
+      console.log(recordings)
       return recordings.recordings;
     });
     setRecordings(recordings);
@@ -91,7 +92,6 @@ const All = (props) => {
 
     populateCalls();
     getRecordings();
-    console.log(recordings)
   }, []);
   const [name, setName] = useState("");
   const [startTime, setStartTime] = useState("");
@@ -159,7 +159,7 @@ const All = (props) => {
         {recordings.length > 0 ? (
           recordings.map((recording) => {
             return (
-              <div className={styles.allCall} key={recording._id}>
+              <div className={styles.allCall} key={recording._id.toString()}>
                 <div>
                   {" "}
                   <Video size={35} />{" "}
@@ -184,8 +184,7 @@ const All = (props) => {
                     router.push("/recordings");
                   }}
                 >
-                  {" "}
-                  Recording{" "}
+                  Recording
                 </Button>
               </div>
             );
