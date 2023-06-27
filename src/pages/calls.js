@@ -3,6 +3,7 @@ import Calling from '../components/Calling'
 import Navbar from '../components/Navbar'
 import Contacts from '../components/Contact'
 import {useRouter} from 'next/router'
+import { useEffect } from 'react'
 
 
 const Calls = ({ authUrl }) => {
@@ -12,6 +13,7 @@ const Calls = ({ authUrl }) => {
         router.push('/login');
     }
   }
+
   return (
     <>
       <Navbar type = 'calls' />
