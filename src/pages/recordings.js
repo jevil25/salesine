@@ -57,20 +57,25 @@ export default function Recordings() {
 
   async function sendMessage() {
     console.log(email);
-    let text = document.getElementById("commentinput").value
+    let text = document.getElementById("commentinput").value;
+    document.getElementById("commentinput").value = "";
     let timestamp = Date.now();
-    const updated_meet = await fetch("/api/Sendmessage",{
-      method:'POST',
-      headers:{
-        'Content-Type':"application/json"
+    const updated_meet = await fetch("/api/Sendmessage", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
       },
-      body:JSON.stringify({
-        meet_id:id,
-        text:text,
-        author:email,
-        timestamp:timestamp
-      })
-    }).then((res)=>res.json()).then((data)=>console.log(data))
+      body: JSON.stringify({
+        meet_id: id,
+        text: text,
+        author: email,
+        timestamp: timestamp,
+      }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+      });
   }
 
   return (
@@ -117,6 +122,7 @@ export default function Recordings() {
                     messageText={comment.text}
                     author={comment.author}
                     timestamp={comment.timestamp}
+                    key={comment._id}
                   />
                 ))
               ) : (
@@ -124,7 +130,11 @@ export default function Recordings() {
               )}
             </div>
             <div className="messageInput" style={{ marginTop: "10px" }}>
-              <input type="text" id="commentinput" placeholder="Enter a message" />
+              <input
+                type="text"
+                id="commentinput"
+                placeholder="Enter a message"
+              />
               <button onClick={sendMessage}>Send</button>
             </div>
           </div>

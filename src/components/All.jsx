@@ -108,7 +108,7 @@ const All = () => {
       <div className={styles.allContainerHeading}>
         <p>All Calls</p>
       </div>
-      <div class={styles.initiateButton}>
+      <div className={styles.initiateButton}>
         <Button onClick={open} color="indigo">
           Initiate New Meeting
         </Button>
