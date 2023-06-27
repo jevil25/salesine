@@ -46,7 +46,7 @@ export default function Recordings() {
       // .then((data)=>console.log(data));
       console.log(meet_data.comments);
       setTopic(meet_data.topic);
-      setId(meet_data._id);
+      setId(meet_data.meetid);
       setRecording_drive_link(meet_data.recordingLink);
       setComments(() => {
         return meet_data.comments;

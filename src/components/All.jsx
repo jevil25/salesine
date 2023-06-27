@@ -69,7 +69,11 @@ const All = () => {
 
   useEffect(() => {
     const getRecordings = async () => {
-      let recordings = await fetch(`${BACK_END_URL}/recordings`)
+      let recordings = await fetch(`${BACK_END_URL}/recordings`,{
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email: localStorage.getItem("email") }),
+      })
     .then((res) => res.json())
     .then((recordings) => {
       console.log(recordings)
@@ -82,7 +86,7 @@ const All = () => {
       axios
         .post(`${BACK_END_URL}/calls`, { email: localStorage.getItem("email") })
         .then((response) => {
-          console.log(response);
+          console.log(response.data);
           setCalls(response.data);
           console.log(calls);
         })
@@ -160,7 +164,7 @@ const All = () => {
         {recordings.length > 0 ? (
           recordings.map((recording) => {
             return (
-              <div className={styles.allCall} key={recording._id.toString()}>
+              <div className={styles.allCall} key={recording.id}>
                 <div>
                   {" "}
                   <Video size={35} />{" "}
@@ -181,7 +185,7 @@ const All = () => {
                 <Button
                   color="indigo"
                   onClick={() => {
-                    localStorage.setItem("recording", JSON.stringify(recording._id));
+                    localStorage.setItem("recording", JSON.stringify(recording.id));
                     router.push("/recordings");
                   }}
                 >
