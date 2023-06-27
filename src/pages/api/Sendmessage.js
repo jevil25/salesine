@@ -7,7 +7,8 @@ export default async function handler(req, res) {
 
   if (!meeting) {
     return res.status(404).json({ message: "Meeting not found" });
-  } else {
+  } 
+  else {
     if (req.body.flag == "send") {
       let author = req.body.author;
       let text = req.body.text;
@@ -32,14 +33,15 @@ export default async function handler(req, res) {
         console.error("Error sending message:", error);
         return res.status(500).json({ message: "Server error" });
       }
-    } else if (req.body.flag == "delete") {
+    } 
+    else if (req.body.flag == "delete") {
       let commentid = req.body.id;
       let email = req.body.email;
 
    try{
       const meet = await MeetModel.findByIdAndUpdate(
         { _id: meet_id }, // Replace 'YOUR_MEET_ID' with the actual ID of the meet document
-        { $pull: { comments: { _id: commentid, email: email } } },
+        { $pull: { comments: { _id: commentid, author: email } } },
         { new: true }
       );
       if (!meet) {

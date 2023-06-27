@@ -122,6 +122,8 @@ export default function Recordings() {
                     messageText={comment.text}
                     author={comment.author}
                     timestamp={comment.timestamp}
+                    meet_id={id}
+                    comment_id={comment._id}
                     key={comment._id}
                   />
                 ))
