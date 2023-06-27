@@ -6,6 +6,7 @@ import Navbar from "../components/Navbar";
 import Message from "../components/Message";
 
 export default function Recordings() {
+  const BACK_END_URL = process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:4000" ;
   const [topic, setTopic] = useState("");
   const [id, setId] = useState("");
   const [recording_drive_link, setRecording_drive_link] = useState("");
@@ -31,7 +32,7 @@ export default function Recordings() {
       setEmail(localStorage.getItem("email"));
       const data = JSON.parse(localStorage.getItem("recording"));
       console.log(data);
-      let meet_data = await fetch("/api/getonerecord", {
+      let meet_data = await fetch(`${BACK_END_URL}/getonerecord`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -60,7 +61,7 @@ export default function Recordings() {
     let text = document.getElementById("commentinput").value;
     document.getElementById("commentinput").value = "";
     let timestamp = Date.now();
-    const updated_meet = await fetch("/api/Sendmessage", {
+    const updated_meet = await fetch(`${BACK_END_URL}/Sendmessage`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

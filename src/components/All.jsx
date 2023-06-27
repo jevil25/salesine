@@ -28,6 +28,7 @@ const All = () => {
   const theme = useMantineTheme();
   const [opened, { open, close }] = useDisclosure(false);
   const [recordings,setRecordings] = useState([])
+  const BACK_END_URL = process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:4000" ;
   // console.log("this is props var");
   // console.log(props);
   const router = useRouter();
@@ -45,7 +46,7 @@ const All = () => {
 
   const initiateMeeting = () => {
     const data = axios
-      .post("api/zoom", {
+      .post(`${BACK_END_URL}/zoom`, {
         name: name,
         startTime: startTime,
         duration: duration,
@@ -68,7 +69,7 @@ const All = () => {
 
   useEffect(() => {
     const getRecordings = async () => {
-      let recordings = await fetch("api/recordings")
+      let recordings = await fetch(`${BACK_END_URL}/recordings`)
     .then((res) => res.json())
     .then((recordings) => {
       console.log(recordings)
@@ -79,7 +80,7 @@ const All = () => {
 
     const populateCalls = () => {
       axios
-        .post("api/calls", { email: localStorage.getItem("email") })
+        .post(`${BACK_END_URL}/calls`, { email: localStorage.getItem("email") })
         .then((response) => {
           console.log(response);
           setCalls(response.data);

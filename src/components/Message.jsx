@@ -1,9 +1,10 @@
 import { bin } from "next/image";
 
 export default function Message(props) {
+const BACK_END_URL = process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:4000" ;
  async function deleteMsg(){
     console.log("in delete msg func")
-    const updated_meet = await fetch("/api/Sendmessage",{
+    const updated_meet = await fetch(`${BACK_END_URL}/Sendmessage`,{
         method:'POST',
         headers:{
           'Content-Type':'application/json'
