@@ -10,12 +10,16 @@ const BACK_END_URL = process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:40
           'Content-Type':'application/json'
         },
         body:JSON.stringify({
-          meet_id:props.meet_id,
-          email:props.author,
           id:props.comment_id,
+          meet_id:props.meet_id,
           flag:"delete"
         }),
-      }).then((res)=>res.json()).then((data)=>console.log(data))
+      }).then((res)=>res.json()).then((data)=>{
+        if(data.message=="Comment deleted successfully"){
+          props.fun()
+        }
+      }
+      )
     console.log(updated_meet)
   }
 

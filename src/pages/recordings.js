@@ -12,6 +12,7 @@ export default function Recordings() {
   const [recording_drive_link, setRecording_drive_link] = useState("");
   const [comments, setComments] = useState([]);
   const [email, setEmail] = useState("");
+  const [meetid, setMeetId] = useState("");
   const router = useRouter();
   if (typeof window !== "undefined") {
     if (localStorage.getItem("token") === null) {
@@ -46,14 +47,40 @@ export default function Recordings() {
       // .then((data)=>console.log(data));
       console.log(meet_data.comments);
       setTopic(meet_data.topic);
-      setId(meet_data.meetid);
+      setId(meet_data.id);
       setRecording_drive_link(meet_data.recordingLink);
+      setMeetId(meet_data.meetid);
       setComments(() => {
         return meet_data.comments;
       });
     }
     getdata();
   }, []);
+  async function getdata() {
+    setEmail(localStorage.getItem("email"));
+    const data = JSON.parse(localStorage.getItem("recording"));
+    console.log(data);
+    let meet_data = await fetch(`${BACK_END_URL}/getonerecord`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        meet_id: data,
+      }),
+    })
+      .then((res) => res.json())
+      .then((data) => data.meeting);
+    // .then((data)=>console.log(data));
+    console.log(meet_data.comments);
+    setTopic(meet_data.topic);
+    setId(meet_data.id);
+    setRecording_drive_link(meet_data.recordingLink);
+    setMeetId(meet_data.meetid);
+    setComments(() => {
+      return meet_data.comments;
+    });
+  }
   // setTrans(meet_data.trans);
 
   async function sendMessage() {
@@ -70,12 +97,13 @@ export default function Recordings() {
         meet_id: id,
         text: text,
         author: email,
-        timestamp: timestamp,
+        flag:"send"
       }),
     })
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
+        console.log(data.message);
+        getdata();
       });
   }
 
@@ -84,7 +112,7 @@ export default function Recordings() {
       <Navbar type="recording" />
       <div style={{ margin: "20px" }}>
         <h1>Recording for {topic} Meet</h1>
-        <h2>ID : {id} </h2>
+        <h2>ID : {meetid} </h2>
         <Divider />
         <br />
         <div
@@ -124,8 +152,9 @@ export default function Recordings() {
                     author={comment.author}
                     timestamp={comment.timestamp}
                     meet_id={id}
-                    comment_id={comment._id}
-                    key={comment._id}
+                    comment_id={comment.id}
+                    key={comment.id}
+                    fun={getdata}
                   />
                 ))
               ) : (
