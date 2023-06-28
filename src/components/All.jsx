@@ -69,6 +69,16 @@ const All = () => {
 
   useEffect(() => {
     const getRecordings = async () => {
+      let calenderUpdate = await fetch(`${BACK_END_URL}/calender`,{
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email: localStorage.getItem("email") }),
+      })
+    .then((res) => res.json())
+    .then((calenderUpdate) => {
+      console.log(calenderUpdate)
+      return calenderUpdate;
+    });
       let recordings = await fetch(`${BACK_END_URL}/recordings`,{
       method: "POST",
       headers: { "Content-Type": "application/json" },
