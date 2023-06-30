@@ -1,6 +1,6 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Salesine
 
-## Getting Started
+This is my Salesine Internship project.
 
 First, run the development server:
 
@@ -24,12 +24,13 @@ This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-opti
 
 ## Learn More
 
-To learn more about Next.js, take a look at the following resources:
+This pages allows companies to register themselves which inturn can add employees to it. They can then conduct zoom meet which will be recorded and analysed using our asr model. Which is then shown on the calls page.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+Ml Model
+  - speakers
+  - duration of each speakers
+  - keywords used
+  - Listening time vs speaking time
 
 ## Deploy on Vercel
 
