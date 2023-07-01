@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { useState,useEffect } from 'react';
 import { Button } from "@mantine/core";
 import { useRouter } from "next/router";
+import Image from 'next/image';
 
 const Navbar = (props) => {
     const [toggleMenu, setToggleMenu] = useState(false);
@@ -31,7 +32,7 @@ const Navbar = (props) => {
     return (
         <div className={styles.navbarContainer}>
             <div className={styles.navLogo}>
-                <img src={logo2} alt="logo" width={120} />
+                <Image src={logo2} alt="logo" />
             </div>
             <ul className={styles.navLinks}>
                 <li><Link href="/" className={props.type === 'home' ? styles.active : null} >HOME</Link></li>

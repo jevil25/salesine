@@ -24,6 +24,7 @@ export default function AuthenticationTitle() {
   const [password, setPassword] = useState('')
   const [remember, setRemember] = useState(false)
   const [invalid, setInvalid] = useState(false)
+  const [serverError, setServerError] = useState(false)
   const BACK_END_URL = process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:4000" ;
   const loginHandler = async () => {
     fetch(`${BACK_END_URL}/login`, {
@@ -38,12 +39,15 @@ export default function AuthenticationTitle() {
       console.log(data)
       if(data.message === "Method not allowed"){
         console.log("Method not allowed")
+        setServerError(true)
         return
       }
       if(data.message === "Invalid credentials"){
         setInvalid(true)
         return
       }
+      setInvalid(false)
+      setServerError(false)
       if (data.user.token) {
         localStorage.setItem('token', data.user.token)
         localStorage.setItem('email', data.user.email)
@@ -77,6 +81,7 @@ export default function AuthenticationTitle() {
 
             <Paper withBorder shadow="md" p={30} mt={30} radius="md">
               {invalid && <Text color="red" align="center">Invalid credentials</Text>}
+              {serverError && <Text color="red" align="center">Server error</Text>}
               <TextInput 
                 label="Email" 
                 name="email" 
