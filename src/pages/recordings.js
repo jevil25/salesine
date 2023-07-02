@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
 // import ReactPlayer from "react-player";
 import Message from "../components/Message";
+import { set } from "mongoose";
 
 export default function Recordings() {
   const BACK_END_URL = process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:4000" ;
@@ -13,6 +14,7 @@ export default function Recordings() {
   const [comments, setComments] = useState([]);
   const [email, setEmail] = useState("");
   const [meetid, setMeetId] = useState("");
+  const [transcript, setTranscript] = useState([]);
   const router = useRouter();
   if (typeof window !== "undefined") {
     if (localStorage.getItem("token") === null) {
@@ -54,6 +56,24 @@ export default function Recordings() {
         return meet_data.comments;
       });
     }
+
+    async function getTranscript() {
+      let transcript = await fetch(`${BACK_END_URL}/transcribe`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          meet_id: id,
+        }),
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          console.log(data);
+          if(data.message === "success")
+            setTranscript(data.data);
+        });
+      }
     getdata();
   }, []);
   async function getdata() {
@@ -139,7 +159,15 @@ export default function Recordings() {
                 style={{ height: "400px", cursor: "pointer", width: "60%" }}
               >
                 <h2 style={{ textAlign: "center" }}>Transcript</h2>
-                <h3>{trans}</h3>
+                {transcript.length > 0 ? transcript.map((trans) => (<>
+                  <h1>{trans.text}</h1>
+                  <h4>{trans.startTime}   {trans.speaker}</h4>
+                  </>
+                )
+                ) : (
+                  <p>"no transcript"</p>
+                )
+                }
               </Card>
             )}
           </div>
