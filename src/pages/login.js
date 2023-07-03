@@ -52,7 +52,20 @@ export default function AuthenticationTitle() {
         localStorage.setItem('token', data.user.token)
         localStorage.setItem('email', data.user.email)
         localStorage.setItem('role', data.user.role)
+        if(data.message === "Voice rec and password needed")
+        {
+          router.push('/advance_register')
+        }
+        else if(data.message === "Password change needed")
+        {
+          router.push(`/advance_register/${1}`)
+        }
+        else if(data.message === "Voice rec and password needed"){
+          router.push(`/advance_register/${2}`)
+        }
+        else{
         router.push('/')
+        }
       }
     }).catch(err => {
       console.log(err)
@@ -60,9 +73,6 @@ export default function AuthenticationTitle() {
   }
   return (
     <Container size={800} my={80} >
-
-
-      
               <Title
               align="center"
               sx={(theme) => ({ fontFamily: `Greycliff CF, ${theme.fontFamily}`, fontWeight: 900 })}
