@@ -126,13 +126,6 @@ export default function AuthenticationTitle() {
                 Sign in
               </Button>
             </Paper>
-     
-    
-
-
-
-
-      
     </Container>
   );
 }
