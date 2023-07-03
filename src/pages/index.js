@@ -11,7 +11,6 @@ import { useRouter } from 'next/router'
 import { useEffect } from 'react';
 import fetch from 'node-fetch';
 
-
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 export const todayHighlight = [
