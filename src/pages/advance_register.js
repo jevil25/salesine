@@ -33,7 +33,7 @@ export default function advance_register(){
             body:JSON.stringify({
                 email,oldpassword,newpassword
             })
-        }).then((res)=>res.json())
+        }).then((res)=>res.json()).then((data)=>console.log(data))
     }
 
     return (
