@@ -186,21 +186,40 @@ const All = () => {
                     {recording.duration}
                   </div>
                 </div>
+                {recording.recordingLink ? (<>
                 <Badge color="indigo">
                   <Text size="sm" weight={500}>
                     Completed
                   </Text>
                 </Badge>
-
-                <Button
-                  color="indigo"
-                  onClick={() => {
-                    localStorage.setItem("recording", JSON.stringify(recording.id));
-                    router.push("/recordings");
-                  }}
-                >
-                  Recording
-                </Button>
+                 <Button
+                 color="indigo"
+                 onClick={() => {
+                   localStorage.setItem("recording", JSON.stringify(recording.id));
+                   router.push("/recordings");
+                 }}
+               >
+                 Recording
+               </Button>
+               </>
+                ) : (<>
+                <Badge color="red">
+                  <Text size="sm" weight={500}>
+                    Not Completed
+                  </Text>
+                </Badge>
+                 <Button
+                 color="indigo"
+                 onClick={() => {
+                   localStorage.setItem("recording", JSON.stringify(recording.id));
+                   router.push("/recordings");
+                 }}
+                 disabled = {true}
+               >
+                 Recording
+               </Button>
+               </>
+                )}
               </div>
             );
           })

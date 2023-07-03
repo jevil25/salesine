@@ -5,6 +5,7 @@ import Navbar from "../components/Navbar";
 // import ReactPlayer from "react-player";
 import Message from "../components/Message";
 import { set } from "mongoose";
+import Video from "../google/video";
 
 export default function Recordings() {
   const BACK_END_URL = process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:4000" ;
@@ -48,9 +49,10 @@ export default function Recordings() {
         .then((data) => data.meeting);
       // .then((data)=>console.log(data));
       console.log(meet_data.comments);
+      console.log(meet_data.videoLink);
       setTopic(meet_data.topic);
       setId(meet_data.id);
-      setRecording_drive_link(meet_data.recordingLink);
+      setRecording_drive_link(meet_data.videoLink);
       setMeetId(meet_data.meetid);
       setComments(() => {
         return meet_data.comments;
@@ -92,10 +94,11 @@ export default function Recordings() {
       .then((res) => res.json())
       .then((data) => data.meeting);
     // .then((data)=>console.log(data));
+    console.log(meet_data.videoLink);
     console.log(meet_data.comments);
     setTopic(meet_data.topic);
     setId(meet_data.id);
-    setRecording_drive_link(meet_data.recordingLink);
+    setRecording_drive_link(meet_data.videoLink);
     setMeetId(meet_data.meetid);
     setComments(() => {
       return meet_data.comments;
@@ -144,12 +147,9 @@ export default function Recordings() {
         >
           <div style={{ display: "flex", alignItems: "center" }}>
             {btn === "Transcript" ? (
-              <iframe
-                src={`${recording_drive_link}`}
-                width="740"
-                height="400"
-                allow="autoplay"
-              ></iframe>
+              <Video
+                id={recording_drive_link}
+                />
             ) : (
               <Card
                 shadow="sm"
