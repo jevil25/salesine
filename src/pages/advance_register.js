@@ -17,25 +17,28 @@ import { useRouter } from "next/router";
 export default function advance_register() {
   const router = useRouter();
   const { id } = router.query;
-  console.log(id)
-  if(id==1){
-    let voicediv = document.getElementById("voiceregistration");
-    voicediv.style.display =  "none"
-  }
-  else if(id==2){
-    let passdiv = document.getElementById("passwordchange");
-    passdiv.style.display = "none"
-  }
   const BACK_END_URL =
     process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:4000";
   const [oldpassword, setoldpass] = useState("");
   const [newpassword, setnewpass] = useState("");
   const [email, setEmail] = useState("");
+  const [stream, setStream] = useState(null);
+  const [mediaRecorder, setMediaRecorder] = useState(null);
+const [recordedChunks, setRecordedChunks] = useState([]);
+
   useEffect(() => {
     const email = localStorage.getItem("email");
     setEmail(email);
 
   }, []);
+
+  if (id == 1) {
+    let voicediv = document.getElementById("voiceregistration");
+    voicediv.style.display = "none";
+  } else if (id == 2) {
+    let passdiv = document.getElementById("passwordchange");
+    passdiv.style.display = "none";
+  }
 
   async function changepassword() {
     await fetch(`${BACK_END_URL}/changepassword`, {
@@ -51,6 +54,38 @@ export default function advance_register() {
     })
       .then((res) => res.json())
       .then((data) => console.log(data));
+  }
+
+  async function getVoice() {
+    try {
+      let stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      setStream(stream);
+      const recorder = new MediaRecorder(stream);
+
+      recorder.addEventListener('dataavailable', (event) => {
+        if (event.data.size > 0) {
+          setRecordedChunks((prevChunks) => [...prevChunks, event.data]);
+        }
+      });
+  
+      setMediaRecorder(recorder);
+      recorder.start();
+    } catch (err) {
+      console.log("Error recording voice " + err);
+    }
+  }
+
+  const stopRecording = () => {
+    if (stream && mediaRecorder && mediaRecorder.state === 'recording') {
+      stream.getTracks().forEach((track) => track.stop());
+      setStream(null);
+      mediaRecorder.stop();
+      const recordedBlob = new Blob(recordedChunks, { type: 'audio/wav' });
+  const audioUrl = URL.createObjectURL(recordedBlob);
+  const audioElement = new Audio(audioUrl);
+  audioElement.play();
+
+    }
   }
 
   return (
@@ -135,17 +170,15 @@ export default function advance_register() {
             I enjoy listening to music in my free time.What is the weather like
             today?
           </div>
-          <Group position="apart" mt="lg">
-          </Group>
-          <Button
-            fullWidth
-            mt="xl"
-            size="md"
-               onClick={getVoice}
-            color="indigo"
-          >
+          <Group position="apart" mt="lg"></Group>
+          <Button fullWidth mt="xl" size="md" onClick={getVoice} color="indigo">
             Start
           </Button>
+
+          <Button fullWidth mt="xl" size="md" onClick={stopRecording} color="red">
+            Stop Recording
+          </Button>
+          
         </Paper>
       </Container>
     </>
