@@ -59,20 +59,50 @@ export default function AuthenticationTitle() {
           localStorage.setItem("token", data.user.token);
           localStorage.setItem("email", data.user.email);
           localStorage.setItem("role", data.user.role);
-          if (data.message === "Voice rec and password needed") {
+          if (
+            data.message ===
+            "Voice rec ,password change and google calendar integration needed"
+          ) {
             router.push({
-              pathname:"/advance_register",
-              query:{id:"0"}
+              pathname: "/advance_register",
+              query: { id: "0" },
             });
-          } else if (data.message === "Password change needed") {
+          } else if (
+            data.message === "Google calendar and password change needed"
+          ) {
             router.push({
               pathname: "/advance_register",
               query: { id: "1" },
             });
+          } else if (
+            data.message === "Google calendar and voice registration needed"
+          ) {
+            router.push({
+              pathname: "/advance_register",
+              query: { id: "2" },
+            });
+          } else if (
+            data.message === "Password change and voice registration needed"
+          ) {
+            router.push({
+              pathname: "/advance_register",
+              query: { id: "3" },
+            });
+          } else if (data.message === "Password change needed") {
+            router.push({
+              pathname: "/advance_register",
+              query: { id: "4" },
+            });
           } else if (data.message === "Voice rec needed") {
             router.push({
               pathname: "/advance_register",
-              query: {id:"2"}
+              query: { id: "5" },
+            });
+          }
+          else if (data.message === "Google calendar needed") {
+            router.push({
+              pathname: "/advance_register",
+              query: { id: "6" },
             });
           } else {
             router.push("/");

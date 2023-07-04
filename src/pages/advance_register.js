@@ -29,16 +29,33 @@ const [recordedChunks, setRecordedChunks] = useState([]);
   useEffect(() => {
     const email = localStorage.getItem("email");
     setEmail(email);
-
-  }, []);
-
-  if (id == 1) {
     let voicediv = document.getElementById("voiceregistration");
-    voicediv.style.display = "none";
-  } else if (id == 2) {
     let passdiv = document.getElementById("passwordchange");
-    passdiv.style.display = "none";
-  }
+    let calendardiv = document.getElementById("googleCalendar")
+
+    if (id == 1) {
+      voicediv.style.display = "none";
+    } else if (id == 2) {
+      passdiv.style.display = "none";
+    }
+    else if(id==3){
+      calendardiv.style.display = "none"
+    }
+    else if(id===4){
+      voicediv.style.display = "none";
+      calendardiv.style.display = "none"
+    }
+    else if(id===5){
+      calendardiv.style.display = "none"
+      passdiv.style.display = "none";
+    }
+    else if(id===6){
+      passdiv.style.display = "none";
+      passdiv.style.display = "none";
+    }else{
+  
+    }
+  }, []);
 
   async function changepassword() {
     await fetch(`${BACK_END_URL}/changepassword`, {
@@ -75,7 +92,7 @@ const [recordedChunks, setRecordedChunks] = useState([]);
     }
   }
 
-  const stopRecording = () => {
+  const stopRecording = async () => {
     if (stream && mediaRecorder && mediaRecorder.state === 'recording') {
       stream.getTracks().forEach((track) => track.stop());
       setStream(null);
@@ -83,8 +100,16 @@ const [recordedChunks, setRecordedChunks] = useState([]);
       const recordedBlob = new Blob(recordedChunks, { type: 'audio/wav' });
   const audioUrl = URL.createObjectURL(recordedBlob);
   const audioElement = new Audio(audioUrl);
-  audioElement.play();
-
+  // audioElement.play();
+ let resp = await fetch(`${BACK_END_URL}/voicerec`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      email,
+    }),
+  }).then((res)=>res.json()).then((data)=>console.log(data));
     }
   }
 
@@ -181,6 +206,8 @@ const [recordedChunks, setRecordedChunks] = useState([]);
           
         </Paper>
       </Container>
+
+      <Button id="googleCalendar" style={{marginLeft:"45%"}}>Google calendar</Button>
     </>
   );
 }
