@@ -25,7 +25,7 @@ export default function advance_register(){
     },[])
 
     async function changepassword(){
-        await fetch(`${BACK_END_URL}/login`,{
+        await fetch(`${BACK_END_URL}/changepassword`,{
             method:'POST',
             headers:{
                 'Content-Type':'application/json'
@@ -80,7 +80,7 @@ export default function advance_register(){
                 </Anchor> */}
               </Group>
               <Button fullWidth mt="xl" size="md"
-            //    onClick={loginHandler} 
+               onClick={changepassword} 
                color="indigo">
                 Change Password
               </Button>
