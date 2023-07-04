@@ -146,7 +146,7 @@ export default function Recordings() {
           }}
         >
           <div style={{ display: "flex", alignItems: "center" }}>
-            {btn === "Transcript" ? (
+            {btn === "Transcript" && recording_drive_link !=="" ? (
               <Video
                 id={recording_drive_link}
                 />
