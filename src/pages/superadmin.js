@@ -246,10 +246,8 @@ const Admin = () => {
                       data={emails.map((email) => ({ label: email, value: email }))}
                       style={{width: '400px'}}
                       placeholder="Seach user by Email ID of the Organization"
-                      searchable
                       onChange={(e) => onSearchChange(e[0])}
                       searchValue={searchValue}
-                      onSearchChange={onSearchChange}
                       nothingFound="Nothing found"
                       maxSelectedValues={1}
                     />
