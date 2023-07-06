@@ -113,6 +113,19 @@ const [recordedChunks, setRecordedChunks] = useState([]);
     }
   }
 
+  const googleAuth = async () => {
+    fetch(`${BACK_END_URL}/googleAuth`, {
+      method:'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+    })
+    .then(res => res.json())
+    .then(data => {
+      router.push(data.url)
+    })
+  }
+
   return (
     <>
       <Container id="passwordchange" size={800} my={80}>
@@ -207,7 +220,7 @@ const [recordedChunks, setRecordedChunks] = useState([]);
         </Paper>
       </Container>
 
-      <Button id="googleCalendar" style={{marginLeft:"45%"}}>Google calendar</Button>
+      <Button id="googleCalendar" style={{marginLeft:"45%"}} onClick={googleAuth}>Google calendar</Button>
     </>
   );
 }
