@@ -20,7 +20,7 @@ const google = () => {
             })
             .then(res => res.json())
             .then(data => {
-                router.push('/')
+                router.push('/login')
             }).catch(err => {
                 console.log(err)
             }
