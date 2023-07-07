@@ -19,6 +19,7 @@ import styles from '../styles/Recording.module.css'; // Import CSS module styles
 import Video from '../google/video';
 import { useRouter } from "next/router";
 import { useEffect } from "react";
+import Image from "next/image";
 
 const recording = () => {
   const [isShare, setShare] = useState(false);
@@ -136,8 +137,6 @@ const recording = () => {
         .then((res) => res.json())
         .then((data) => data.meeting);
       // .then((data)=>console.log(data));
-      console.log(meet_data.comments);
-      console.log(meet_data.videoLink);
       setTopic(meet_data.topic);
       setId(meet_data.id);
       setRecording_drive_link(meet_data.videoLink);
@@ -226,7 +225,7 @@ const recording = () => {
             <div className={styles.shareHeader}>
               <div className={styles.shareHead}>Share</div>
               <div className={styles.shareClose}>
-                <img src={close} alt="close" onClick={() => setShare(false)} />
+                <Image src={close} alt="close" onClick={() => setShare(false)} />
               </div>
             </div>
             <div className={styles.shareBody}>
@@ -237,7 +236,7 @@ const recording = () => {
                     {tags.map((tag, index) => (
                       <div className={styles.tagItem} key={index}>
                         <span className={styles.text}>{tag}</span>
-                        <img src={close} alt="" onClick={() => removeTag(index)} />
+                        <Image src={close} alt="" onClick={() => removeTag(index)} />
                       </div>
                     ))}
                   </div>
@@ -262,17 +261,17 @@ const recording = () => {
                   </div>
                 </div>
                 <div className={styles.trimBody}>
-                  <img src={plus} alt="" />
+                  <Image src={plus} alt="" />
                 </div>
               </div>
               <div className={styles.shareFooter}>
                 <div className={styles.shareFooterPart1}>
                   <div className={styles.footer1Button}>
                     <div className={styles.footerButtonName}>Share</div>
-                    <img src={nextw} alt="" />
+                    <Image src={nextw} alt="" />
                   </div>
                   <div className={styles.footer1Link}>
-                    <img src={video} alt="" />
+                    <Image src={video} alt="" />
                     <div className={styles.shareable}>Get shareable link</div>
                   </div>
                 </div>
@@ -356,11 +355,11 @@ const recording = () => {
             <div className={styles.twoicons}>
               <div className={styles.first} onClick={() => setShare(true)}>
                 <div>Share</div>
-                <img src={next} alt="" style={{ width: "14px", height: "14px" }} />
+                <Image src={next} alt="" style={{ width: "14px", height: "14px" }} />
               </div>
               <div className={styles.first}>
                 <div>Add to Library</div>
-                <img src={plus} alt="" />
+                <Image src={plus} alt="" />
               </div>
             </div>
             {!isTranscript &&
@@ -402,12 +401,12 @@ const recording = () => {
               <div className={styles.divider}></div>
               <div className={styles.part2}>
                 <div className={styles.controllers} id='controll'>
-                  <img src={next} alt="previous" className={styles.previous} />
+                  <Image src={next} alt="previous" className={styles.previous} />
                   <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                     <img src={playing ? "https://img.icons8.com/ios-glyphs/50/FFFFFF/circled-pause.png" : "https://img.icons8.com/ios-glyphs/50/ffffff/play-button-circled--v1.png"} alt="play" className={styles.play} onClick={() => setStates({ ...states, playing: !playing })} style={{ zIndex: '4' }} />
                     <div style={{ background: '#3F51B5', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', width: '30px', height: '30px', position: 'absolute' }}></div>
                   </div>
-                  <img src={next} alt="next" className={styles.next} />
+                  <Image src={next} alt="next" className={styles.next} />
                 </div>
                 <div className={styles.loader}>
                   <div className={styles.current}>{playedSeconds}</div>
@@ -430,10 +429,10 @@ const recording = () => {
                   {(isNav.openCompany || isNav.openInteraction || isNav.openInterest || isNav.openSlides) &&
                     <>
                       <div className={isTranscript ? styles.activeOne : styles.buttons} onClick={() => setIsTranscript(true)}>
-                        <img src={isTranscript ? transcript1 : transcript} alt="" />
+                        <Image src={isTranscript ? transcript1 : transcript} alt="" />
                       </div>
                       <div className={!isTranscript ? styles.activeOne : styles.buttons} onClick={() => setIsTranscript(false)}>
-                        <img src={isTranscript ? video1 : video} alt="" />
+                        <Image src={isTranscript ? video1 : video} alt="" />
                       </div>
                     </>
                   }

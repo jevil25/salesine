@@ -7,6 +7,7 @@ import preview from '../../public/assets/preview.png'
 import Vector from '../../public/assets/Vector.png'
 import Rectangle from '../../public/assets/Rectangle.png'
 import { useState } from 'react'
+import Image from "next/image";
 
 export const conversations = [
     {
@@ -117,12 +118,12 @@ const Company = () => {
                     <div className={styles.sideBar2Body}>
                         <div className={styles.sideBarSearch}>
                             <input type="text" placeholder='Search for conversations..' />
-                            <img src={search} alt="" />
+                            <Image src={search} alt="" />
                         </div>
                         {conversations.map((conversation, i) => (
                             <div className={styles.sideBarCard} key={conversation.id} onClick={() => handleClick(conversation.id)} style = {{backgroundColor:conversation.id===ids?'#E5EFFF':''}}>
                                 <div className={styles.cardLogo}>
-                                    <img src={conversation.icon} alt="" />
+                                    <Image src={conversation.icon} alt="" />
                                 </div>
                                 <div className={styles.cardBody}>
                                     <div className={styles.cardHeader}>
@@ -154,52 +155,52 @@ const Company = () => {
                     </div>
                     <div className={styles.iconBox}>
                         <div className={styles.nextBox}>
-                            <img src={Rectangle} alt="" />
+                            <Image src={Rectangle} alt="" />
                             <div className={styles.nextAbsol}>
-                                <img src={Vector} alt="" />
+                                <Image src={Vector} alt="" />
                             </div>
                         </div>
                         <div className={styles.box1}>
-                            <img src={caller} alt="" />
-                            <img src={mail} alt="" />
-                            <img src={mail} alt="" />
+                            <Image src={caller} alt="" />
+                            <Image src={mail} alt="" />
+                            <Image src={mail} alt="" />
                         </div>
                         <div className={styles.box1}>
-                            <img src={caller} alt="" />
-                            <img src={mail} alt="" />
-                            <img src={mail} alt="" />
+                            <Image src={caller} alt="" />
+                            <Image src={mail} alt="" />
+                            <Image src={mail} alt="" />
                         </div>
                         <div className={styles.box1}>
-                            <img src={caller} alt="" />
-                            <img src={mail} alt="" />
-                            <img src={mail} alt="" />
+                            <Image src={caller} alt="" />
+                            <Image src={mail} alt="" />
+                            <Image src={mail} alt="" />
                         </div>
                         <div className={styles.box1}>
-                            <img src={caller} alt="" />
-                            <img src={mail} alt="" />
-                            <img src={mail} alt="" />
+                            <Image src={caller} alt="" />
+                            <Image src={mail} alt="" />
+                            <Image src={mail} alt="" />
                         </div>
                         <div className={styles.box1}>
-                            <img src={caller} alt="" />
-                            <img src={mail} alt="" />
-                            <img src={mail} alt="" />
+                            <Image src={caller} alt="" />
+                            <Image src={mail} alt="" />
+                            <Image src={mail} alt="" />
                         </div>
                         <div className={styles.box1}>
-                            <img src={caller} alt="" />
-                            <img src={mail} alt="" />
-                            <img src={mail} alt="" />
+                            <Image src={caller} alt="" />
+                            <Image src={mail} alt="" />
+                            <Image src={mail} alt="" />
                         </div>
                         <div className={styles.nextBox} style={{ transform: 'rotate(180deg)' }}>
-                            <img src={Rectangle} alt="" />
+                            <Image src={Rectangle} alt="" />
                             <div className={styles.nextAbsol}>
-                                <img src={Vector} alt="" />
+                                <Image src={Vector} alt="" />
                             </div>
                         </div>
                     </div>
                 </div>
                 <div className={show ? styles.rightbar : styles.rightBar2}>
                     {!show && <>
-                        <img src={preview} alt="" />
+                        <Image src={preview} alt="" />
                         <div>Conversations are shown here</div>
                     </>}
                     {show &&
@@ -211,7 +212,7 @@ const Company = () => {
                                     <div>Acme Co.</div>
                                 </div>
                                 <div className={styles.rightbar__main12}>
-                                    <img src={calendar} alt="" />
+                                    <Image src={calendar} alt="" />
                                     <div>{data[0].date}</div>
                                 </div>
                             </div>

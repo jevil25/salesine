@@ -3,6 +3,7 @@ import styles from "../styles/Calling.module.css";
 import Group from "../../public/assets/Group.png";
 import building from "../../public/assets/building.png";
 import word from "../../public/assets/word.png";
+import Image from "next/image";
 
 const Calling = () => {
   const [advance, isAdvance] = useState(true);
@@ -36,7 +37,7 @@ const Calling = () => {
               }
             >
               <div className={styles.nameIcon1}>
-                <img src={Group} width="20px" height="20px" alt="" />
+                <Image src={Group} width="20px" height="20px" alt="" />
               </div>
               <div style={{ width: "156px" }}>CALL PARTICIPANTS</div>
               <div className={styles.nameIcon2}>
@@ -73,7 +74,7 @@ const Calling = () => {
               }
             >
               <div className={styles.nameIcon1}>
-                <img src={building} width="20px" height="20px" alt="" />
+                <Image src={building} width="20px" height="20px" alt="" />
               </div>
               <div style={{ width: "156px" }}>COMPANY NAME</div>
               <div className={styles.nameIcon2}>

@@ -20,14 +20,9 @@ module.exports = {
     return config;
   },
   image:{
-    remotePatterns: [
-      {
-        protocol: 'https',
-        hostname: 'img.icons8.com',
-        port: '',
-        pathname: '/**',
-      },
-    ],
+    images: {
+      domains: ['img.icons8.com'],
+    },
   }
 };
 

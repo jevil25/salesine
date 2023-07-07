@@ -5,6 +5,7 @@ import { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
 import bin from '../../public/assets/dustbin.png'
 import Image from 'next/image'
+import { Button } from '@mantine/core'
 
 const Chat = ({ comments,meet_id,getdata }) => {
     const [email, setEmail] = useState('')
@@ -88,7 +89,12 @@ const Chat = ({ comments,meet_id,getdata }) => {
                             <div style={{fontSize : "10px" , display:"flex", flexDirection:"row",gap:"5px"}}>
                                 <p>{comment.author}</p>
                                 <p>{formatTime(comment.timestamp)}</p>
-                                <p><Image src={bin} style={{cursor:"pointer" }} width={20} alt="bin" onClick={deleteMsg(comment.id)} /></p>
+                                <Button
+                                  onClick={e => deleteMsg(comment.id)}
+                                  variant='outline'
+                                >
+                                  <Image src={bin} style={{cursor:"pointer" }} width={15} alt="bin" />
+                                </Button>
                             </div>
                         </div>
                         <Image src={Hellen} alt="" style={{ width: "50px", height: "50px" }} />
@@ -109,7 +115,13 @@ const Chat = ({ comments,meet_id,getdata }) => {
             <div className={styles.message}>
                 <textarea placeholder='Message..' onChange={e => setText1(e.target.value)} value={text1} />
                 <div className={styles.button1} style={{cursor:"pointer"}}>
-                    <p onClick={sendMessage}>Send</p>
+                    <Button
+                      variant="subtle"
+                      onClick={sendMessage}
+                      style={{color:"#000000"}}
+                    >
+                      Send
+                    </Button>
                 </div>
             </div>
         </div>

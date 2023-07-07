@@ -1,6 +1,7 @@
 import styles from '../styles/Contact.module.css'
 import isaac from '../../public/assets/Isaac.png'
 import { useState } from 'react';
+import Image from "next/image";
 const Contacts = () => {
 
     const [open, setOpen] = useState(false);
@@ -41,7 +42,7 @@ const Contacts = () => {
             <div className={styles.contactWrapper}>
                 <div className={styles.contactHistory}>
                     <div className={styles.contactImage}>
-                        <img src={isaac} alt="" />
+                        <Image src={isaac} alt="" />
                     </div>
                     <div className={styles.contactDesc}>
                         <div className={styles.contactName}>ABC</div>
@@ -50,7 +51,7 @@ const Contacts = () => {
                 </div>
                 <div className={styles.contactHistory}>
                     <div className={styles.contactImage}>
-                        <img src={isaac} alt="" />
+                        <Image src={isaac} alt="" />
                     </div>
                     <div className={styles.contactDesc}>
                         <div className={styles.contactName}>ABC</div>
@@ -59,7 +60,7 @@ const Contacts = () => {
                 </div>
                 <div className={styles.contactHistory}>
                     <div className={styles.contactImage}>
-                        <img src={isaac} alt="" />
+                        <Image src={isaac} alt="" />
                     </div>
                     <div className={styles.contactDesc}>
                         <div className={styles.contactName}>ABC</div>
@@ -68,7 +69,7 @@ const Contacts = () => {
                 </div>
                 <div className={styles.contactHistory}>
                     <div className={styles.contactImage}>
-                        <img src={isaac} alt="" />
+                        <Image src={isaac} alt="" />
                     </div>
                     <div className={styles.contactDesc}>
                         <div className={styles.contactName}>ABC</div>
@@ -77,7 +78,7 @@ const Contacts = () => {
                 </div>
                 <div className={styles.contactHistory}>
                     <div className={styles.contactImage}>
-                        <img src={isaac} alt="" />
+                        <Image src={isaac} alt="" />
                     </div>
                     <div className={styles.contactDesc}>
                         <div className={styles.contactName}>ABC</div>
@@ -86,7 +87,7 @@ const Contacts = () => {
                 </div>
                 <div className={styles.contactHistory}>
                     <div className={styles.contactImage}>
-                        <img src={isaac} alt="" />
+                        <Image src={isaac} alt="" />
                     </div>
                     <div className={styles.contactDesc}>
                         <div className={styles.contactName}>ABC</div>
@@ -95,7 +96,7 @@ const Contacts = () => {
                 </div>
                 <div className={styles.contactHistory}>
                     <div className={styles.contactImage}>
-                        <img src={isaac} alt="" />
+                        <Image src={isaac} alt="" />
                     </div>
                     <div className={styles.contactDesc}>
                         <div className={styles.contactName}>ABC</div>
@@ -104,7 +105,7 @@ const Contacts = () => {
                 </div>
                 <div className={styles.contactHistory}>
                     <div className={styles.contactImage}>
-                        <img src={isaac} alt="" />
+                        <Image src={isaac} alt="" />
                     </div>
                     <div className={styles.contactDesc}>
                         <div className={styles.contactName}>ABC</div>
@@ -113,7 +114,7 @@ const Contacts = () => {
                 </div>
                 <div className={styles.contactHistory}>
                     <div className={styles.contactImage}>
-                        <img src={isaac} alt="" />
+                        <Image src={isaac} alt="" />
                     </div>
                     <div className={styles.contactDesc}>
                         <div className={styles.contactName}>ABC</div>
@@ -122,7 +123,7 @@ const Contacts = () => {
                 </div>
                 <div className={styles.contactHistory}>
                     <div className={styles.contactImage}>
-                        <img src={isaac} alt="" />
+                        <Image src={isaac} alt="" />
                     </div>
                     <div className={styles.contactDesc}>
                         <div className={styles.contactName}>ABC</div>
@@ -131,7 +132,7 @@ const Contacts = () => {
                 </div>
                 <div className={styles.contactHistory}>
                     <div className={styles.contactImage}>
-                        <img src={isaac} alt="" />
+                        <Image src={isaac} alt="" />
                     </div>
                     <div className={styles.contactDesc}>
                         <div className={styles.contactName}>ABC</div>
@@ -140,7 +141,7 @@ const Contacts = () => {
                 </div>
                 <div className={styles.contactHistory}>
                     <div className={styles.contactImage}>
-                        <img src={isaac} alt="" />
+                        <Image src={isaac} alt="" />
                     </div>
                     <div className={styles.contactDesc}>
                         <div className={styles.contactName}>ABC</div>
@@ -149,7 +150,7 @@ const Contacts = () => {
                 </div>
                 <div className={styles.contactHistory}>
                     <div className={styles.contactImage}>
-                        <img src={isaac} alt="" />
+                        <Image src={isaac} alt="" />
                     </div>
                     <div className={styles.contactDesc}>
                         <div className={styles.contactName}>ABC</div>
@@ -158,7 +159,7 @@ const Contacts = () => {
                 </div>
                 <div className={styles.contactHistory}>
                     <div className={styles.contactImage}>
-                        <img src={isaac} alt="" />
+                        <Image src={isaac} alt="" />
                     </div>
                     <div className={styles.contactDesc}>
                         <div className={styles.contactName}>ABC</div>

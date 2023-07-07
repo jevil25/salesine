@@ -13,6 +13,7 @@ import {
 } from '@mantine/core';
 import Link from 'next/link';
 import { useState } from 'react';
+import Image from "next/image";
 import { useRouter } from 'next/router'
 
 export default function AuthenticationTitle({ url, authUrl }) {
@@ -186,7 +187,7 @@ export default function AuthenticationTitle({ url, authUrl }) {
                Grant Access to Zoom Meetings
              </Title>
              <br />
-             <img src="../../assets/Zoom.jpeg" height="100px" width="100px" style={{marginLeft: '43%'}}/>
+             <Image src="../../assets/Zoom.jpeg" height="100px" width="100px" style={{marginLeft: '43%'}}/>
              <br /><br /> 
              <Button fullWidth mt="xl" size="md" onClick={nextStep} color="indigo">
                Proceed
@@ -199,7 +200,7 @@ export default function AuthenticationTitle({ url, authUrl }) {
                Grant Access to Google Calendar
              </Title>
              <br />
-             <img src="../../assets/googleCalendar.png" height="100px" width="100px" style={{marginLeft: '43%'}}/>
+             <Image src="../../assets/googleCalendar.png" height="100px" width="100px" style={{marginLeft: '43%'}}/>
              <br /><br /> 
              <Button fullWidth mt="xl" size="md" onClick={pushHome} color="indigo">
                Proceed

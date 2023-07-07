@@ -10,6 +10,7 @@ import { Pie } from 'react-chartjs-2'
 import { useRouter } from 'next/router'
 import { useEffect } from 'react';
 import fetch from 'node-fetch';
+import Image from "next/image";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -116,8 +117,8 @@ const Home = () => {
                                 <div className={styles.partHead}>Top Performer</div>
                                 <div className={styles.partSubHead}>Congratulations!</div>
                             </div>
-                            <div className={styles.img}>
-                                <img src={performer} alt="" />
+                            <div className={styles.Image}>
+                                <Image src={performer} alt="" />
                             </div>
                         </div>
                     </div>
@@ -147,8 +148,8 @@ const Home = () => {
                             <div className={styles.highlights} style={{ gap: '15px', paddingLeft: '10px' }} >
                                 <div className={styles.partHead} style={{ color: '#3F51B5', fonstSize: '15px' }}>Today</div>
                                 <div className={styles.performanceHeadingData}>
-                                    <div className={styles.recentCallsImg}>
-                                        <img src={call} alt="" />
+                                    <div className={styles.recentCallsImage}>
+                                        <Image src={call} alt="" />
                                     </div>
                                     <div className={styles.partHeader}>
                                         <div className={styles.partHead}>ABC Company</div>
@@ -156,19 +157,19 @@ const Home = () => {
                                         <div className={styles.partSubHead}>Deal closing date</div>
                                     </div>
                                     <div className={styles.headingDataIcons}>
-                                        <img src={msg2} alt="" />
-                                        <div className={styles.ImgNumber}>23</div>
-                                        <div className={styles.imgDiv}></div>
-                                        <img src={[phone]} alt="" />
-                                        <div className={styles.ImgNumber}>23</div>
+                                        <Image src={msg2} alt="" />
+                                        <div className={styles.ImageNumber}>23</div>
+                                        <div className={styles.ImageDiv}></div>
+                                        <Image src={phone} alt="" />
+                                        <div className={styles.ImageNumber}>23</div>
                                     </div>
                                 </div>
                             </div>
                             <div className={styles.highlights} style={{ gap: '15px', paddingLeft: '10px' }} >
                                 <div className={styles.partHead} style={{ color: '#3F51B5', fonstSize: '15px' }}>Yesterday</div>
                                 <div className={styles.performanceHeadingData}>
-                                    <div className={styles.recentCallsImg}>
-                                        <img src={call} alt="" />
+                                    <div className={styles.recentCallsImage}>
+                                        <Image src={call} alt="" />
                                     </div>
                                     <div className={styles.partHeader}>
                                         <div className={styles.partHead}>ABC Company</div>
@@ -176,19 +177,19 @@ const Home = () => {
                                         <div className={styles.partSubHead}>Deal closing date</div>
                                     </div>
                                     <div className={styles.headingDataIcons}>
-                                        <img src={msg2} alt="" />
-                                        <div className={styles.ImgNumber}>23</div>
-                                        <div className={styles.imgDiv}></div>
-                                        <img src={[phone]} alt="" />
-                                        <div className={styles.ImgNumber}>23</div>
+                                        <Image src={msg2} alt="" />
+                                        <div className={styles.ImageNumber}>23</div>
+                                        <div className={styles.ImageDiv}></div>
+                                        <Image src={[phone]} alt="" />
+                                        <div className={styles.ImageNumber}>23</div>
                                     </div>
                                 </div>
                             </div>
                             <div className={styles.highlights} style={{ gap: '15px', paddingLeft: '10px' }} >
                                 <div className={styles.partHead} style={{ color: '#3F51B5', fonstSize: '15px' }}>Tuesday</div>
                                 <div className={styles.performanceHeadingData}>
-                                    <div className={styles.recentCallsImg}>
-                                        <img src={call} alt="" />
+                                    <div className={styles.recentCallsImage}>
+                                        <Image src={call} alt="" />
                                     </div>
                                     <div className={styles.partHeader}>
                                         <div className={styles.partHead}>ABC Company</div>
@@ -196,11 +197,11 @@ const Home = () => {
                                         <div className={styles.partSubHead}>Deal closing date</div>
                                     </div>
                                     <div className={styles.headingDataIcons}>
-                                        <img src={msg2} alt="" />
-                                        <div className={styles.ImgNumber}>23</div>
-                                        <div className={styles.imgDiv}></div>
-                                        <img src={[phone]} alt="" />
-                                        <div className={styles.ImgNumber}>23</div>
+                                        <Image src={msg2} alt="" />
+                                        <div className={styles.ImageNumber}>23</div>
+                                        <div className={styles.ImageDiv}></div>
+                                        <Image src={phone} alt="" />
+                                        <div className={styles.ImageNumber}>23</div>
                                     </div>
                                 </div>
                             </div>

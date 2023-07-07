@@ -1,5 +1,6 @@
 import styles from '../styles/Stats.module.css'
 import tips from '../../public/assets/tips.png'
+import Image from "next/image";
 
 const Stats = () => {
   return (
@@ -9,7 +10,7 @@ const Stats = () => {
           <p>Interaction Stats</p>
         </div>
         <div className={styles.statsTip}>
-          <img src={tips} alt="" />
+          <Image src={tips} alt="" />
           <p>1 tip for employee.</p>
         </div>
         <div className={styles.statsContainer}>
