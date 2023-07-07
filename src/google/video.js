@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import ReactPlayer from 'react-player';
 
-function Video({ id }) {
+function Video({ id,player,playing,handleDuration,handleEnd,handleProgress,handlePlayback,states,setStates,wave }) {
   const [video, setVideo] = useState(null);
   const [accessToken, setAccessToken] = useState("");
   const [fetchVideo, setFetchVideo] = useState(true);
   const [vidId, setVidId] = useState(id);
   const BACK_END_URL = process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:4000";
+  console.log("Video id is: ", id);
 
   useEffect(() => {
     id = id.trim().toString();
@@ -49,7 +50,30 @@ function Video({ id }) {
         fetchVideo ? 
             <div>Loading...</div> 
             : 
-            <iframe src={`https://drive.google.com/file/d/${id}/preview`} width="640" height="480"></iframe>
+            <ReactPlayer
+              ref={player}
+              url={`https://drive.google.com/uc?export=download&id=${id}`}
+              controls
+              width='100%'
+              muted 
+              height='100%'
+              playing={playing}
+              onPlay = {()=>{setStates({
+                ...states,
+                playing:true
+              })}}
+              onSeek = {(e)=>{
+                wave.current.seekTo(e)
+              }}
+              onPause = {()=>{setStates({
+                ...states,
+                playing:false
+              })}}
+              onPlaybackRateChange = {handlePlayback}
+              onDuration={handleDuration}
+              onEnded={handleEnd}
+              onProgress={handleProgress}
+            />
     }
     </>
 }

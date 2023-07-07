@@ -212,7 +212,7 @@ const All = () => {
                  color="indigo"
                  onClick={() => {
                    localStorage.setItem("recording", JSON.stringify(recording.id));
-                   router.push("/recordings");
+                   router.push("/recording");
                  }}
                  disabled = {true}
                >

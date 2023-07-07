@@ -49,7 +49,9 @@
     "react-player": "^2.12.0",
     "react-wavesurfer.js": "^0.0.8",
     "swr": "^2.1.1",
-    "tabler-icons-react": "^1.56.0"
+    "tabler-icons-react": "^1.56.0",
+    "wavesurfer-react": "^2.2.2",
+    "wavesurfer.js": "^6.3.0"
   },
   "devDependencies": {
     "@types/react": "18.2.6",
