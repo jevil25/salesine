@@ -454,7 +454,12 @@ const recording = () => {
               responsive={true}
             /> */}
           </div>
-          <Chat />
+          <Chat 
+            comments={comments}
+            meet_id={id}
+            sendMessage={sendMessage}
+            getdata={getdata}
+          />
         </div>
         </>
       }

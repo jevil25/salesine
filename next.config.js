@@ -3,6 +3,8 @@ const nextConfig = {
   reactStrictMode: true,
 }
 
+//add a image link
+
 module.exports = {
   future: {
     webpack5: true, // by default, if you customize webpack config, they switch back to version 4. 
@@ -17,6 +19,16 @@ module.exports = {
 
     return config;
   },
+  image:{
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'img.icons8.com',
+        port: '',
+        pathname: '/**',
+      },
+    ],
+  }
 };
 
 module.exports = nextConfig
