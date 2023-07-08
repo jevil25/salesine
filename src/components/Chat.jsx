@@ -81,6 +81,7 @@ const Chat = ({ comments,meet_id,getdata }) => {
                 {/* <Image src={"https://img.icons8.com/ios-filled/20/ADA8A7/search--v1.png"} width={10} height={10} alt="search" /> */}
             </div>
             <div className={styles.chat}>
+                {comments.length === 0 && <p>No messages yet</p>}
                 {comments.map((comment) => (
                     comment.author === email ?
                     <div className={styles.sender}>

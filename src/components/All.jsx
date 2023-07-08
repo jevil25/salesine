@@ -105,7 +105,7 @@ const All = () => {
         });
     };
 
-    populateCalls();
+    // populateCalls();
     getRecordings();
   }, []);
   const [name, setName] = useState("");
@@ -195,7 +195,7 @@ const All = () => {
                  <Button
                  color="indigo"
                  onClick={() => {
-                   localStorage.setItem("recording", JSON.stringify(recording.id));
+                   localStorage.setItem("recording", JSON.stringify(recording.meetid));
                    router.push("/recording");
                  }}
                >
@@ -211,7 +211,7 @@ const All = () => {
                  <Button
                  color="indigo"
                  onClick={() => {
-                   localStorage.setItem("recording", JSON.stringify(recording.id));
+                   localStorage.setItem("recording", JSON.stringify(recording.meetid));
                    router.push("/recording");
                  }}
                  disabled = {true}

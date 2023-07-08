@@ -139,7 +139,7 @@ const recording = () => {
       // .then((data)=>console.log(data));
       setTopic(meet_data.topic);
       setId(meet_data.id);
-      setRecording_drive_link(meet_data.videoLink);
+      setRecording_drive_link(meet_data.file[0].videoId);
       setMeetId(meet_data.meetid);
       setComments(() => {
         return meet_data.comments;
@@ -185,7 +185,7 @@ const recording = () => {
     console.log(meet_data.comments);
     setTopic(meet_data.topic);
     setId(meet_data.id);
-    setRecording_drive_link(meet_data.videoLink);
+    setRecording_drive_link(meet_data.file[0].videoId);
     setMeetId(meet_data.meetid);
     setComments(() => {
       return meet_data.comments;
@@ -455,7 +455,7 @@ const recording = () => {
           </div>
           <Chat 
             comments={comments}
-            meet_id={id}
+            meet_id={meetid}
             sendMessage={sendMessage}
             getdata={getdata}
           />
