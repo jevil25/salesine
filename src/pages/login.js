@@ -31,6 +31,7 @@ export default function AuthenticationTitle() {
   const [remember, setRemember] = useState(false);
   const [invalid, setInvalid] = useState(false);
   const [serverError, setServerError] = useState(false);
+  const [inactive, setInactive] = useState(false);
   const BACK_END_URL =
     process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:4000";
   const loginHandler = async () => {
@@ -59,7 +60,10 @@ export default function AuthenticationTitle() {
           localStorage.setItem("token", data.user.token);
           localStorage.setItem("email", data.user.email);
           localStorage.setItem("role", data.user.role);
-          if (
+          if(data.message === "Company is inactive"){
+              setInactive(true);
+          }
+          else if (
             data.message ===
             "Voice rec ,password change and google calendar integration needed"
           ) {
@@ -140,6 +144,11 @@ export default function AuthenticationTitle() {
         {serverError && (
           <Text color="red" align="center">
             Server error
+          </Text>
+        )}
+        {inactive && (
+          <Text color="red" align="center">
+            Company is inactive. Please wait till its active or contact the super admin.
           </Text>
         )}
         <TextInput
