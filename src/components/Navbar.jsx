@@ -37,7 +37,6 @@ const Navbar = (props) => {
             <ul className={styles.navLinks}>
                 <li><Link href="/" className={props.type === 'home' ? styles.active : null} >HOME</Link></li>
                 <li><Link href="/calls" className={props.type === 'calls' ? styles.active : null}>CALLS</Link></li>
-                <li><Link href="/team" className={props.type === 'teams' ? styles.active : null}>SCHEDULED</Link></li>
                 <li><Link href="/deals" className={props.type === 'deals' ? styles.active : null}>DEALS</Link></li>
                 <li><Link href="/team" className={props.type === 'teams' ? styles.active : null}>TEAM</Link></li>
                 <li><Link href="/activity" className={props.type === 'activity' ? styles.active : null}>ACTIVITY</Link></li>
@@ -54,7 +53,6 @@ const Navbar = (props) => {
                         <ul className={styles.navlinks}>
                             <li><Link href="/" className={props.type === 'home' ? styles.active : null} >HOME</Link></li>
                             <li><Link href="/calls" className={props.type === 'calls' ? styles.active : null}>CALLS</Link></li>
-                            <li><Link href="/team" className={props.type === 'teams' ? styles.active : null}>SCHEDULED</Link></li>
                             <li><Link href="/deals" className={props.type === 'deals' ? styles.active : null}>DEALS</Link></li>
                             <li><Link href="/team" className={props.type === 'teams' ? styles.active : null}>TEAM</Link></li>
                             <li><Link href="/activity" className={props.type === 'activity' ? styles.active : null}>ACTIVITY</Link></li>
