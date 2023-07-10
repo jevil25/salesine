@@ -13,10 +13,10 @@ import {
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
+import { ro } from "@faker-js/faker";
 
 export default function advance_register() {
   const router = useRouter();
-  const { id } = router.query;
   const BACK_END_URL =
     process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:4000";
   const [oldpassword, setoldpass] = useState("");
@@ -24,38 +24,48 @@ export default function advance_register() {
   const [email, setEmail] = useState("");
   const [stream, setStream] = useState(null);
   const [mediaRecorder, setMediaRecorder] = useState(null);
-const [recordedChunks, setRecordedChunks] = useState([]);
+  const [recordedChunks, setRecordedChunks] = useState([]);
+  const [calendar,showCalendar] = useState(true);
+  const [password,showPassword] = useState(true);
+  const [voice,showVoice] = useState(true);
 
   useEffect(() => {
+    if(!router.isReady) return;
+    const id = router.query.id;
     const email = localStorage.getItem("email");
     setEmail(email);
     let voicediv = document.getElementById("voiceregistration");
     let passdiv = document.getElementById("passwordchange");
     let calendardiv = document.getElementById("googleCalendar")
+    console.log(id);
 
-    if (id == 1) {
-      voicediv.style.display = "none";
-    } else if (id == 2) {
-      passdiv.style.display = "none";
+    if (id === '1') {
+      showVoice(false)
+    } else if (id === '2') {
+      showPassword(false)
     }
-    else if(id==3){
-      calendardiv.style.display = "none"
+    else if(id==='3'){
+      showCalendar(false)
     }
-    else if(id===4){
-      voicediv.style.display = "none";
-      calendardiv.style.display = "none"
+    else if(id==='4'){
+      showCalendar(false)
+      showVoice(false)
     }
-    else if(id===5){
-      calendardiv.style.display = "none"
-      passdiv.style.display = "none";
+    else if(id==='5'){
+      showCalendar(false)
+      showPassword(false)
     }
-    else if(id===6){
-      passdiv.style.display = "none";
-      passdiv.style.display = "none";
-    }else{
-  
+    else if(id==='6'){
+      showVoice(false)
+      showPassword(false)
     }
-  }, []);
+  }, [router.isReady]);
+
+  useEffect(() => {
+    if(password===false && voice===false && calendar===false){
+      router.push('/')
+    }
+  }, [password,voice,calendar])
 
   async function changepassword() {
     await fetch(`${BACK_END_URL}/changepassword`, {
@@ -70,7 +80,9 @@ const [recordedChunks, setRecordedChunks] = useState([]);
       }),
     })
       .then((res) => res.json())
-      .then((data) => console.log(data));
+      .then((data) => {
+        showPassword(false);
+      });
   }
 
   async function getVoice() {
@@ -109,7 +121,10 @@ const [recordedChunks, setRecordedChunks] = useState([]);
     body: JSON.stringify({
       email,
     }),
-  }).then((res)=>res.json()).then((data)=>console.log(data));
+  }).then((res)=>res.json()).then((data)=>{
+    console.log(data);
+    showVoice(false)
+  })
     }
   }
 
@@ -128,7 +143,7 @@ const [recordedChunks, setRecordedChunks] = useState([]);
 
   return (
     <>
-      <Container id="passwordchange" size={800} my={80}>
+      {password && <Container id="passwordchange" size={800} my={80}>
         <Title
           align="center"
           sx={(theme) => ({
@@ -182,9 +197,9 @@ const [recordedChunks, setRecordedChunks] = useState([]);
             Change Password
           </Button>
         </Paper>
-      </Container>
+      </Container>}
 
-      <Container id="voiceregistration" size={800} my={80}>
+      {voice && <Container id="voiceregistration" size={800} my={80}>
         <Title
           align="center"
           sx={(theme) => ({
@@ -219,8 +234,12 @@ const [recordedChunks, setRecordedChunks] = useState([]);
           
         </Paper>
       </Container>
-
-      <Button id="googleCalendar" style={{marginLeft:"45%"}} onClick={googleAuth}>Google calendar</Button>
+}
+      {calendar && 
+      <Container id="googleCalendar" size={800} my={80}>
+            <Button id="googleCalendar" style={{marginLeft:"45%"}} onClick={googleAuth}>Google calendar</Button>
+      </Container>
+      }
     </>
   );
 }
