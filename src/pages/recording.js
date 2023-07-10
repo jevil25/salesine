@@ -137,10 +137,12 @@ const recording = () => {
         .then((res) => res.json())
         .then((data) => data.meeting);
       // .then((data)=>console.log(data));
+      console.log(meet_data);
       setTopic(meet_data.topic);
       setId(meet_data.id);
       setRecording_drive_link(meet_data.file[0].videoId);
       setMeetId(meet_data.meetid);
+      setTranscript(meet_data.transcript)
       setComments(() => {
         return meet_data.comments;
       });
@@ -181,8 +183,7 @@ const recording = () => {
       .then((res) => res.json())
       .then((data) => data.meeting);
     // .then((data)=>console.log(data));
-    console.log(meet_data.videoLink);
-    console.log(meet_data.comments);
+    console.log(meet_data);
     setTopic(meet_data.topic);
     setId(meet_data.id);
     setRecording_drive_link(meet_data.file[0].videoId);
@@ -390,7 +391,7 @@ const recording = () => {
             }
             {isTranscript &&
               <div className={styles.transcriptApp}>
-                <Transcript isNav={isNav} />
+                <Transcript isNav={isNav} transcript={transcript} />
               </div>
             }
             <div className={styles.recording}>
