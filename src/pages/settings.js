@@ -38,7 +38,9 @@ import styles from "../styles/Settings.module.css"
     const [serverError,setServerError] = useState(false);
     const [user,setUser] = useState({});
     const [display,setDisplay] = useState("Account Details")
-  
+    const [passError,setPassError] = useState(false);
+    const [passComplete,setPassComplete] = useState(false);
+
     useEffect(() => {
       const email = localStorage.getItem("email");
       setEmail(email);
@@ -110,7 +112,12 @@ import styles from "../styles/Settings.module.css"
       })
         .then((res) => res.json())
         .then((data) => {
-          showPassword(false);
+          if(data.message === "Invalid credentials"){
+            setPassError(true)
+          }else if(data.message==="Password change successful"){
+            showPassword(false)
+            setPassComplete(true)
+          }
         });
     }
   
@@ -217,50 +224,57 @@ import styles from "../styles/Settings.module.css"
           >
             Change Password
           </Title>
-  
-          <Paper withBorder shadow="md" p={30} mt={30} radius="md">
-            {/* {invalid && <Text color="red" align="center">Invalid credentials</Text>} */}
-            {/* {serverError && <Text color="red" align="center">Server error</Text>} */}
-            <TextInput
-              label="Old Password"
-              name="email"
-              value={oldpassword}
-              onChange={(e) => setoldpass(e.target.value)}
-              placeholder="Old Password"
-              size="md"
-              required
-            />
-            <PasswordInput
-              label="New Password"
-              value={newpassword}
-              name="password"
-              onChange={(e) => setnewpass(e.target.value)}
-              placeholder="New password"
-              size="md"
-              required
-              mt="md"
-            />
-            <br />
-            {/* <Checkbox
-                  label="Keep me logged in"
-                  name="keep-logged-in"
-                  // onChange={(e) => setRemember(e.target.checked)}
-                /> */}
-            <Group position="apart" mt="lg">
-              {/* <Anchor component="button" size="sm">
-                    Forgot password?
-                  </Anchor> */}
-            </Group>
-            <Button
-              fullWidth
-              mt="xl"
-              size="md"
-              onClick={changepassword}
-              color="indigo"
-            >
-              Change Password
-            </Button>
-          </Paper>
+          {!passComplete ?<>
+            {!passError ? <></> : <Text color="red" align="center">Invalid credentials</Text>}
+            <Paper withBorder shadow="md" p={30} mt={30} radius="md">
+              {/* {invalid && <Text color="red" align="center">Invalid credentials</Text>} */}
+              {/* {serverError && <Text color="red" align="center">Server error</Text>} */}
+              <TextInput
+                label="Old Password"
+                name="email"
+                value={oldpassword}
+                onChange={(e) => setoldpass(e.target.value)}
+                placeholder="Old Password"
+                size="md"
+                required
+              />
+              <PasswordInput
+                label="New Password"
+                value={newpassword}
+                name="password"
+                onChange={(e) => setnewpass(e.target.value)}
+                placeholder="New password"
+                size="md"
+                required
+                mt="md"
+              />
+              <br />
+              {/* <Checkbox
+                    label="Keep me logged in"
+                    name="keep-logged-in"
+                    // onChange={(e) => setRemember(e.target.checked)}
+                  /> */}
+              <Group position="apart" mt="lg">
+                {/* <Anchor component="button" size="sm">
+                      Forgot password?
+                    </Anchor> */}
+              </Group>
+              <Button
+                fullWidth
+                mt="xl"
+                size="md"
+                onClick={changepassword}
+                color="indigo"
+              >
+                Change Password
+              </Button>
+            </Paper>
+            </>
+            :
+            <Paper withBorder shadow="md" p={30} mt={30} radius="md">
+              <Text align="center">Password changed successfully</Text>
+            </Paper>
+          }
         </Container>}
   
         {(voice || display === "Voice Recording" )&& <Container id="voiceregistration" size={800} my={80}>
@@ -274,7 +288,10 @@ import styles from "../styles/Settings.module.css"
             Voice Registration
           </Title>
           {
-            !voice ? <Text align="center">You have already registered your voice....</Text>
+            !voice ?
+            <Paper withBorder shadow="md" p={30} mt={30} radius="md">
+              <Text align="center">You have already registered your voice....</Text>
+            </Paper>
              : 
              <><Text align="center">You have not registered your yet</Text>
               <Paper withBorder shadow="md" p={30} mt={30} radius="md">
@@ -342,11 +359,11 @@ import styles from "../styles/Settings.module.css"
                         User Details
                     </Title>
                     <Paper withBorder shadow="md" p={30} mt={30} radius="md">
-                        <Text>Name: {user.name}</Text>
-                        <Text>Email: {user.email}</Text>
-                        <Text>Role: {user.role}</Text>
-                        <Text>Company Name: {user.company.name}</Text>
-                        <Text>Company Email: {user.company.email}</Text>
+                        <Text>Name: <Text sx={{fontWeight:500}}>{user.name}</Text></Text>
+                        <Text>Email: <Text sx={{fontWeight:500}}>{user.email}</Text></Text>
+                        <Text>Role: <Text sx={{fontWeight:500}}>{user.role}</Text></Text>
+                        <Text>Company Name: <Text sx={{fontWeight:500}}>{user.company.name}</Text></Text>
+                        <Text>Company Email: <Text sx={{fontWeight:500}}>{user.company.email}</Text></Text>
                     </Paper>
                 </Container>
         }
