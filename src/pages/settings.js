@@ -222,7 +222,7 @@ import styles from "../styles/Settings.module.css"
                 Server Error
             </Title>
         </Container>}
-        {(display==="Change Password") && <Container id="passwordchange" size={800} my={80}>
+        {(display==="Password Change") && <Container id="passwordchange" size={800} my={80}>
           <Title
             align="center"
             sx={(theme) => ({
@@ -329,7 +329,7 @@ import styles from "../styles/Settings.module.css"
           }
         </Container>
         }
-        {(display === "Google Calender" ) && <>
+        {(display === "Google Calendar" ) && <>
         <Container id="voiceregistration" size={800} my={80}>
             <Title
             align="center"
