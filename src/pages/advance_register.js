@@ -14,6 +14,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { ro } from "@faker-js/faker";
+import Navbar from "../components/Navbar";
 
 export default function advance_register() {
   const router = useRouter();
@@ -143,6 +144,7 @@ export default function advance_register() {
 
   return (
     <>
+    <Navbar />
       {password && <Container id="passwordchange" size={800} my={80}>
         <Title
           align="center"
@@ -235,11 +237,28 @@ export default function advance_register() {
         </Paper>
       </Container>
 }
-      {calendar && 
-      <Container id="googleCalendar" size={800} my={80}>
-            <Button id="googleCalendar" style={{marginLeft:"45%"}} onClick={googleAuth}>Google calendar</Button>
-      </Container>
-      }
+      {calendar && <>
+        <Container id="voiceregistration" size={800} my={80}>
+          <Title
+          align="center"
+          sx={(theme) => ({
+            fontFamily: `Greycliff CF, ${theme.fontFamily}`,
+            fontWeight: 900,
+          })}
+          >
+          Google Calender Registration
+        </Title>
+
+          <Paper withBorder shadow="md" p={30} mt={30} radius="md"  style={{"display":"flex","flexDirection":"column","justifyContent":"center","alignItems":"center"}}>
+                    <Button id="googleCalendar" onClick={googleAuth}>Google calendar</Button>
+          </Paper>
+        </Container>
+          </>
+          }
+          <Container id="voiceregistration" size={800} my={80} style={{"display":"flex","flexDirection":"column","justifyContent":"center","alignItems":"center"}}>
+            <Text>Click on Skip to do this later in settings page</Text>
+            <Button variant="gradient" onClick={e => router.push("/")} >Skip</Button>
+          </Container>
     </>
   );
 }

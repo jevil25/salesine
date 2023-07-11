@@ -1,3 +1,4 @@
+import { LoadingOverlay } from '@mantine/core';
 import React, { useState, useEffect, useRef } from 'react';
 
 function Video({ id, player, playing, handleDuration, handleEnd, handleProgress, handlePlayback, states, setStates, wave }) {
@@ -127,7 +128,7 @@ function Video({ id, player, playing, handleDuration, handleEnd, handleProgress,
   return (
     <>
       {fetchVideo ? (
-        <div>Loading...</div>
+        <LoadingOverlay visible={fetchVideo} />
       ) : (
         <div ref={playerContainerRef} style={{ width: '100%', height: '100%' }} />
       )}
