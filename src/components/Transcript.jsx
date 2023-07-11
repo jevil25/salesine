@@ -9,16 +9,12 @@ const Transcript = (props) => {
                 <div className={styles.transcriptBody}>
                     {
                         props.transcript.map((item, index) => {
-                            return ((index%2) === 0) ?
+                            return (
                             <div className={styles.chatt}>
-                                <div className={styles.speakerName}>Aadarsh</div>
+                                <div className={styles.speakerName}>{`Speaker${item.speaker+1}`}</div>
                                 <div className={styles.speakerText}>{item.text}</div>
                             </div>
-                            :
-                            <div className={styles.chatt}>
-                                <div className={styles.speakerName}>Ashwini</div>
-                                <div className={styles.speakerText}>{item.text}</div>
-                            </div>
+                            )
                         }
                     )}
                 </div>
