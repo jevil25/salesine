@@ -9,6 +9,7 @@ import {
   IconPassword,
 } from '@tabler/icons-react';
 import { useRouter } from 'next/router';
+import Styles from "../styles/Settings.module.css"
 
 const useStyles = createStyles((theme) => ({
   header: {
@@ -65,7 +66,7 @@ const useStyles = createStyles((theme) => ({
   },
 }));
 
-export function NavbarSimple({ user }) {
+export function NavbarSimple({ user,setDisplay }) {
   const router = useRouter();
   const { classes, cx } = useStyles();
   const [active, setActive] = useState('Account Details');
@@ -111,6 +112,7 @@ export function NavbarSimple({ user }) {
             onClick={(event) => {
               event.preventDefault();
               setActive(item.label);
+              setDisplay(item.label);
             }}
           >
             <item.icon className={classes.linkIcon} stroke={1.5} />
@@ -120,7 +122,7 @@ export function NavbarSimple({ user }) {
   ));
 
   return (
-    <Navbar height={700} width={{ sm: 300 }} p="md">
+    <Navbar height={700} width={{ sm: 300 }} p="md" style={{"zIndex":"50"}} className={Styles.settingsLeft}>
       <Navbar.Section grow>
         {links}
       </Navbar.Section>

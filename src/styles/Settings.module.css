@@ -1,0 +1,7 @@
+.settingsLeft{
+    flex-basis: 25%;
+}
+
+.settingsRight{
+    flex-basis: 75%;
+}

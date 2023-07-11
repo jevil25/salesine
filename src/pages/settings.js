@@ -18,6 +18,7 @@ import {
   import { ro } from "@faker-js/faker";
   import Navbar from "../components/Navbar";
 import { NavbarSimple } from "../components/SettingSideBar";
+import styles from "../styles/Settings.module.css"
   
   export default function advance_register() {
     const router = useRouter();
@@ -36,6 +37,7 @@ import { NavbarSimple } from "../components/SettingSideBar";
     const [invalid,setIvalid] = useState(false);
     const [serverError,setServerError] = useState(false);
     const [user,setUser] = useState({});
+    const [display,setDisplay] = useState("Account Details")
   
     useEffect(() => {
       const email = localStorage.getItem("email");
@@ -179,9 +181,10 @@ import { NavbarSimple } from "../components/SettingSideBar";
       <div style={{"display":"flex","flexDirection":"row"}}>
         <NavbarSimple 
           user={user}
+          setDisplay={setDisplay}
           
         />
-        <div>
+        <div className={styles.settingsRight}>
         {invalid && <Container id="invalid" size={800} my={80}>
             <Title  
                 align="center"
@@ -204,7 +207,7 @@ import { NavbarSimple } from "../components/SettingSideBar";
                 Server Error
             </Title>
         </Container>}
-        {password && <Container id="passwordchange" size={800} my={80}>
+        {(password || display==="Change Password") && <Container id="passwordchange" size={800} my={80}>
           <Title
             align="center"
             sx={(theme) => ({
@@ -260,7 +263,7 @@ import { NavbarSimple } from "../components/SettingSideBar";
           </Paper>
         </Container>}
   
-        {voice && <Container id="voiceregistration" size={800} my={80}>
+        {(voice || display === "Voice Recording" )&& <Container id="voiceregistration" size={800} my={80}>
           <Title
             align="center"
             sx={(theme) => ({
@@ -270,34 +273,39 @@ import { NavbarSimple } from "../components/SettingSideBar";
           >
             Voice Registration
           </Title>
-  
-          <Paper withBorder shadow="md" p={30} mt={30} radius="md">
-            Press the start button and repeat the sentence into your microphone
-            <br />
-            <div
-              style={{
-                backgroundColor: "wheat",
-                marginTop: "20px",
-                padding: "10px",
-              }}
-            >
-              I enjoy listening to music in my free time.What is the weather like
-              today?
-            </div>
-            <Group position="apart" mt="lg"></Group>
-            <Button fullWidth mt="xl" size="md" onClick={getVoice} color="indigo">
-              Start
-            </Button>
-  
-            <Button fullWidth mt="xl" size="md" onClick={stopRecording} color="red">
-              Stop Recording
-            </Button>
-            
-          </Paper>
+          {
+            !voice ? <Text align="center">You have already registered your voice....</Text>
+             : 
+             <><Text align="center">You have not registered your yet</Text>
+              <Paper withBorder shadow="md" p={30} mt={30} radius="md">
+                Press the start button and repeat the sentence into your microphone
+                <br />
+                <div
+                  style={{
+                    backgroundColor: "wheat",
+                    marginTop: "20px",
+                    padding: "10px",
+                  }}
+                >
+                  I enjoy listening to music in my free time.What is the weather like
+                  today?
+                </div>
+                <Group position="apart" mt="lg"></Group>
+                <Button fullWidth mt="xl" size="md" onClick={getVoice} color="indigo">
+                  Start
+                </Button>
+      
+                <Button fullWidth mt="xl" size="md" onClick={stopRecording} color="red">
+                  Stop Recording
+                </Button>
+                
+              </Paper>
+            </>
+          }
         </Container>
         }
-        {calendar && <>
-          <Container id="voiceregistration" size={800} my={80}>
+        {(calendar || display === "Google Calender" ) && <>
+        <Container id="voiceregistration" size={800} my={80}>
             <Title
             align="center"
             sx={(theme) => ({
@@ -307,14 +315,21 @@ import { NavbarSimple } from "../components/SettingSideBar";
             >
             Google Calender Registration
           </Title>
-  
+        {calendar ? <>
             <Paper withBorder shadow="md" p={30} mt={30} radius="md"  style={{"display":"flex","flexDirection":"column","justifyContent":"center","alignItems":"center"}}>
-                      <Button id="googleCalendar" onClick={googleAuth}>Google calendar</Button>
+                <Button id="googleCalendar" onClick={googleAuth}>Google calendar</Button>
             </Paper>
-          </Container>
             </>
-            }
-        {!loading
+            :
+            <>
+            <Paper withBorder shadow="md" p={30} mt={30} radius="md"  style={{"display":"flex","flexDirection":"column","justifyContent":"center","alignItems":"center"}}>
+                <Text>You have already registered your google calendar</Text>
+            </Paper>
+            </>
+          }
+          </Container>
+      </>}
+        {!loading && display === "Account Details" 
             // display user deatails
             && <Container id="userdetails" size={800} my={80}>
                     <Title
