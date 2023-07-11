@@ -41,7 +41,9 @@ const Navbar = (props) => {
                 <li><Link href="/team" className={props.type === 'teams' ? styles.active : null}>TEAM</Link></li>
                 <li><Link href="/activity" className={props.type === 'activity' ? styles.active : null}>ACTIVITY</Link></li>
                 <li><Link href="/library" className={props.type === 'library' ? styles.active : null}>LIBRARY</Link></li>
-                <li><Link href="/settings" className={props.type === 'settings' ? styles.active : null}>SETTINGS</Link></li>
+                {
+                    loggedIn ? <li><Link href="/settings" className={props.type === 'settings' ? styles.active : null}>SETTINGS</Link></li> : <></>
+                }
             </ul>
             <div className={styles.navLinks} style={{"marginLeft":"2rem"}}>
                 {

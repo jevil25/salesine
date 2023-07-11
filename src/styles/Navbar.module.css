@@ -27,6 +27,7 @@
   text-decoration: none;
   font-weight: 500;
   color: white;
+  font-size: large;
 }
 
 .navLinks li :hover{

@@ -17,6 +17,7 @@ import {
   import { useRouter } from "next/router";
   import { ro } from "@faker-js/faker";
   import Navbar from "../components/Navbar";
+import { NavbarSimple } from "../components/SettingSideBar";
   
   export default function advance_register() {
     const router = useRouter();
@@ -61,7 +62,9 @@ import {
             }else{
                 const user = data.user
                 setUser(user)
-                if (user.voice_rec === "" && user.password_change === "" && user.googleCalendar === "") {
+                  if(user.role === "SUPERADMIN"){
+                  }
+                  else if (user.voice_rec === "" && user.password_change === "" && user.googleCalendar === "") {
                     showCalendar(true)
                     showVoice(true)
                     showPassword(true)
@@ -164,11 +167,21 @@ import {
         router.push(data.url)
       })
     }
+
+    const sideBarContent = []
   
     return (
       <>
-      <Navbar />
+      <Navbar 
+        type="settings"
+      />
       <LoadingOverlay visible={loading}  />
+      <div style={{"display":"flex","flexDirection":"row"}}>
+        <NavbarSimple 
+          user={user}
+          
+        />
+        <div>
         {invalid && <Container id="invalid" size={800} my={80}>
             <Title  
                 align="center"
@@ -282,7 +295,7 @@ import {
             
           </Paper>
         </Container>
-  }
+        }
         {calendar && <>
           <Container id="voiceregistration" size={800} my={80}>
             <Title
@@ -322,6 +335,8 @@ import {
                     </Paper>
                 </Container>
         }
+        </div>
+      </div>
       </>
     );
   }
