@@ -76,16 +76,16 @@ export function NavbarSimple({ user,setDisplay,pending }) {
     data = [
     { link: `/${user.role.toLowerCase()}`, label: 'Dashboard', icon: IconDashboard },
     { link: '', label: 'Account Details', icon: IconUser },
-    { link: '', label: 'Google Calender', icon: IconCalendarEvent },
+    { link: '', label: 'Google Calendar', icon: IconCalendarEvent },
     { link: '', label: 'Voice Recording', icon: IconVolume },
-    { link: '', label: 'Change Password', icon: IconPassword },
+    { link: '', label: 'Password Change', icon: IconPassword },
     ]
     ) : (
     data = [
         { link: '', label: 'Account Details', icon: IconUser },
-        { link: '', label: 'Google Calender', icon: IconCalendarEvent },
+        { link: '', label: 'Google Calendar', icon: IconCalendarEvent },
         { link: '', label: 'Voice Recording', icon: IconVolume },
-        { link: '', label: 'Change Password', icon: IconPassword },
+        { link: '', label: 'Password Change', icon: IconPassword },
         ]
     )}
 
