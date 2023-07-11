@@ -66,7 +66,7 @@ const useStyles = createStyles((theme) => ({
   },
 }));
 
-export function NavbarSimple({ user,setDisplay }) {
+export function NavbarSimple({ user,setDisplay,pending }) {
   const router = useRouter();
   const { classes, cx } = useStyles();
   const [active, setActive] = useState('Account Details');
@@ -116,7 +116,15 @@ export function NavbarSimple({ user,setDisplay }) {
             }}
           >
             <item.icon className={classes.linkIcon} stroke={1.5} />
-            <span>{item.label}</span>
+            <span>
+              {item.label}
+              {/* check if any label is in pending array */}
+              {pending.includes(item.label) ? (
+                <Code style={{color:"white","backgroundColor":"red","marginLeft":"5px"}}>Pending</Code>
+              ) : (
+                <></>
+              )}
+            </span>
         </a>
         )
   ));
@@ -125,13 +133,6 @@ export function NavbarSimple({ user,setDisplay }) {
     <Navbar height={700} width={{ sm: 300 }} p="md" style={{"zIndex":"50"}} className={Styles.settingsLeft}>
       <Navbar.Section grow>
         {links}
-      </Navbar.Section>
-
-      <Navbar.Section className={classes.footer}>
-        <a href="#" className={classes.link} onClick={(event) => event.preventDefault()}>
-          <IconLogout className={classes.linkIcon} stroke={1.5} />
-          <span>Logout</span>
-        </a>
       </Navbar.Section>
     </Navbar>
   );

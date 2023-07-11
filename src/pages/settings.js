@@ -40,6 +40,7 @@ import styles from "../styles/Settings.module.css"
     const [display,setDisplay] = useState("Account Details")
     const [passError,setPassError] = useState(false);
     const [passComplete,setPassComplete] = useState(false);
+    const [pending,setPending] = useState([]);
 
     useEffect(() => {
       const email = localStorage.getItem("email");
@@ -72,27 +73,34 @@ import styles from "../styles/Settings.module.css"
                     showCalendar(true)
                     showVoice(true)
                     showPassword(true)
+                    setPending(["Google Calendar","Voice Recording","Password Change"])
                   }
                   else if(user.googleCalendar === "" && user.password_change === ""){
                     showCalendar(true)
                     showPassword(true)
+                    setPending(["Google Calendar","Password Change"])
                   }
                   else if(user.googleCalendar === "" && user.voice_rec === ""){
                     showCalendar(true)
                     showVoice(true)
+                    setPending(["Google Calendar","Voice Recording"])
                   }
                   else if(user.password_change === "" && user.voice_rec===""){
                     showPassword(true)
                     showVoice(true)
+                    setPending(["Password Change","Voice Recording"])
                   }
                   else if( user.password_change === ""){
                     showPassword(true)
+                    setPending(["Password Change"])
                   }
                   else if(user.voice_rec === ""){
                     showVoice(true)
+                    setPending(["Voice Recording"])
                   }
                   else if(user.googleCalendar === ""){
                     showCalendar(true)
+                    setPending(["Google Calendar"])
                   }
             }
         })
@@ -117,6 +125,7 @@ import styles from "../styles/Settings.module.css"
           }else if(data.message==="Password change successful"){
             showPassword(false)
             setPassComplete(true)
+            setPending(pending.filter((item)=>item!=="Password Change"))
           }
         });
     }
@@ -160,6 +169,7 @@ import styles from "../styles/Settings.module.css"
     }).then((res)=>res.json()).then((data)=>{
       console.log(data);
       showVoice(false)
+      setPending(pending.filter((item)=>item!=="Voice Recording"))
     })
       }
     }
@@ -176,8 +186,6 @@ import styles from "../styles/Settings.module.css"
         router.push(data.url)
       })
     }
-
-    const sideBarContent = []
   
     return (
       <>
@@ -189,7 +197,7 @@ import styles from "../styles/Settings.module.css"
         <NavbarSimple 
           user={user}
           setDisplay={setDisplay}
-          
+          pending={pending}
         />
         <div className={styles.settingsRight}>
         {invalid && <Container id="invalid" size={800} my={80}>
@@ -214,7 +222,7 @@ import styles from "../styles/Settings.module.css"
                 Server Error
             </Title>
         </Container>}
-        {(password || display==="Change Password") && <Container id="passwordchange" size={800} my={80}>
+        {(display==="Change Password") && <Container id="passwordchange" size={800} my={80}>
           <Title
             align="center"
             sx={(theme) => ({
@@ -277,7 +285,7 @@ import styles from "../styles/Settings.module.css"
           }
         </Container>}
   
-        {(voice || display === "Voice Recording" )&& <Container id="voiceregistration" size={800} my={80}>
+        {(display === "Voice Recording" )&& <Container id="voiceregistration" size={800} my={80}>
           <Title
             align="center"
             sx={(theme) => ({
@@ -321,7 +329,7 @@ import styles from "../styles/Settings.module.css"
           }
         </Container>
         }
-        {(calendar || display === "Google Calender" ) && <>
+        {(display === "Google Calender" ) && <>
         <Container id="voiceregistration" size={800} my={80}>
             <Title
             align="center"
