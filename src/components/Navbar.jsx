@@ -1,8 +1,8 @@
 import styles from '../styles/Navbar.module.css'
 import logo2 from '../../public/assets/logo2.png'
 import Link from 'next/link'
+import { Button } from '@mantine/core'
 import { useState,useEffect } from 'react';
-import { Button } from "@mantine/core";
 import { useRouter } from "next/router";
 import Image from 'next/image';
 
@@ -30,8 +30,8 @@ const Navbar = (props) => {
     }
 
     return (
-        <div className={styles.navbarContainer}>
-            <div className={styles.navLogo}>
+        <div className={styles.navbarContainer} style={{"display":"flex","flexDirection":"row","justifyContent":"space-evenly","alignItems":"center","gap":"4rem" , "paddingLeft":"3rem","paddingRight":"3rem"}}>
+            <div className={styles.navLogo} >
                 <Image src={logo2} alt="logo" />
             </div>
             <ul className={styles.navLinks}>
@@ -41,10 +41,16 @@ const Navbar = (props) => {
                 <li><Link href="/team" className={props.type === 'teams' ? styles.active : null}>TEAM</Link></li>
                 <li><Link href="/activity" className={props.type === 'activity' ? styles.active : null}>ACTIVITY</Link></li>
                 <li><Link href="/library" className={props.type === 'library' ? styles.active : null}>LIBRARY</Link></li>
+                <li><Link href="/settings" className={props.type === 'settings' ? styles.active : null}>SETTINGS</Link></li>
             </ul>
-            <div className={styles.navLinks}>
-                {loggedIn ? role==="SUPERADMIN" || role==="ADMIN" ? <><li><Link href={`/${role.toLowerCase()}`} class={styles.dashboard}>DASHBOARD</Link></li> <Button onClick={logout} className={styles.button}>Logout</Button></> : <><li><Link href="/account">MY ACCOUNT</Link></li> <Button onClick={logout} className={styles.button}>Logout</Button></> : <li><Link href="/login" className="">Login</Link></li>}
+            <div className={styles.navLinks} style={{"marginLeft":"2rem"}}>
+                {
+                    loggedIn ? <Button onClick={logout} className={styles.button}>Logout</Button> : <li><Link href="/login" className="">LOGIN/REGISTER</Link></li>
+                }
             </div>
+            {/* <div className={styles.navLinks}>
+                {loggedIn ? role==="SUPERADMIN" || role==="ADMIN" ? <><li><Link href={`/${role.toLowerCase()}`} class={styles.dashboard}>DASHBOARD</Link></li> <Button onClick={logout} className={styles.button}>Logout</Button></> : <><li><Link href="/account">MY ACCOUNT</Link></li> <Button onClick={logout} className={styles.button}>Logout</Button></> : <li><Link href="/login" className="">Login</Link></li>}
+            </div> */}
             <div className={styles.navSmallScreen}>
                 <img src="https://img.icons8.com/ios-glyphs/30/ffffff/menu--v1.png" alt="" onClick={() => setToggleMenu(true)} />
                 {toggleMenu && (
@@ -57,9 +63,15 @@ const Navbar = (props) => {
                             <li><Link href="/team" className={props.type === 'teams' ? styles.active : null}>TEAM</Link></li>
                             <li><Link href="/activity" className={props.type === 'activity' ? styles.active : null}>ACTIVITY</Link></li>
                             <li><Link href="/library" className={props.type === 'library' ? styles.active : null}>LIBRARY</Link></li>
+                            <li><Link href="/settings" className={props.type === 'settings' ? styles.active : null}>SETTINGS</Link></li>
                             {/* <div className={styles.navLinks}> */}
-                                {loggedIn ? role==="SUPERADMIN" ? <li><Link href="/superadmin">DASHBOARD</Link></li> : <li><Link href="/account">MY ACCOUNT</Link></li> : <li><Link href="/login" className="">Login</Link></li>}
+                                {/* {loggedIn ? role==="SUPERADMIN" ? <li><Link href="/superadmin">DASHBOARD</Link></li> : <li><Link href="/account">MY ACCOUNT</Link></li> : <li><Link href="/login" className="">Login</Link></li>} */}
                             {/* </div> */}
+                            <div className={styles.navLinks}>
+                                {
+                                    loggedIn ? <></> : <li><Link href="/login" className="">Login/Register</Link></li>
+                                }
+                            </div>
                         </ul>
                     </div>
                 )}

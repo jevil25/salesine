@@ -17,6 +17,7 @@ import {
   Skeleton,
   TextInput,
   Input,
+  LoadingOverlay,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 
@@ -28,6 +29,7 @@ const All = () => {
   const theme = useMantineTheme();
   const [opened, { open, close }] = useDisclosure(false);
   const [recordings,setRecordings] = useState([])
+  const [loading, setLoading] = useState(true);
   const BACK_END_URL = process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:4000" ;
   // console.log("this is props var");
   // console.log(props);
@@ -90,6 +92,7 @@ const All = () => {
       return recordings.recordings;
     });
     setRecordings(recordings);
+    setLoading(false);
     };
 
     const populateCalls = () => {
@@ -123,11 +126,11 @@ const All = () => {
       <div className={styles.allContainerHeading}>
         <p>All Calls</p>
       </div>
-      <div className={styles.initiateButton}>
+      {/* <div className={styles.initiateButton}>
         <Button onClick={open} color="indigo">
           Initiate New Meeting
         </Button>
-      </div>
+      </div> */}
       <div className={styles.allSortBy}>
         <div className={styles.allSortBy1}>Sort By</div>
         <div
@@ -224,7 +227,7 @@ const All = () => {
             );
           })
         ) : (
-          <h2>No calls yet</h2>
+          loading ? <LoadingOverlay visible={loading} /> : <div className={styles.noCalls}>No Calls</div>
         )}
       </div>
     </div>
