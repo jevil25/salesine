@@ -12,6 +12,7 @@ import {
     LoadingOverlay,
     Slider,
   } from "@mantine/core";
+  import { ApideckVault } from '@apideck/vault-js'
   import Link from "next/link";
   import { useEffect, useState } from "react";
   import { useRouter } from "next/router";
