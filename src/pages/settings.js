@@ -132,47 +132,51 @@ import styles from "../styles/Settings.module.css"
   
     async function getVoice() {
       try {
-        let stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-        setStream(stream);
-        const recorder = new MediaRecorder(stream);
-  
-        recorder.addEventListener('dataavailable', (event) => {
-          if (event.data.size > 0) {
-            setRecordedChunks((prevChunks) => [...prevChunks, event.data]);
-          }
+        //Use MediaRecorder for recording audio
+        const stream = await navigator.mediaDevices.getUserMedia({
+          audio: true,
         });
-    
-        setMediaRecorder(recorder);
-        recorder.start();
+        setStream(stream);
+        const mediaRecorder = new MediaRecorder(stream);
+        setMediaRecorder(mediaRecorder);
+        mediaRecorder.ondataavailable = (e) => {
+          setRecordedChunks((e.data));
+        }
+        mediaRecorder.start();
       } catch (err) {
-        console.log("Error recording voice " + err);
+        console.log("Error recording voice: " + err);
       }
     }
+  
+    useEffect(() => {
+      stopRecording();
+    }, [recordedChunks]);
   
     const stopRecording = async () => {
       if (stream && mediaRecorder && mediaRecorder.state === 'recording') {
         stream.getTracks().forEach((track) => track.stop());
         setStream(null);
         mediaRecorder.stop();
-        const recordedBlob = new Blob(recordedChunks, { type: 'audio/wav' });
-    const audioUrl = URL.createObjectURL(recordedBlob);
-    const audioElement = new Audio(audioUrl);
-    // audioElement.play();
-   let resp = await fetch(`${BACK_END_URL}/voicerec`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        email,
-      }),
-    }).then((res)=>res.json()).then((data)=>{
-      console.log(data);
-      showVoice(false)
-      setPending(pending.filter((item)=>item!=="Voice Recording"))
-    })
-      }
-    }
+        console.log(recordedChunks);
+      }else{
+        //get the recording and send it to the backend
+        if (recordedChunks.length === 0) return;
+        console.log(recordedChunks);
+        const formData = new FormData();
+        formData.append('audio_data', recordedChunks);
+        formData.append('email', email);
+  
+          const res = await fetch(`${BACK_END_URL}/voicerec`, {
+            method: 'POST',
+            body: formData,
+          });
+          const data = await res.json();
+          console.log(data);
+          if (data.success) {
+            showVoice(false);
+          }
+        }
+    };
   
     const googleAuth = async () => {
       fetch(`${BACK_END_URL}/googleAuth`, {
