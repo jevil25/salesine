@@ -79,6 +79,9 @@ export default function advance_register() {
       .then((res) => res.json())
       .then((data) => {
         showPassword(false);
+        if (password === false && voice === false && calendar === false) {
+          router.push("/");
+        }
       });
   }
 
@@ -116,15 +119,15 @@ export default function advance_register() {
       formData.append("email",email)
       const resp = await fetch(`${BACK_END_URL}/voicerec`, {
         method: "POST",
-        // headers: {
-        //   "Content-Type": "application/json",
-        // },
         body: formData,
       })
         .then((res) => res.json())
         .then((data) => {
           console.log(data);
           showVoice(false);
+          if (password === false && voice === false && calendar === false) {
+                router.push("/");
+              }
         });
     }
   };
@@ -139,6 +142,9 @@ export default function advance_register() {
       .then((res) => res.json())
       .then((data) => {
         router.push(data.url);
+        if (password === false && voice === false && calendar === false) {
+          router.push("/");
+        }
       });
   };
 
