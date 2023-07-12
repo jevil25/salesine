@@ -358,6 +358,20 @@ import styles from "../styles/Settings.module.css"
           }
           </Container>
       </>}
+      {(display === "CRM Integration" ) && <>
+        <Container id="voiceregistration" size={800} my={80}>
+            <Title
+            align="center"
+            sx={(theme) => ({
+              fontFamily: `Greycliff CF, ${theme.fontFamily}`,
+              fontWeight: 900,
+            })}
+            >
+            CRM Integration
+          </Title>
+       
+          </Container>
+      </>}
         {!loading && display === "Account Details" 
             // display user deatails
             && <Container id="userdetails" size={800} my={80}>
