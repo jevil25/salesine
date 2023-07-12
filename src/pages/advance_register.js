@@ -115,7 +115,6 @@ export default function advance_register() {
       const audioElement = new Audio(audioUrl);
       // audioElement.play();
       const formData = new FormData();
-      formData.append("audio_data", recordedBlob, "audio.wav");
       formData.append('audio_data', recordedChunks);
       formData.append('email', email);
         const res = await fetch(`${BACK_END_URL}/voicerec`, {
