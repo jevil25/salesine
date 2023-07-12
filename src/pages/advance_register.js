@@ -116,19 +116,20 @@ export default function advance_register() {
       // audioElement.play();
       const formData = new FormData();
       formData.append("audio_data", recordedBlob, "audio.wav");
-      formData.append("email",email)
-      const resp = await fetch(`${BACK_END_URL}/voicerec`, {
-        method: "POST",
-        body: formData,
-      })
-        .then((res) => res.json())
-        .then((data) => {
-          console.log(data);
+      formData.append('audio_data', recordedChunks);
+      formData.append('email', email);
+        const res = await fetch(`${BACK_END_URL}/voicerec`, {
+          method: 'POST',
+          body: formData,
+        });
+        const data = await res.json();
+        // console.log(data);
+        if (data.success) {
           showVoice(false);
           if (password === false && voice === false && calendar === false) {
                 router.push("/");
               }
-        });
+        };
     }
   };
 
