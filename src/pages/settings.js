@@ -207,13 +207,14 @@ export default function advance_register() {
     //   }).then((res)=>res.json())
     console.log("inside integrate function")
 
-    let resp = await fetch(`${BACK_END_URL}/crmauth`,{
+    let resp = await fetch(`${BACK_END_URL}/crm`,{
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
         email,
+        flag:"crmauth"
       }),
     }).then((res)=>res.json())
     console.log(resp)

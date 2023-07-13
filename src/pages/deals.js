@@ -1,4 +1,5 @@
 import React from 'react'
+import { useEffect,useState } from 'react'
 import styles from "../styles/deals.module.css"
 import Navbar from '../components/Navbar'
 import activity from '../../public/assets/activity.png'
@@ -158,6 +159,33 @@ const data = [
 ]
 
 const Deals = () => {
+    const [crmData,setcrmData] = useState([]) 
+    const [email, setEmail] = useState("");
+    const BACK_END_URL =
+    process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:4000";
+    useEffect(()=>{
+      async function getopp(){
+        const email = localStorage.getItem("email");
+        setEmail(email);
+        const data = await fetch(`${BACK_END_URL}/crm`,{
+          method:'POST',
+          headers:{
+            "Content-Type":"application/json"
+          },
+          body:JSON.stringify({
+            email,
+            flag:"listopp"
+          })
+        }).then((res)=>res.json());
+        console.log(data)
+        if(data.message == "Integrate your CRM"){
+          console.log("yooo")
+        }
+      }
+      getopp()
+    },[])
+
+
     const formatDate = moment().format('LL');
     return (
       <div className={styles.dealsApp}>
