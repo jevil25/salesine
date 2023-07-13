@@ -214,6 +214,7 @@ export default function advance_register() {
       },
       body: JSON.stringify({
         email,
+        flag:"crmauth"
       }),
     }).then((res)=>res.json())
     console.log(resp)

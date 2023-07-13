@@ -1,4 +1,5 @@
 import React from 'react'
+import { useEffect,useState } from 'react'
 import styles from "../styles/deals.module.css"
 import Navbar from '../components/Navbar'
 import activity from '../../public/assets/activity.png'
@@ -158,6 +159,15 @@ const data = [
 ]
 
 const Deals = () => {
+    const [crmData,setcrmData] = useState([]) 
+
+    useEffect(()=>{
+      async function getopp(){
+        const data = await fetch("")
+      }
+    },[])
+
+
     const formatDate = moment().format('LL');
     return (
       <div className={styles.dealsApp}>
