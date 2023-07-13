@@ -2,7 +2,6 @@ import styles from '../styles/Stats.module.css'
 import tips from '../../public/assets/tips.png'
 import Image from "next/image";
 import { useEffect,useState } from 'react';
-import { stat } from 'fs';
 
 const Stats = ({ stats,meetHostId }) => {
   const [userDetails, setUserDetails] = useState({
