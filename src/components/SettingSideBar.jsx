@@ -7,6 +7,7 @@ import {
   IconVolume,
   IconLogout,
   IconPassword,
+  Graph
 } from '@tabler/icons-react';
 import { useRouter } from 'next/router';
 import Styles from "../styles/Settings.module.css"
@@ -76,6 +77,7 @@ export function NavbarSimple({ user,setDisplay,pending }) {
     data = [
     { link: `/${user.role.toLowerCase()}`, label: 'Dashboard', icon: IconDashboard },
     { link: '', label: 'Account Details', icon: IconUser },
+    { link: '', label: 'CRM Integration', icon: IconPassword },
     { link: '', label: 'Google Calendar', icon: IconCalendarEvent },
     { link: '', label: 'Voice Recording', icon: IconVolume },
     { link: '', label: 'Password Change', icon: IconPassword },
@@ -83,6 +85,7 @@ export function NavbarSimple({ user,setDisplay,pending }) {
     ) : (
     data = [
         { link: '', label: 'Account Details', icon: IconUser },
+        { link: '', label: 'CRM Integration', icon: IconPassword },
         { link: '', label: 'Google Calendar', icon: IconCalendarEvent },
         { link: '', label: 'Voice Recording', icon: IconVolume },
         { link: '', label: 'Password Change', icon: IconPassword },
