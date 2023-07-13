@@ -10,6 +10,12 @@ const Interaction = ({ calls }) => {
     patience: false,
   });
 
+  if(calls.length === 0) return (<div className={styles.interactionWrapper}>
+    <div className={styles.interactionWrapperHead}>
+      No calls to show
+    </div>
+  </div>)
+
   //extract analysis from calls and analysis array not empty
   var analysis = calls.map((call) => {if (call.analysis.length > 0) return call.analysis});
   //remove undefined values from analysis
