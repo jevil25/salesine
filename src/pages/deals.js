@@ -178,6 +178,9 @@ const Deals = () => {
           })
         }).then((res)=>res.json());
         console.log(data)
+        if(data.message == "Integrate your CRM"){
+          console.log("yooo")
+        }
       }
       getopp()
     },[])
