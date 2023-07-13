@@ -251,6 +251,23 @@ const Deals = () => {
   const [crmstatus, setCrmstatus] = useState(false);
   const BACK_END_URL =
     process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:4000";
+  const graphinfo = {
+    activity: {
+      data: {
+        labels,
+        datasets: [
+          {
+            fill: true,
+            data: labels.map(() =>
+              faker.datatype.number({ min: 0, max: 1000 })
+            ),
+            backgroundColor: "#E5EFFF",
+            hoverBackgroundColor: "#3F51B5",
+          },
+        ],
+      },
+    },
+  }
 
   useEffect(() => {
     async function getopp() {
@@ -345,38 +362,42 @@ const Deals = () => {
           </div>
           <div className={styles.dealsWrapperComonent2Details}>
             {crmstatus ? (
-              data.map((val) => (
+              crmData.map((val) => (
                 <div className={styles.dataWrapper}>
                   <div
                     className={styles.nameData}
                     style={{ flex: 2, justifyContent: "space-evenly" }}
                   >
                     <img src={val.img} alt="" />
-                    <div className={styles.Dataname}>{val.name}</div>
+                    <div className={styles.Dataname}>{val.title}</div>
                   </div>
                   <div className={styles.nameData} style={{ flex: 4 }}>
                     <div className={styles.areaChart}>
                       <Line
-                        data={val.activity.data}
+                        data={graphinfo.activity.data}
                         options={options}
                         height="40px"
                       />
                     </div>
                   </div>
                   <div className={styles.nameData} style={{ flex: 1 }}>
-                    <div className={styles.Dataname}>{val.nextCall}</div>
+                    <div className={styles.Dataname}>
+                    {/* {val.nextCall} */}
+                    Tomorrow
+                    </div>
                   </div>
                   <div className={styles.nameData} style={{ flex: 1 }}>
-                    <div className={styles.Dataname}>{val.amount}</div>
+                    <div className={styles.Dataname}>{val.monetary_amount
+}</div>
                   </div>
                   <div className={styles.nameData} style={{ flex: 1 }}>
-                    <div className={styles.Dataname}>{val.status}</div>
+                    <div className={styles.Dataname}>{val.won_reason}</div>
                   </div>
                   <div className={styles.nameData} style={{ flex: 1 }}>
-                    <div className={styles.Dataname}>{val.closeDate}</div>
+                    <div className={styles.Dataname}>{val.close_date}</div>
                   </div>
                   <div className={styles.nameData} style={{ flex: 1 }}>
-                    <div className={styles.Dataname}>{val.owner}</div>
+                    <div className={styles.Dataname}>{val.owner_id}</div>
                   </div>
                   <div className={styles.nameData} style={{ flex: 2 }}>
                     <div className={styles.buttonWrapper}>
