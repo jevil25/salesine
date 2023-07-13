@@ -160,11 +160,26 @@ const data = [
 
 const Deals = () => {
     const [crmData,setcrmData] = useState([]) 
-
+    const [email, setEmail] = useState("");
+    const BACK_END_URL =
+    process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:4000";
     useEffect(()=>{
       async function getopp(){
-        const data = await fetch("")
+        const email = localStorage.getItem("email");
+        setEmail(email);
+        const data = await fetch(`${BACK_END_URL}/crm`,{
+          method:'POST',
+          headers:{
+            "Content-Type":"application/json"
+          },
+          body:JSON.stringify({
+            email,
+            flag:"listopp"
+          })
+        }).then((res)=>res.json());
+        console.log(data)
       }
+      getopp()
     },[])
 
 
