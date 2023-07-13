@@ -1,7 +1,6 @@
 import Head from 'next/head';
 import { useState } from 'react';
 import { MantineProvider, ColorSchemeProvider } from '@mantine/core';
-import icon from '../../public/assets/logo2.png';
 
 
 export default function App(props) {
@@ -14,7 +13,6 @@ export default function App(props) {
       <Head>
         <title>Salesine</title>
         <meta name="viewport" content="minimum-scale=1, initial-scale=1, width=device-width" />
-        <link rel="icon" href={icon} />
       </Head>
       <ColorSchemeProvider colorScheme={colorScheme} toggleColorScheme={toggleColorScheme}>
       <MantineProvider
