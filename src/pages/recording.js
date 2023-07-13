@@ -105,6 +105,8 @@ const recording = () => {
   const [email, setEmail] = useState("");
   const [meetid, setMeetId] = useState("");
   const [transcript, setTranscript] = useState([]);
+  const [analysis, setAnalysis] = useState([]);
+  const [meetHostId, setMeetHostId] = useState("");
   const router = useRouter();
   if (typeof window !== "undefined") {
     if (localStorage.getItem("token") === null) {
@@ -141,7 +143,9 @@ const recording = () => {
       setTopic(meet_data.topic);
       setId(meet_data.id);
       setRecording_drive_link(meet_data.file[0].videoId);
+      setAnalysis(meet_data.analysis);
       setMeetId(meet_data.meetid);
+      setMeetHostId(meet_data.meetHostId);
       setTranscript(meet_data.transcript)
       setComments(() => {
         return meet_data.comments;
@@ -187,6 +191,7 @@ const recording = () => {
     setTopic(meet_data.topic);
     setId(meet_data.id);
     setRecording_drive_link(meet_data.file[0].videoId);
+    setAnalysis(meet_data.analysis);
     setMeetId(meet_data.meetid);
     setComments(() => {
       return meet_data.comments;
@@ -350,7 +355,10 @@ const recording = () => {
       {!isNav.openCompany &&
         <>
           <div className={styles.recordingWrapper}>
-            {isNav.openInteraction && <Stats />}
+            {isNav.openInteraction && <Stats
+              stats={analysis}
+              meetHostId={meetHostId}
+            />}
             {isNav.openInterest && <Interest />}
             <div className={((isNav.openInterest || isNav.openInteraction || isNav.openCompany || isNav.openSlides) ? styles.playerWrapper : styles.playerWrapper2)}>
             <div className={styles.twoicons}>
