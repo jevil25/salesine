@@ -4,6 +4,8 @@ import styles from '../styles/library.module.css';
 import shape from '../../public/assets/shape.png';
 import folder from '../../public/assets/folder.png';
 import { useEffect } from 'react';
+import { Modal,Input,Text,Select,Button } from '@mantine/core';
+import { useRouter } from 'next/router';
 
 export const datas = [
   { id: 1, heading: 'About ANC Company', folders: 1, calls: 4, createdBy: 'Eran Hrbek', lastUpdated: 'Dec 18, 2019' },
@@ -18,8 +20,15 @@ const Library = () => {
   const [datasp, setDatasp] = useState([]);
   const [fav, setFav] = useState([]);
   const [invalid, setInvalid] = useState(false);
+  const [modal, setModal] = useState(false);
+  const [modalFolder, setModalFolder] = useState({});
+  const [refresh, setRefresh] = useState(false);
+  const [addFolder, setAddFolder] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const n = 10;
+
+  const router = useRouter();
 
   useEffect(() => {
     const email = localStorage.getItem('email');
@@ -42,7 +51,102 @@ const Library = () => {
           setInvalid(true)
         }
       })
-  }, []);
+  }, [refresh]);
+
+  const formatDate = (date) => {
+    const d = new Date(date);
+    const month = d.toLocaleString('default', { month: 'short' });
+    const day = d.getDate();
+    const year = d.getFullYear();
+    return `${day} ${month} ${year}`;
+  };
+
+  const openFolder = (id) =>{
+    //get folder data from id
+    const folder = datas.find((item) => item.id === id);
+    setModalFolder(folder)
+    setModal(true)
+  }
+
+  const openFolderp = (id) =>{
+    //get folder data from id
+    const folder = datasp.find((item) => item.id === id);
+    setModalFolder(folder)
+    setModal(true)
+  }
+
+  const openFolderf = (id) =>{
+    //get folder data from id
+    const folder = fav.find((item) => item.id === id);
+    setModalFolder(folder)
+    setModal(true)
+  }
+
+  const [fileDetails, setFileDetails] = useState([]);
+
+  const getFileDetails = async (id) => {
+    try {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/getFileDetailsById`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ fileId: id }),
+      });
+      const data = await response.json();
+      if (data.status === true) {
+        return data.file;
+      } else {
+        setInvalid(true);
+      }
+    } catch (error) {
+      console.error(error);
+      setInvalid(true);
+    }
+  };
+  
+  const fetchFileDetails = async () => {
+    const fileIds = modalFolder.fileId;
+    const details = await Promise.all(fileIds.map((id) => getFileDetails(id)));
+    console.log(details);
+    setFileDetails(details);
+  };
+  
+  useEffect(() => {
+    if (modal) {
+      fetchFileDetails();
+    }
+  }, [modal]);
+
+  const [name, setName] = useState("");
+  const [type, setType] = useState("PUBLIC");
+
+  const createFolder = () => {
+    setAddFolder(false);
+    setLoading(true);
+    fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/library/addfolder`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+            email: localStorage.getItem("email"),
+            name: name,
+            type: type,
+        }),
+    })
+    .then((res) => res.json())
+    .then((data) => {
+        console.log(data);
+        setLoading(false);
+        if(data.status){
+            console.log("success");
+            setRefresh(!refresh);
+        }
+        else
+            setUnsuccessful(true);
+    });
+}
   
 
   return (
@@ -66,7 +170,7 @@ const Library = () => {
               >
                 <img src="https://img.icons8.com/ios-glyphs/14/3f51b5/plus-math.png" alt="" />
               </div>
-              <div style={{ display: 'flex', justifyContent: 'center', width: '100%', padding: '10px 0px' }}>
+              <div className={styles.new} style={{ display: 'flex', justifyContent: 'center', width: '100%', padding: '10px 0px', }} onClick={e => setAddFolder(true)}>
                 Add new folder
               </div>
             </div>
@@ -144,7 +248,7 @@ const Library = () => {
                 <div className={styles.noOfFolders}>{datas.length} folders</div>
                 <div className={styles.AllFolders}>
                   {datas.map((data,i) => (
-                    <div className={styles.folders}>
+                    <div className={styles.folders} onClick={e => openFolder(data.id)}>
                       <div className={styles.folderLine}></div>
                       <div className={styles.folder}>
                         <img src={folder} alt="" />
@@ -161,7 +265,7 @@ const Library = () => {
                           </div>
                           <div className={styles.createdBy}>
                             <div className={styles.folderSubs}>Last updated</div>
-                            <div className={styles.folderSub}>{data.updatedAt}</div>
+                            <div className={styles.folderSub}>{formatDate(data.updatedAt)}</div>
                           </div>
                         </div>
                       </div>
@@ -175,7 +279,7 @@ const Library = () => {
                 <div className={styles.noOfFolders}>{datasp.length} folders</div>
                 <div className={styles.AllFolders}>
                   {datasp.map((data,i) => (
-                    <div className={styles.folders}>
+                    <div className={styles.folders} onClick={e => openFolderp(data.id)}>
                     <div className={styles.folderLine}></div>
                     <div className={styles.folder}>
                       <img src={folder} alt="" />
@@ -192,7 +296,7 @@ const Library = () => {
                         </div>
                         <div className={styles.createdBy}>
                           <div className={styles.folderSubs}>Last updated</div>
-                          <div className={styles.folderSub}>{data.updatedAt}</div>
+                          <div className={styles.folderSub}>{formatDate(data.updatedAt)}</div>
                         </div>
                       </div>
                     </div>
@@ -206,7 +310,7 @@ const Library = () => {
                 <div className={styles.noOfFolders}>{fav.length} folders</div>
                 <div className={styles.AllFolders}>
                   {fav.map((data,i) => (
-                    <div className={styles.folders}>
+                    <div className={styles.folders} onClick={e => openFolderf(data.id)}>
                     <div className={styles.folderLine}></div>
                     <div className={styles.folder}>
                       <img src={folder} alt="" />
@@ -223,7 +327,7 @@ const Library = () => {
                         </div>
                         <div className={styles.createdBy}>
                           <div className={styles.folderSubs}>Last updated</div>
-                          <div className={styles.folderSub}>{data.updatedAt}</div>
+                          <div className={styles.folderSub}>{formatDate(data.updatedAt)}</div>
                         </div>
                       </div>
                     </div>
@@ -235,6 +339,57 @@ const Library = () => {
           </div>
         </div>
       </div>
+      {
+        modal && (
+          <Modal onClose={() => setModal(false)} opened={modal} title={`${modalFolder.name}`}>
+            {/* display the files */}
+            <div className={styles.modalBody}>
+              <div className={styles.modalBodyHeader}>
+                <div className={styles.modalBodyHead}>File Name</div>
+                <div className={styles.modalBodyHead}>Created At</div>
+              </div>
+              <div className={styles.modalBodyFolders}>
+              {fileDetails.map((name, i) => (<>
+                <div className={styles.modalFolders} key={i} onClick={() => {
+                   localStorage.setItem("recording", JSON.stringify(name.meetingId));
+                   router.push("/recording");
+                 }} >
+                  <div style={{"textAlign":"left"}}>{i + 1}. {name.meeting.topic}</div>
+                  <div style={{"textAlign":"right"}}>{formatDate(name.timestamp)}</div>
+                </div>
+                </>
+              ))}
+              </div>
+            </div>
+          </Modal>)
+      }
+      {
+        addFolder &&
+        <Modal size={"lg"} title={"Create a new Folder"} opened={addFolder} onClose={e => setAddFolder(false)}>
+            <div className={styles.modal}>
+                <div className={styles.title}>
+                    <Text className={styles.label}>Folder Name</Text>
+                    <Input className={styles.input} type="text" onChange={e => setName(e.target.value)} />
+                </div>
+                <div className={styles.title}>
+                    <Text className={styles.label}>Type</Text>
+                    <Select
+                        data={[
+                            { value: "PUBLIC", label: "PUBLIC" },
+                            { value: "PRIVATE", label: "PRIVATE" },
+                        ]}
+                        placeholder="Select type"
+                        className={styles.select}
+                        onChange={(event) => setType(event)}
+                    />
+                </div>
+                <div className={styles.title}>
+                    <Button className={styles.label} onClick={e => createFolder()}>Create</Button>
+                    <Button className={styles.label} onClick={e => setAddFolder(false)}>Cancel</Button>
+                </div>
+            </div>
+        </Modal>
+        }
     </>
   );
 };

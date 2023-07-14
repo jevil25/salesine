@@ -143,6 +143,12 @@
     gap: 15px;
 }
 
+.folders:hover{
+    cursor: pointer;
+    background-color: #E5EFFF;
+    border-radius: 8px;
+}
+
 .AllFolders {
     display: flex;
     flex-wrap: wrap;
@@ -175,4 +181,72 @@
 
 .folderSubs {
     color: #606060;
+}
+
+.modalBody{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 20px;
+}
+
+.modalBodyHeader{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.modalBodyHead{
+    font-family: 'Arial';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 18px;
+    color: #333333;
+}
+
+.modalBodyFolders{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.new:hover{
+    cursor: pointer;
+    background-color: #E5EFFF;
+    border-radius: 8px;
+}
+
+.modalFolders{
+    display: flex;
+    flex-direction: row;
+}
+
+.modalFolders:hover{
+    cursor: pointer;
+    background-color: #E5EFFF;
+    border-radius: 8px;
+}
+
+.modalFolders div{
+    flex-basis: 50%;
+}
+
+.modal{
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.title{
+    font-size: 1.2rem;
+    font-weight: 400;
+    margin-bottom: 1rem;
+    display: flex;
+    flex-direction: row;
+    gap: 0.5rem;
+}
+
+.select{
+    z-index: 1000;
 }
