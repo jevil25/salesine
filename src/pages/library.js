@@ -3,45 +3,47 @@ import Navbar from '../components/Navbar';
 import styles from '../styles/library.module.css';
 import shape from '../../public/assets/shape.png';
 import folder from '../../public/assets/folder.png';
+import { useEffect } from 'react';
 
 export const datas = [
   { id: 1, heading: 'About ANC Company', folders: 1, calls: 4, createdBy: 'Eran Hrbek', lastUpdated: 'Dec 18, 2019' },
-  { id: 2, heading: 'Department Overviews', folders: 0, calls: 4, createdBy: 'Brandy Hilbrand', lastUpdated: 'Dec 27, 2019' },
-  { id: 3, heading: 'Sales Pitch - 3 Pillars', folders: 0, calls: 3, createdBy: 'Eran Hrbek', lastUpdated: 'Dec 18, 2019' },
-  { id: 4, heading: 'Ideal Demo Flow', folders: 0, calls: 4, createdBy: 'Eran Hrbek', lastUpdated: 'Oct 27, 2020' },
-  { id: 5, heading: 'About ANC Company', folders: 1, calls: 4, createdBy: 'Eran Hrbek', lastUpdated: 'Dec 18, 2019' },
-  { id: 6, heading: 'Department Overviews', folders: 0, calls: 4, createdBy: 'Brandy Hilbrand', lastUpdated: 'Dec 27, 2019' },
-  { id: 7, heading: 'Sales Pitch - 3 Pillars', folders: 0, calls: 3, createdBy: 'Eran Hrbek', lastUpdated: 'Dec 18, 2019' },
-  { id: 8, heading: 'Ideal Demo Flow', folders: 0, calls: 4, createdBy: 'Eran Hrbek', lastUpdated: 'Oct 27, 2020' },
-  { id: 9, heading: 'About ANC Company', folders: 1, calls: 4, createdBy: 'Eran Hrbek', lastUpdated: 'Dec 18, 2019' },
-  { id: 10, heading: 'Department Overviews', folders: 0, calls: 4, createdBy: 'Brandy Hilbrand', lastUpdated: 'Dec 27, 2019' },
-  { id: 11, heading: 'Sales Pitch - 3 Pillars', folders: 0, calls: 3, createdBy: 'Eran Hrbek', lastUpdated: 'Dec 18, 2019' },
-  { id: 12, heading: 'Ideal Demo Flow', folders: 0, calls: 4, createdBy: 'Eran Hrbek', lastUpdated: 'Oct 27, 2020' },
 ];
-
-export const datasp = [
-  { id: 1, heading: 'About ANC Company', folders: 1, calls: 4, createdBy: 'Eran Hrbek', lastUpdated: 'Dec 18, 2019' },
-  { id: 2, heading: 'Department Overviews', folders: 0, calls: 4, createdBy: 'Brandy Hilbrand', lastUpdated: 'Dec 27, 2019' },
-  { id: 3, heading: 'Sales Pitch - 3 Pillars', folders: 0, calls: 3, createdBy: 'Eran Hrbek', lastUpdated: 'Dec 18, 2019' },
-  { id: 4, heading: 'Ideal Demo Flow', folders: 0, calls: 4, createdBy: 'Eran Hrbek', lastUpdated: 'Oct 27, 2020' },
-  { id: 5, heading: 'About ANC Company', folders: 1, calls: 4, createdBy: 'Eran Hrbek', lastUpdated: 'Dec 18, 2019' },
-  { id: 6, heading: 'Department Overviews', folders: 0, calls: 4, createdBy: 'Brandy Hilbrand', lastUpdated: 'Dec 27, 2019' },
-  { id: 7, heading: 'Sales Pitch - 3 Pillars', folders: 0, calls: 3, createdBy: 'Eran Hrbek', lastUpdated: 'Dec 18, 2019' },
-  { id: 8, heading: 'Ideal Demo Flow', folders: 0, calls: 4, createdBy: 'Eran Hrbek', lastUpdated: 'Oct 27, 2020' },
-  { id: 9, heading: 'About ANC Company', folders: 1, calls: 4, createdBy: 'Eran Hrbek', lastUpdated: 'Dec 18, 2019' },
-  { id: 10, heading: 'Department Overviews', folders: 0, calls: 4, createdBy: 'Brandy Hilbrand', lastUpdated: 'Dec 27, 2019' },
-  // { id: 11, heading: 'Sales Pitch - 3 Pillars', folders: 0, calls: 3, createdBy: 'Eran Hrbek', lastUpdated: 'Dec 18, 2019' },
-  // { id: 12, heading: 'Ideal Demo Flow', folders: 0, calls: 4, createdBy: 'Eran Hrbek', lastUpdated: 'Oct 27, 2020' },
-];
-
 const Library = () => {
   const [state, setState] = useState({
     isPublic: true,
     isPrivate: false,
     isfav: false,
   });
+  const [datas, setDatas] = useState([]);
+  const [datasp, setDatasp] = useState([]);
+  const [fav, setFav] = useState([]);
+  const [invalid, setInvalid] = useState(false);
 
   const n = 10;
+
+  useEffect(() => {
+    const email = localStorage.getItem('email');
+    fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/library`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ email: email }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+        if (data.status === true) {
+          //set data with type PUBLIC to datas
+          setDatas(data.folder.filter((item) => item.type === 'PUBLIC'));
+          setDatasp(data.folder.filter((item) => item.type === 'PRIVATE'));
+          setFav(data.folder.filter((item) => item.favorite === true));
+        }else{
+          setInvalid(true)
+        }
+      })
+  }, []);
+  
 
   return (
     <>
@@ -141,25 +143,25 @@ const Library = () => {
               <>
                 <div className={styles.noOfFolders}>{datas.length} folders</div>
                 <div className={styles.AllFolders}>
-                  {datas.map((data) => (
+                  {datas.map((data,i) => (
                     <div className={styles.folders}>
                       <div className={styles.folderLine}></div>
                       <div className={styles.folder}>
                         <img src={folder} alt="" />
                         <div className={styles.folderInsides}>
                           <div className={styles.folderName}>
-                            {data.id}. {data.heading}
+                            {i+1}. {data.name}
                           </div>
                           <div className={styles.folderSub}>
-                            {data.folders} folder {data.calls} calls
+                            {data.fileId.length} calls
                           </div>
                           <div className={styles.createdBy}>
                             <div className={styles.folderSubs}>Created by</div>
-                            <div className={styles.folderSub}>{data.createdBy}</div>
+                            <div className={styles.folderSub}>{data.User.name}</div>
                           </div>
                           <div className={styles.createdBy}>
                             <div className={styles.folderSubs}>Last updated</div>
-                            <div className={styles.folderSub}>{data.lastUpdated}</div>
+                            <div className={styles.folderSub}>{data.updatedAt}</div>
                           </div>
                         </div>
                       </div>
@@ -172,29 +174,60 @@ const Library = () => {
               <>
                 <div className={styles.noOfFolders}>{datasp.length} folders</div>
                 <div className={styles.AllFolders}>
-                  {datasp.map((data) => (
+                  {datasp.map((data,i) => (
                     <div className={styles.folders}>
-                      <div className={styles.folderLine}></div>
-                      <div className={styles.folder}>
-                        <img src={folder} alt="" />
-                        <div className={styles.folderInsides}>
-                          <div className={styles.folderName}>
-                            {data.id}. {data.heading}
-                          </div>
-                          <div className={styles.folderSub}>
-                            {data.folders} folder {data.calls} calls
-                          </div>
-                          <div className={styles.createdBy}>
-                            <div className={styles.folderSubs}>Created by</div>
-                            <div className={styles.folderSub}>{data.createdBy}</div>
-                          </div>
-                          <div className={styles.createdBy}>
-                            <div className={styles.folderSubs}>Last updated</div>
-                            <div className={styles.folderSub}>{data.lastUpdated}</div>
-                          </div>
+                    <div className={styles.folderLine}></div>
+                    <div className={styles.folder}>
+                      <img src={folder} alt="" />
+                      <div className={styles.folderInsides}>
+                        <div className={styles.folderName}>
+                          {i+1}. {data.name}
+                        </div>
+                        <div className={styles.folderSub}>
+                          {data.fileId.length} calls
+                        </div>
+                        <div className={styles.createdBy}>
+                          <div className={styles.folderSubs}>Created by</div>
+                          <div className={styles.folderSub}>{data.User.name}</div>
+                        </div>
+                        <div className={styles.createdBy}>
+                          <div className={styles.folderSubs}>Last updated</div>
+                          <div className={styles.folderSub}>{data.updatedAt}</div>
                         </div>
                       </div>
                     </div>
+                  </div>
+                  ))}
+                </div>
+              </>
+            )}
+            {state.isfav && (
+              <>
+                <div className={styles.noOfFolders}>{fav.length} folders</div>
+                <div className={styles.AllFolders}>
+                  {fav.map((data,i) => (
+                    <div className={styles.folders}>
+                    <div className={styles.folderLine}></div>
+                    <div className={styles.folder}>
+                      <img src={folder} alt="" />
+                      <div className={styles.folderInsides}>
+                        <div className={styles.folderName}>
+                          {i+1}. {data.name}
+                        </div>
+                        <div className={styles.folderSub}>
+                          {data.fileId.length} calls
+                        </div>
+                        <div className={styles.createdBy}>
+                          <div className={styles.folderSubs}>Created by</div>
+                          <div className={styles.folderSub}>{data.User.name}</div>
+                        </div>
+                        <div className={styles.createdBy}>
+                          <div className={styles.folderSubs}>Last updated</div>
+                          <div className={styles.folderSub}>{data.updatedAt}</div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                   ))}
                 </div>
               </>
