@@ -6,6 +6,7 @@ import folder from '../../public/assets/folder.png';
 import { useEffect } from 'react';
 import { Modal,Input,Text,Select,Button } from '@mantine/core';
 import { useRouter } from 'next/router';
+import ReactStars from 'react-stars';
 
 export const datas = [
   { id: 1, heading: 'About ANC Company', folders: 1, calls: 4, createdBy: 'Eran Hrbek', lastUpdated: 'Dec 18, 2019' },
@@ -144,8 +145,30 @@ const Library = () => {
             setRefresh(!refresh);
         }
         else
-            setUnsuccessful(true);
+            setInvalid(true);
     });
+}
+
+const updateFav = (id) => {
+  fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/library/updateFav`, {
+      method: "POST",
+      headers: {
+          "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+          id: id,
+      }),
+  })
+  .then((res) => res.json())
+  .then((data) => {
+      console.log(data);
+      if(data.status){
+          console.log("success");
+          setRefresh(!refresh);
+      }
+      else
+          setInvalid(true);
+  });
 }
   
 
@@ -247,7 +270,14 @@ const Library = () => {
               <>
                 <div className={styles.noOfFolders}>{datas.length} folders</div>
                 <div className={styles.AllFolders}>
-                  {datas.map((data,i) => (
+                  {datas.map((data,i) => (<>
+                    <ReactStars
+                    count={1}
+                    size={24}
+                    color2={'#ffd700'} 
+                    value={data.favorite ? 1 : 0}
+                    onChange={e => updateFav(data.id)}
+                    />
                     <div className={styles.folders} onClick={e => openFolder(data.id)}>
                       <div className={styles.folderLine}></div>
                       <div className={styles.folder}>
@@ -270,6 +300,7 @@ const Library = () => {
                         </div>
                       </div>
                     </div>
+                    </>
                   ))}
                 </div>
               </>
@@ -278,7 +309,14 @@ const Library = () => {
               <>
                 <div className={styles.noOfFolders}>{datasp.length} folders</div>
                 <div className={styles.AllFolders}>
-                  {datasp.map((data,i) => (
+                  {datasp.map((data,i) => (<>
+                    <ReactStars
+                    count={1}
+                    size={24}
+                    color2={'#ffd700'} 
+                    value={data.favorite ? 1 : 0}
+                    onChange={e => updateFav(data.id)}
+                    />
                     <div className={styles.folders} onClick={e => openFolderp(data.id)}>
                     <div className={styles.folderLine}></div>
                     <div className={styles.folder}>
@@ -301,6 +339,7 @@ const Library = () => {
                       </div>
                     </div>
                   </div>
+                  </>
                   ))}
                 </div>
               </>
@@ -309,7 +348,14 @@ const Library = () => {
               <>
                 <div className={styles.noOfFolders}>{fav.length} folders</div>
                 <div className={styles.AllFolders}>
-                  {fav.map((data,i) => (
+                  {fav.map((data,i) => (<>
+                    <ReactStars
+                    count={1}
+                    size={24}
+                    color2={'#ffd700'} 
+                    value={data.favorite ? 1 : 0}
+                    onChange={e => updateFav(data.id)}
+                    />
                     <div className={styles.folders} onClick={e => openFolderf(data.id)}>
                     <div className={styles.folderLine}></div>
                     <div className={styles.folder}>
@@ -332,6 +378,7 @@ const Library = () => {
                       </div>
                     </div>
                   </div>
+                  </>
                   ))}
                 </div>
               </>

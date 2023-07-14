@@ -49,6 +49,7 @@
     "react-dom": "^18.2.0",
     "react-icons": "^4.10.1",
     "react-player": "^2.12.0",
+    "react-stars": "^2.2.5",
     "react-wavesurfer.js": "^0.0.8",
     "swr": "^2.1.1",
     "tabler-icons-react": "^1.56.0",
