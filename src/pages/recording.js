@@ -20,6 +20,7 @@ import Video from '../google/video';
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import Image from "next/image";
+import AddToLibrary from '../components/AddToLibrary';
 
 const recording = () => {
   const [isShare, setShare] = useState(false);
@@ -107,6 +108,7 @@ const recording = () => {
   const [transcript, setTranscript] = useState([]);
   const [analysis, setAnalysis] = useState([]);
   const [meetHostId, setMeetHostId] = useState("");
+  const [fileId, setFileId] = useState("");
   const router = useRouter();
   if (typeof window !== "undefined") {
     if (localStorage.getItem("token") === null) {
@@ -143,6 +145,7 @@ const recording = () => {
       setTopic(meet_data.topic);
       setId(meet_data.id);
       setRecording_drive_link(meet_data.file[0].videoId);
+      setFileId(meet_data.file[0].id);
       setAnalysis(meet_data.analysis);
       setMeetId(meet_data.meetid);
       setMeetHostId(meet_data.meetHostId);
@@ -367,8 +370,9 @@ const recording = () => {
                 <Image src={next} alt="" style={{ width: "14px", height: "14px" }} />
               </div>
               <div className={styles.first}>
-                <div>Add to Library</div>
-                <Image src={plus} alt="" />
+                <AddToLibrary
+                  fileId={fileId}
+                />
               </div>
             </div>
             {!isTranscript &&
