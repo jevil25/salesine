@@ -1,15 +1,17 @@
 import styles from '../styles/Navbar.module.css'
 import logo2 from '../../public/assets/logo2.png'
 import Link from 'next/link'
-import { Button } from '@mantine/core'
+import { Button, Input } from '@mantine/core'
 import { useState,useEffect } from 'react';
 import { useRouter } from "next/router";
 import Image from 'next/image';
+import SearchBar from './SearchBar';
 
 const Navbar = (props) => {
     const [toggleMenu, setToggleMenu] = useState(false);
     const [loggedIn, setLoggedIn] = useState(false);
     const [role, setRole] = useState('');
+    const [text, setText] = useState('');
     const router = useRouter();
     
     useEffect(() => {
@@ -35,19 +37,20 @@ const Navbar = (props) => {
                 <Image src={logo2} alt="logo" />
             </div>
             <ul className={styles.navLinks}>
-                <li><Link href="/" className={props.type === 'home' ? styles.active : null} >HOME</Link></li>
-                <li><Link href="/calls" className={props.type === 'calls' ? styles.active : null}>CALLS</Link></li>
-                <li><Link href="/deals" className={props.type === 'deals' ? styles.active : null}>DEALS</Link></li>
-                <li><Link href="/team" className={props.type === 'teams' ? styles.active : null}>TEAM</Link></li>
-                <li><Link href="/activity" className={props.type === 'activity' ? styles.active : null}>ACTIVITY</Link></li>
-                <li><Link href="/library" className={props.type === 'library' ? styles.active : null}>LIBRARY</Link></li>
+                <li className={styles.links}><Link href="/" className={props.type === 'home' ? styles.active : null} >HOME</Link></li>
+                <li className={styles.links}><Link href="/calls" className={props.type === 'calls' ? styles.active : null}>CALLS</Link></li>
+                <li className={styles.links}><Link href="/deals" className={props.type === 'deals' ? styles.active : null}>DEALS</Link></li>
+                <li className={styles.links}><Link href="/team" className={props.type === 'teams' ? styles.active : null}>TEAM</Link></li>
+                {/* <li><Link href="/activity" className={props.type === 'activity' ? styles.active : null}>ACTIVITY</Link></li> */}
+                <li className={styles.links}><Link href="/library" className={props.type === 'library' ? styles.active : null}>LIBRARY</Link></li>
                 {
-                    loggedIn ? <li><Link href="/settings" className={props.type === 'settings' ? styles.active : null}>SETTINGS</Link></li> : <></>
+                    loggedIn ? <li className={styles.links}><Link href="/settings" className={props.type === 'settings' ? styles.active : null}>SETTINGS</Link></li> : <></>
                 }
             </ul>
+            <SearchBar/>
             <div className={styles.navLinks} style={{"marginLeft":"2rem"}}>
                 {
-                    loggedIn ? <Button onClick={logout} className={styles.button}>Logout</Button> : <li><Link href="/login" className="">LOGIN/REGISTER</Link></li>
+                    loggedIn ? <Button onClick={logout} className={styles.button}>Logout</Button> : <li><Button onClick={e => router.push("/login")} className="">LOGIN/REGISTER</Button></li>
                 }
             </div>
             {/* <div className={styles.navLinks}>

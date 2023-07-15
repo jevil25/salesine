@@ -21,7 +21,8 @@
   display: flex;
   gap: 30px;
   list-style: none;
-  margin-top: 25px;
+  justify-content: space-evenly;
+  align-items: center;
 }
 .navLinks a{
   text-decoration: none;
@@ -30,7 +31,7 @@
   font-size: large;
 }
 
-.navLinks li :hover{
+.navLinks .links :hover{
   border-bottom: 3px solid;
   padding-bottom: 5px;
 }
@@ -119,9 +120,6 @@
   border-radius: 20px;
 }
 
-.button{
-  margin-bottom: 20px;
-}
 
 .dashboard{
   margin-top: 20px;
