@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useEffect } from 'react';
+import styles from '../styles/Navbar.module.css'
 
 function SearchBar() {
   const [searchTerm, setSearchTerm] = useState('');
@@ -10,8 +11,13 @@ function SearchBar() {
     const regex = new RegExp(searchTerm, 'gi');
     const matches = bodyText.match(regex);
 
-    if (matches) {
+    //replace all occurrences of search term with highlighted version
+    if (matches.length > 0) {
       setSearchResults(matches);
+      // document.body.innerHTML = bodyText.replace(
+      //   regex,
+      //   `<span class={{color:/"red/"}}>${searchTerm}</span>`
+      // );
     } else {
       setSearchResults([]);
     }
@@ -19,12 +25,12 @@ function SearchBar() {
   };
 
   useEffect(() => {
-    if(searchTerm.length === 0) setSearchResults([])
-    handleSearch()
+    if(searchTerm.length === 0) {setSearchResults([])}
+    else handleSearch()
     }, [searchTerm])
 
   return (
-    <div style={{"display":"flex","flexDirection":"column"}}>
+    <div style={{"display":"flex","flexDirection":"column","width":"10rem"}}>
       <input
         type="text"
         value={searchTerm}
@@ -33,16 +39,19 @@ function SearchBar() {
         }
         }
         placeholder="Search..."
-        style={{"width":"10rem","height":"2rem","borderRadius":"0.5rem","border":"none","outline":"none","paddingLeft":"0.5rem"}}
+        style={{"width":"10rem","height":"2rem","borderRadius":"0.5rem","border":"none","outline":"none","paddingLeft":"0.5rem","z-inde":"1"}}
       />
-      <div>
+      <div className={styles.results}>
         {searchResults.length > 0 ? (
           <>
-            <p>Found {searchResults.length} occurrences of '{searchTerm}'.</p>
             <ul>
-                {searchResults.slice(0, 10).map((result, index) => (
-                <li key={index}>{result}</li>
-                ))}
+              {/* remove one search value of what user typed */}
+              {/* reduce the results by 1 of what user typed*/}
+              {searchResults.slice(0, searchResults.length-1).map((result, index) => (
+                <li key={index}>
+                  {result}
+                </li>
+              ))}
             </ul>
           </>
         ) : (
