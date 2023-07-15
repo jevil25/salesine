@@ -11,6 +11,7 @@ import { useRouter } from 'next/router'
 import { useEffect } from 'react';
 import fetch from 'node-fetch';
 import Image from "next/image";
+import { LoadingOverlay } from '@mantine/core';
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -33,6 +34,8 @@ export const myChart = {
 const Home = () => {
     const router = useRouter();
     const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:4000" ;
+    const [user, setUser] = React.useState({});
+    const [loading, setLoading] = React.useState(true);
     console.log(BACKEND_URL);
     useEffect (() => {
         if(typeof window !== 'undefined') {
@@ -52,12 +55,14 @@ const Home = () => {
                             console.log(data);
                             if (data.status === 200) {
                                 console.log("success")
+                                setUser(data.user);
                             }
                             if(data.status === 401){
                                 localStorage.removeItem('token');
                                 localStorage.removeItem('email');
                                 router.push('/login');
                             }
+                            setLoading(false);
                         })
                         .catch((err) => {
                             console.log(err);
@@ -80,6 +85,7 @@ const Home = () => {
     
     return (
         <>
+            <LoadingOverlay visible={loading} />
             <Navbar type='home' />
             <div className={styles.homeWrapper}>
                 <div className={styles.homeHeader}>
@@ -90,15 +96,15 @@ const Home = () => {
                         <div className={styles.homeBody1Part1}>
                             <div className={styles.part1part1}>
                                 <div className={styles.partHead}>Total Deals</div>
-                                <div className={styles.partNumber}>150</div>
+                                <div className={styles.partNumber}>{user.closedDeals + user.activeDeals}</div>
                             </div>
                             <div className={styles.part1part1}>
                                 <div className={styles.partHead}>Closed Deals</div>
-                                <div className={styles.partNumber}>90</div>
+                                <div className={styles.partNumber}>{user.closedDeals}</div>
                             </div>
                             <div className={styles.part1part1}>
                                 <div className={styles.partHead}>Active Deals</div>
-                                <div className={styles.partNumber}>60</div>
+                                <div className={styles.partNumber}>{user.activeDeals}</div>
                             </div>
                         </div>
                         <div className={styles.homeBody1Part2}>

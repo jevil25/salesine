@@ -1,4 +1,4 @@
-import { Paper, Text, Button } from "@mantine/core";
+import { Paper, Text, Button, LoadingOverlay } from "@mantine/core";
 import React from "react";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
@@ -54,6 +54,8 @@ const Deals = () => {
   const [crmData, setcrmData] = useState([]);
   const [email, setEmail] = useState("");
   const [crmstatus, setCrmstatus] = useState(false);
+  const [user, setUser] = useState({});
+  const [loading, setLoading] = useState(true);
   const BACK_END_URL =
     process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:4000";
   const graphinfo = {
@@ -75,6 +77,7 @@ const Deals = () => {
   }
 
   useEffect(() => {
+    setLoading(true);
     async function getopp() {
       const email = localStorage.getItem("email");
       setEmail(email);
@@ -92,12 +95,15 @@ const Deals = () => {
       // setcrmData(data.data.data)
       // console.log(crmData)
       if (data.message == "Integrate your CRM") {
-        console.log("yooo");
+        // console.log("yooo");
+        setLoading(false);
       } else {
         const crminfo = data.data.data
-        console.log(crminfo)
-        setcrmData(crminfo)
+        console.log(crminfo);
+        setcrmData(crminfo);
         setCrmstatus(true);
+        setUser(data.user);
+        setLoading(false);
       }
     }
     getopp();
@@ -106,7 +112,8 @@ const Deals = () => {
   const handleClick = () => router.push('/settings')
 
   const formatDate = moment().format("LL");
-  return (
+  return (<>
+    <LoadingOverlay visible={loading} />
     <div className={styles.dealsApp}>
       <Navbar type="deals" />
 
@@ -114,28 +121,19 @@ const Deals = () => {
         <div className={styles.dealsWrapperComponent1}>
           <div className={styles.dealsWrapperComponent1stats}>
             <div className={styles.statsName}>Total Deals</div>
-            <div className={styles.statsCount}>75</div>
+            <div className={styles.statsCount}>{user.activeDeals + user.closedDeals}</div>
           </div>
           <div className={styles.dealsWrapperComponent1stats}>
             <div className={styles.statsName}>Closed Deals</div>
-            <div className={styles.statsCount}>50</div>
+            <div className={styles.statsCount}>{user.closedDeals}</div>
           </div>
           <div className={styles.dealsWrapperComponent1stats}>
             <div className={styles.statsName}>Active Deals</div>
-            <div className={styles.statsCount}>25</div>
+            <div className={styles.statsCount}>{user.activeDeals}</div>
           </div>
         </div>
         <div className={styles.dealsWrapperComponent2}>
           <div className={styles.dealsWrapperComonent2Filter}>
-            <div className={styles.dealsWrapperComonent2Filter1}>
-              <div className={styles.filter1name}>Points of Interest</div>
-            </div>
-            <div className={styles.dealsWrapperComonent2Filter1}>
-              <div className={styles.filter1name}>Interaction Stats</div>
-            </div>
-            <div className={styles.dealsWrapperComonent2Filter1}>
-              <div className={styles.filter1name}>Company</div>
-            </div>
             <div className={styles.date}>{formatDate}</div>
           </div>
           <div className={styles.dealsWrapperComonent2Parameter}>
@@ -256,6 +254,7 @@ const Deals = () => {
         </div>
       </div>
     </div>
+  </>
   );
 };
 
