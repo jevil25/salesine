@@ -26,6 +26,7 @@ const Library = () => {
   const [refresh, setRefresh] = useState(false);
   const [addFolder, setAddFolder] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [data, setData] = useState([]);
 
   const n = 10;
 
@@ -45,6 +46,8 @@ const Library = () => {
         console.log(data);
         if (data.status === true) {
           //set data with type PUBLIC to datas
+          console.log(data.folder);
+          setData(data.folder);
           setDatas(data.folder.filter((item) => item.type === 'PUBLIC'));
           setDatasp(data.folder.filter((item) => item.type === 'PRIVATE'));
           setFav(data.folder.filter((item) => item.favorite === true));
@@ -197,15 +200,16 @@ const updateFav = (id) => {
                 Add new folder
               </div>
             </div>
-            {[...Array(n)].map(() => (
+            {data.map((item) => (
               <div className={styles.foldrs}>
                 <div className={styles.outerCircle}>
                   <div className={styles.innerCircle}></div>
                   <div style={{ zIndex: '3' }}>A</div>
                 </div>
                 <div>
-                  <div>ABC Company</div>
-                  <div>a minute ago</div>
+                  <div>{item.Company.name}</div>
+                  <div>{item.User.name}</div>
+                  <div>{formatDate(item.updatedAt)}</div>
                 </div>
               </div>
             ))}
@@ -391,6 +395,7 @@ const updateFav = (id) => {
           <Modal onClose={() => setModal(false)} opened={modal} title={`${modalFolder.name}`}>
             {/* display the files */}
             <div className={styles.modalBody}>
+              <Button className={styles.modalBodyButton} onClick={e => setAddFolder(true)}>{`Make ${modalFolder.type === "PUBLIC" ? `Private`: `Public`}`}</Button>
               <div className={styles.modalBodyHeader}>
                 <div className={styles.modalBodyHead}>File Name</div>
                 <div className={styles.modalBodyHead}>Created At</div>
