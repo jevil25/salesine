@@ -35,10 +35,11 @@ const Home = () => {
     const router = useRouter();
     const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:4000" ;
     const [user, setUser] = React.useState({});
-    const [loading, setLoading] = React.useState(true);
+    const [loading, setLoading] = React.useState(false);
     console.log(BACKEND_URL);
     useEffect (() => {
         if(typeof window !== 'undefined') {
+            setLoading(true);
             if(localStorage.getItem('token')){
                 const token = localStorage.getItem('token');
                 const email = localStorage.getItem('email');

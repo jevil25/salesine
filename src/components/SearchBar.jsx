@@ -39,7 +39,7 @@ function SearchBar() {
         }
         }
         placeholder="Search..."
-        style={{"width":"10rem","height":"2rem","borderRadius":"0.5rem","border":"none","outline":"none","paddingLeft":"0.5rem","z-inde":"1"}}
+        style={{"width":"10rem","height":"2rem","borderRadius":"0.5rem","border":"none","outline":"none","paddingLeft":"0.5rem","z-index":"1"}}
       />
       <div className={styles.results}>
         {searchResults.length > 0 ? (
