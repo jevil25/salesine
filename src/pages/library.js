@@ -173,6 +173,29 @@ const updateFav = (id) => {
           setInvalid(true);
   });
 }
+
+const updateType = (id) => {
+  fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/library/updateType`, {
+      method: "POST",
+      headers: {
+          "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+          id: id,
+      }),
+  })
+  .then((res) => res.json())
+  .then((data) => {
+      console.log(data);
+      if(data.status){
+          console.log("success");
+          setModal(false);
+          setRefresh(!refresh);
+      }
+      else
+          setInvalid(true);
+  });
+}
   
 
   return (
@@ -395,7 +418,7 @@ const updateFav = (id) => {
           <Modal onClose={() => setModal(false)} opened={modal} title={`${modalFolder.name}`}>
             {/* display the files */}
             <div className={styles.modalBody}>
-              <Button className={styles.modalBodyButton} onClick={e => setAddFolder(true)}>{`Make ${modalFolder.type === "PUBLIC" ? `Private`: `Public`}`}</Button>
+              <Button className={styles.modalBodyButton} onClick={e => updateType(modalFolder.id)}>{`Make ${modalFolder.type === "PUBLIC" ? `Private`: `Public`}`}</Button>
               <div className={styles.modalBodyHeader}>
                 <div className={styles.modalBodyHead}>File Name</div>
                 <div className={styles.modalBodyHead}>Created At</div>

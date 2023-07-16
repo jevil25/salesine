@@ -189,7 +189,8 @@ const All = () => {
                     {recording.duration}
                   </div>
                 </div>
-                {recording.recordingLink ? (<>
+                {recording.file.length > 0 ?
+                recording.file[0].videoId ? (<>
                 <Badge color="indigo">
                   <Text size="sm" weight={500}>
                     Completed
@@ -222,7 +223,24 @@ const All = () => {
                  Recording
                </Button>
                </>
-                )}
+                )
+                : <>
+                 <Badge color="red">
+                  <Text size="sm" weight={500}>
+                    Not Completed
+                  </Text>
+                </Badge>
+                 <Button
+                 color="indigo"
+                 onClick={() => {
+                   localStorage.setItem("recording", JSON.stringify(recording.meetid));
+                   router.push("/recording");
+                 }}
+                 disabled = {true}
+               >
+                 Recording
+               </Button>
+                </>}
               </div>
             );
           })
