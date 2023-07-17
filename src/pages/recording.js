@@ -263,7 +263,7 @@ const recording = () => {
         meetId: meetid,
         startTime: start_time,
         endTime: end_time,
-        videoId: "git-mmet/Product%20Marketing%20Meeting%20(weekly)%202021-06-28.mp4",
+        videoId: "git-meet/Product%20Marketing%20Meeting%20(weekly)%202021-06-28.mp4",
       }),
     })
     .then((res) => res.json())
