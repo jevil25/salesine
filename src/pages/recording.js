@@ -1,13 +1,8 @@
 import React, { useState, useRef } from 'react';
 import moment from 'moment';
-//import Wavesurfer from 'react-wavesurfer.js';
 import Navbar from '../components/Navbar';
 import next from '../../public/assets/next.png';
-import nextw from '../../public/assets/nextw.png';
-import plus from '../../public/assets/plus.png';
-import close from '../../public/assets/close.png';
 import video from '../../public/assets/video.png';
-import transcript from '../../public/assets/transcript.png';
 import video1 from '../../public/assets/video1.png';
 import transcript1 from '../../public/assets/transcript1.png';
 import Stats from '../components/Stats';
@@ -16,15 +11,24 @@ import Interest from '../components/Interest';
 import Transcript from '../components/Transcript';
 import Company from '../components/Company';
 import styles from '../styles/Recording.module.css'; // Import CSS module styles
-import Video from '../google/video';
+import ReactPlayer from 'react-player';
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import Image from "next/image";
 import AddToLibrary from '../components/AddToLibrary';
+import { Modal } from '@mantine/core';
+import { TimeInput } from '@mantine/dates';
+import { Button,Text,Loader } from '@mantine/core';
+import { IconClock } from '@tabler/icons-react';
+import Link from 'next/link';
+// import dynamic from "next/dynamic";
+
+// const Waveform = dynamic(() => import("../components/WaveSurfer"), { ssr: false });
 
 const recording = () => {
   const [isShare, setShare] = useState(false);
   const [isTranscript, setIsTranscript] = useState(false);
+  const [load, setLoad] = useState(false);
   const [isNav, setIsNav] = useState({
     isOpen: false,
     openInterest: false,
@@ -109,6 +113,10 @@ const recording = () => {
   const [analysis, setAnalysis] = useState([]);
   const [meetHostId, setMeetHostId] = useState("");
   const [fileId, setFileId] = useState("");
+  const [startTime, setStartTime] = useState("");
+  const [endTime, setEndTime] = useState("");
+  const [trimId, setTrimId] = useState("");
+  const [linkModal, setLinkModal] = useState(false);
   const router = useRouter();
   if (typeof window !== "undefined") {
     if (localStorage.getItem("token") === null) {
@@ -226,73 +234,81 @@ const recording = () => {
       });
   }
 
+  const share = () => {
+    setLoad(true);
+    console.log(startTime, endTime);
+    if(startTime === "" || endTime === "") {
+      alert("Please enter both start time and end time");
+      setLoad(false);
+      return;
+    }
+    let start = startTime.split(":");
+    let end = endTime.split(":");
+    let start_time = parseInt(start[0])*3600 + parseInt(start[1])*60 + parseInt(start[2]);
+    let end_time = parseInt(end[0])*3600 + parseInt(end[1])*60 + parseInt(end[2]);
+    console.log(start_time, end_time);
+    let duration = end_time - start_time;
+    console.log(duration);
+    if(duration < 0) {
+      setLoad(false);
+      alert("Start time cannot be greater than end time");
+      return;
+    }
+    fetch(`${BACK_END_URL}/trim/trim`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        meetId: meetid,
+        startTime: start_time,
+        endTime: end_time,
+        videoId: "git-mmet/Product%20Marketing%20Meeting%20(weekly)%202021-06-28.mp4",
+      }),
+    })
+    .then((res) => res.json())
+    .then((data) => {
+      console.log(data);
+      if(data.status){
+        setTrimId(data.trim.id)
+        setLinkModal(true)
+      }
+      else
+        alert("Error in trimming");
+      setShare(false);
+      setLoad(false);
+    }
+    )
+  }
+
   return (
     <>
       {isShare && (
-        <div className={styles.share}>
-          <div className={styles.shareBlock}>
-            <div className={styles.shareHeader}>
-              <div className={styles.shareHead}>Share</div>
-              <div className={styles.shareClose}>
-                <Image src={close} alt="close" onClick={() => setShare(false)} />
-              </div>
+        // give fields for start time and end time
+        <Modal onClose={() => setShare(false)} opened={isShare} title={"Share"} size="md">
+          <div className={styles.shareModal}>
+           <div className={styles.shareModal1}>
+            Enter Trim Timming
             </div>
-            <div className={styles.shareBody}>
-              <div className={styles.tagBody}>
-                <div>Share with:</div>
-                <div className={styles.tagInputConrainer}>
-                  <div className={styles.tagPlacer}>
-                    {tags.map((tag, index) => (
-                      <div className={styles.tagItem} key={index}>
-                        <span className={styles.text}>{tag}</span>
-                        <Image src={close} alt="" onClick={() => removeTag(index)} />
-                      </div>
-                    ))}
-                  </div>
-                  <input onKeyDown={handleKeyDown} type="text" className={styles['tags-input']} />
-                </div>
-              </div>
-              <div className={styles.addMessage}>
-                <div>Add a message:</div>
-                <div className={styles.messageContainer}>
-                  <textarea placeholder='Message' />
-                </div>
-              </div>
-              <div className={styles.trimContainer}>
-                <div className={styles.trimHeader}>
-                  <div className={styles.trimHead}>Trim call:</div>
-                  <div className={styles.trimFilter}>
-                    <div className={styles.trimType}>Start</div>
-                    <div className={styles.trimTime}>00:00</div>
-                    <div>-</div>
-                    <div className={styles.trimTime}>00:00</div>
-                    <div className={styles.trimType}>End</div>
-                  </div>
-                </div>
-                <div className={styles.trimBody}>
-                  <Image src={plus} alt="" />
-                </div>
-              </div>
-              <div className={styles.shareFooter}>
-                <div className={styles.shareFooterPart1}>
-                  <div className={styles.footer1Button}>
-                    <div className={styles.footerButtonName}>Share</div>
-                    <Image src={nextw} alt="" />
-                  </div>
-                  <div className={styles.footer1Link}>
-                    <Image src={video} alt="" />
-                    <div className={styles.shareable}>Get shareable link</div>
-                  </div>
-                </div>
-                <div className={styles.shareFooterPart2}>
-                  <div className={styles.shareable}>Access to this call will expire in</div>
-                  <div className={styles.shareableNumber}>5</div>
-                  <div className={styles.shareable}>days</div>
-                </div>
-              </div>
+            <div className={styles.shareModal2}>
+              Start Time: <TimeInput icon={<IconClock size="1rem" stroke={1.5} />} withSeconds  placeholder="Start Time" onChange={e => setStartTime(e.target.value)} />
+              End Time: <TimeInput icon={<IconClock size="1rem" stroke={1.5} />}   withSeconds placeholder="End Time" onChange={e => setEndTime(e.target.value)} />
             </div>
+            <Button 
+              onClick={() => share()}
+              style={{"marginTop":"10px","width":"100%"}}
+            >
+              {
+                !load ?
+                <Text>
+                  Share
+                </Text>
+                :
+                <Loader color="dark"/>
+              }
+            </Button>
           </div>
-        </div>
+        </Modal>      
       )}
       <Navbar type="recording" />
       <div className={styles.headerWrapper}>
@@ -379,18 +395,27 @@ const recording = () => {
               <>
                 <div className={styles.Player2}>
                   {recording_drive_link !=="" ? 
-                  <Video
-                    id={recording_drive_link}
-                    player={player}
+                  <ReactPlayer
+                    ref={player}
+                    url={`https://d26bootyjexpt7.cloudfront.net/${`git-meet/Product%20Marketing%20Meeting%20(weekly)%202021-06-28.mp4`}`}
+                    controls
+                    width='100%'
+                    height='100%'
                     playing={playing}
-                    setStates={setStates}
-                    states={states}
-                    wave={wave}
-                    handlePlayback={handlePlayback}
-                    handleDuration={handleDuration}
-                    handleProgress={handleProgress}
-                    handleEnd={handleEnd}
-                    />
+                    onPlay = {()=>{setStates({
+                      ...states,
+                      playing:true
+                    })
+                    }}
+                    onPause = {()=>{setStates({
+                      ...states,
+                      playing:false
+                    })}}
+                    onPlaybackRateChange = {handlePlayback}
+                    onDuration={handleDuration}
+                    onEnded={handleEnd}
+                    onProgress={handleProgress}
+                  />
                     :
                     <>
                       <div className={styles.noVideo}>
@@ -452,8 +477,8 @@ const recording = () => {
                 </div>
               </div>
             </div>
-            {/* <Wavesurfer
-              src="demo.mp4"
+            {/* <DynamicWavesurfer
+              src={`https://d26bootyjexpt7.cloudfront.net/${`git-meet/Product%20Marketing%20Meeting%20(weekly)%202021-06-28.mp4`}`}
               playing={playing}
               barWidth={4}
               barHeight={1}
@@ -461,7 +486,7 @@ const recording = () => {
               ref={wave}
               interact={false}
               backend='MediaElement'
-              waveColor="#3F51B5"
+              waveColor='#3F51B5'
               progressColor='#3F51B5'
               responsive={true}
             /> */}
@@ -473,6 +498,13 @@ const recording = () => {
             getdata={getdata}
           />
         </div>
+        {
+          linkModal &&
+          <Modal onClose={() => setLinkModal(false)} opened={linkModal} title={"Share Link"} size="md">
+            <Text>Your Shareable link</Text>
+            <Link href={`/trim/${trimId}`}>{`${process.env.NEXT_PUBLIC_FRONTEND_URL}/trim/${trimId}`}</Link>
+          </Modal>
+        }
         </>
       }
 
