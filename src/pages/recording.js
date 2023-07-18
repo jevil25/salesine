@@ -263,7 +263,7 @@ const recording = () => {
         meetId: meetid,
         startTime: start_time,
         endTime: end_time,
-        videoId: "git-meet/Product%20Marketing%20Meeting%20(weekly)%202021-06-28.mp4",
+        videoId: recording_drive_link,
       }),
     })
     .then((res) => res.json())
@@ -397,7 +397,7 @@ const recording = () => {
                   {recording_drive_link !=="" ? 
                   <ReactPlayer
                     ref={player}
-                    url={`https://d26bootyjexpt7.cloudfront.net/${`git-meet/Product%20Marketing%20Meeting%20(weekly)%202021-06-28.mp4`}`}
+                    url={`https://d26bootyjexpt7.cloudfront.net/${recording_drive_link}`}
                     controls
                     width='100%'
                     height='100%'

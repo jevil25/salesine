@@ -17,9 +17,13 @@
   justify-content: center;
 }
 
+.navLogo:hover{
+  cursor: pointer;
+}
+
 .navLinks{
   display: flex;
-  gap: 30px;
+  gap: 20px;
   list-style: none;
   justify-content: space-evenly;
   align-items: center;
@@ -28,7 +32,7 @@
   text-decoration: none;
   font-weight: 500;
   color: white;
-  font-size: large;
+  font-size: medium;
 }
 
 .navLinks .links :hover{
