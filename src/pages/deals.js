@@ -194,7 +194,8 @@ const Deals = () => {
 }</div>
                   </div>
                   <div className={styles.nameData} style={{ flex: 1 }}>
-                    <div className={styles.Dataname}>{val.won_reason}</div>
+                    <div className={styles.Dataname}>{val.pipeline_stage_id
+}</div>
                   </div>
                   <div className={styles.nameData} style={{ flex: 1 }}>
                     <div className={styles.Dataname}>{val.close_date}</div>
