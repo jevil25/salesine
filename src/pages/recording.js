@@ -117,6 +117,7 @@ const recording = () => {
   const [endTime, setEndTime] = useState("");
   const [trimId, setTrimId] = useState("");
   const [linkModal, setLinkModal] = useState(false);
+  const [summary, setSummary] = useState("");
   const router = useRouter();
   if (typeof window !== "undefined") {
     if (localStorage.getItem("token") === null) {
@@ -154,6 +155,7 @@ const recording = () => {
       setId(meet_data.id);
       setRecording_drive_link(meet_data.file[0].videoId);
       setFileId(meet_data.file[0].id);
+      setSummary(meet_data.file[0].summary);
       setAnalysis(meet_data.analysis);
       setMeetId(meet_data.meetid);
       setMeetHostId(meet_data.meetHostId);
@@ -202,6 +204,7 @@ const recording = () => {
     setTopic(meet_data.topic);
     setId(meet_data.id);
     setRecording_drive_link(meet_data.file[0].videoId);
+    setSummary(meet_data.file[0].summary);
     setAnalysis(meet_data.analysis);
     setMeetId(meet_data.meetid);
     setComments(() => {
@@ -428,7 +431,7 @@ const recording = () => {
             }
             {isTranscript &&
               <div className={styles.transcriptApp}>
-                <Transcript isNav={isNav} transcript={transcript} />
+                <Transcript isNav={isNav} transcript={transcript} summary={summary} />
               </div>
             }
             <div className={styles.recording}>

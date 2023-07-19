@@ -21,7 +21,7 @@ const Transcript = (props) => {
             </div>
             <div className={styles.summary}>
                 <div className={styles.sumHead}>Last Call Summary:</div>
-                <div className={styles.sumBody}>"The KALDI is releasing some models, called the release some models trained on the English. You can find them on the on their website. Called, they have free train, the model for the English. Cultivating in c++, with interface. Because written Java."</div>
+                <div className={styles.sumBody}>{props.summary}</div>
             </div>
         </div>
     )
