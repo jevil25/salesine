@@ -46,7 +46,7 @@ const Navbar = (props) => {
       }}
     >
       <div className={styles.navLogo}>
-        <Image src={logo2} alt="logo" />
+        <Image onClick={e => router.push("/")} src={logo2} alt="logo" />
       </div>
       <ul className={styles.navLinks}>
         <li className={styles.links}>
