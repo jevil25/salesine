@@ -81,14 +81,14 @@ const Navbar = (props) => {
             TEAM
           </Link>
         </li>
-        <li className={styles.links}>
+        {/* <li className={styles.links}>
           <Link
             href="/activity"
             className={props.type === "activity" ? styles.active : null}
           >
             ACTIVITY
           </Link>
-        </li>
+        </li> */}
         {/* <li><Link href="/activity" className={props.type === 'activity' ? styles.active : null}>ACTIVITY</Link></li> */}
         <li className={styles.links}>
           <Link

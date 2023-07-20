@@ -124,7 +124,7 @@ const Deals = () => {
     console.log(deal_id);
     router.push({
       pathname: "/activity",
-      query: { deal_id: deal_id,
+      query: { dealId: deal_id,
       userId:userId},
     });
   }
