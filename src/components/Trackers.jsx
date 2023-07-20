@@ -1,12 +1,10 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 import ellipse from '../../public/assets/Ellipse.png';
 import styles from '../styles/Trackers.module.css';
 import {Pie} from 'react-chartjs-2';
 import { Chart, ArcElement } from 'chart.js'
 
-const Trackers = ({ trackers }) => {
-
-  // const [data, setData] = React.useState({});
+const Trackers = ({ trackers,user }) => {
 
   trackers = trackers.filter((tracker) => tracker !== null);
   console.log(trackers);
@@ -38,12 +36,12 @@ const Trackers = ({ trackers }) => {
       datasets: [{
         data: [percent,100-percent],
         backgroundColor: [
-          '#3F51B5',
-          '#36A2EB',
+          '#3f51b5',
+          '#f99400',
         ],
         hoverBackgroundColor: [
-          '#3F51B5',
-          '#36A2EB',
+          '#3f51b5',
+          '#f99400',
         ]
       }]
     }
@@ -84,30 +82,33 @@ const Trackers = ({ trackers }) => {
               <img src={ellipse} alt="" />
             </div>
             <div className={styles.trackers2BodyDetails}>
-              <div className={styles.trackers2BodyDetail}>Name :</div>
-              <div className={styles.trackers2BodyDetail}>Mobile :</div>
-              <div className={styles.trackers2BodyDetail}>Email :</div>
-              <div className={styles.trackers2BodyDetail}>Work :</div>
-              <div className={styles.trackers2BodyDetail}>Status :</div>
+              <div className={styles.trackers2BodyDetail}>Name :{user.name}</div>
+              <div className={styles.trackers2BodyDetail}>Email :{user.email}</div>
+              <div className={styles.trackers2BodyDetail}>Work :{user.role}</div>
+              <div className={styles.trackers2BodyDetail}>Status :{user.company.active ? "Active":"Not Active"}</div>
             </div>
             <div className={styles.trackers2BodyLine}></div>
             <div className={styles.trackers2BodyCalls}>
               <div className={styles.trackers2BodyCallsHead}>
-                <div className={styles.trackers2BodyCallsHeader} style={{ color: '#3F51B5' }}>Last 10 calls</div>
+                <div className={styles.trackers2BodyCallsHeader} style={{ color: '#3F51B5' }}>Last {user.meeting.length} calls</div>
               </div>
-              <div className={styles.trackers2BodyCallsHead}>
-                <div className={styles.trackers2BodyCallsHeader}>ABC Company</div>
-                <div className={styles.trackers2BodyCallsSub}>July 18, 2022</div>
+              {user.meeting.length > 0 ? user.meeting.map((meeting) => {
+              return <div className={styles.trackers2BodyCallsHead}>
+                <div className={styles.trackers2BodyCallsHeader}>{user.company.name}</div>
+                <div className={styles.trackers2BodyCallsSub}>{meeting.topic}</div>
               </div>
-              <div className={styles.trackers2BodyCallsHead}>
+              }) : <div className={styles.trackers2BodyCallsHead}>
+                <div className={styles.trackers2BodyCallsHeader}>No calls to show</div>
+              </div>}
+              {/* <div className={styles.trackers2BodyCallsHead}>
                 <div className={styles.trackers2BodyCallsHeader}>Conversation</div>
                 <div className={styles.trackers2BodyCallsSub}>
                   Lorem ipsum dolor, sit amet consectetur adipisicing elit. Nihil sed eum ipsa similique ducimus voluptas
                   labore odit, voluptatum architecto quam vel asperiores ipsum, et voluptatem quidem porro saepe odio.
                   Voluptates.
                 </div>
-              </div>
-              <div className={styles.trackers2BodyMore} style={{ color: 'rgba(63, 81, 181, 0.72)' }}>View 2 more ..</div>
+              </div> */}
+              {/* <div className={styles.trackers2BodyMore} style={{ color: 'rgba(63, 81, 181, 0.72)' }}>View 2 more ..</div> */}
             </div>
           </div>
         </div>

@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styles from '../styles/TeamActivity.module.css';
 
 const TeamsActivity = ({ team,calls }) => {
+  const [flag,setFlag] = useState(false);
   const [activityName, setActivityName] = useState({
     callDuration: true,
     weeklyVolume: false,
@@ -10,6 +11,24 @@ const TeamsActivity = ({ team,calls }) => {
     totalDuration: false,
   });
 
+  useEffect(() => {
+    if(!team.cdpercentage){
+      for(let i=0;i<team.length;i++){
+        //generate random percentage from 20 to 100
+        team[i].cdpercentage = Math.floor(Math.random() * (100 - 20 + 1) + 20);
+        console.log(team[i].cdpercentage)
+        //generate random percentage from 0 to calls.length
+        team[i].wvpercentage = Math.floor(Math.random() * (calls.length - 0 + 1) + 0);
+        //generate random percentage from 20 to 100
+        team[i].wdpercentage = Math.floor(Math.random() * (100 - 20 + 1) + 20);
+        //generate random percentage from 0 to calls.length
+        team[i].tvpercentage = Math.floor(Math.random() * (calls.length - 0 + 1) + 0);
+        //generate random percentage from 20 to 100
+        team[i].tdpercentage = Math.floor(Math.random() * (100 - 20 + 1) + 20);
+      }
+      setFlag(true)
+    }
+  }, [flag,team])
 
   return (
     <div className={styles.activityWrapper}>
@@ -95,12 +114,14 @@ const TeamsActivity = ({ team,calls }) => {
             <div className={styles.callDurationGraph}>
               <div className={styles.graphLabel}>Team Members</div>
               <div className={styles.barGraph}>
-                {team.map((member) => (
+                {team.map((member) => (<>
                   <div className={styles.graph}>
                     <div className={styles.graphName}>{member.name}</div>
-                    <div className={`${styles.graphData}`} style={{"width":"50px"}}></div>50%
                   </div>
-                ))}
+                  <div className={styles.graph}>
+                    <div className={`${styles.graphData}`} style={{"width":`${3*member.cdpercentage}px`}}></div>{member.cdpercentage}%
+                  </div>
+                  </>))}
               </div>
             </div>
           </div>
@@ -114,12 +135,14 @@ const TeamsActivity = ({ team,calls }) => {
             <div className={styles.callDurationGraph}>
               <div className={styles.graphLabel}>Team Members</div>
               <div className={styles.barGraph}>
-                {team.map((member) => (
+              {team.map((member) => (<>
                   <div className={styles.graph}>
                     <div className={styles.graphName}>{member.name}</div>
-                    <div className={`${styles.graphData}`} style={{"width":"50px"}}></div>50%
                   </div>
-                ))}
+                  <div className={styles.graph}>
+                  <div className={`${styles.graphData}`} style={{"width":`${100*member.wvpercentage/(calls.length)}px`}}></div>{member.wvpercentage}
+                  </div>
+                  </>))}
               </div>
             </div>
           </div>
@@ -133,12 +156,14 @@ const TeamsActivity = ({ team,calls }) => {
             <div className={styles.callDurationGraph}>
               <div className={styles.graphLabel}>Team Members</div>
               <div className={styles.barGraph}>
-                {team.map((member) => (
+              {team.map((member) => (<>
                   <div className={styles.graph}>
                     <div className={styles.graphName}>{member.name}</div>
-                    <div className={`${styles.graphData}`} style={{"width":"50px"}}></div>50%
                   </div>
-                ))}
+                  <div className={styles.graph}>
+                  <div className={`${styles.graphData}`} style={{"width":`${3*member.wdpercentage}px`}}></div>{member.wdpercentage}%
+                  </div>
+                  </>))}
               </div>
             </div>
           </div>
@@ -152,12 +177,14 @@ const TeamsActivity = ({ team,calls }) => {
             <div className={styles.callDurationGraph}>
               <div className={styles.graphLabel}>Team Members</div>
               <div className={styles.barGraph}>
-                {team.map((member) => (
+              {team.map((member) => (<>
                   <div className={styles.graph}>
                     <div className={styles.graphName}>{member.name}</div>
-                    <div className={`${styles.graphData}`} style={{"width":"50px"}}></div>50%
                   </div>
-                ))}
+                  <div className={styles.graph}>
+                  <div className={`${styles.graphData}`} style={{"width":`${100*(member.tvpercentage)/(calls.length)}px`}}></div>{member.tvpercentage}
+                  </div>
+                  </>))}
               </div>
             </div>
           </div>
@@ -171,12 +198,14 @@ const TeamsActivity = ({ team,calls }) => {
             <div className={styles.callDurationGraph}>
               <div className={styles.graphLabel}>Team Members</div>
               <div className={styles.barGraph}>
-                {team.map((member) => (
+              {team.map((member) => (<>
                   <div className={styles.graph}>
                     <div className={styles.graphName}>{member.name}</div>
-                    <div className={`${styles.graphData}`} style={{"width":"50px"}}></div>50%
                   </div>
-                ))}
+                  <div className={styles.graph}>
+                  <div className={`${styles.graphData}`} style={{"width":`${3*member.tdpercentage}px`}}></div>{member.tdpercentage}%
+                  </div>
+                  </>))}
               </div>
             </div>
           </div>

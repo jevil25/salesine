@@ -84,10 +84,11 @@
 }
 
 .barGraph{
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    grid-template-columns: 100px 400px;
     margin: 40px;
-    gap: 10px;
+    gap: 15px;
+    background-color: aliceblue;
 }
 
 .graph{

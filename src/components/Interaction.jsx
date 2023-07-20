@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import styles from '../styles/Interaction.module.css';
 
 const Interaction = ({ calls }) => {
+  console.log(calls);
   const [interactionname, setInteractionName] = useState({
     talkRatio: true,
     longMono: false,
@@ -131,13 +132,14 @@ const Interaction = ({ calls }) => {
               <div className={styles.talkRatioInfoSub}>Percentages of call in which team member spoke</div>
             </div>
             <div className={styles.barGraph}>
-                {analysis[0].map((analysis,index) => (
+                {analysis[0].map((analysis,index) => (<>
                   <div className={styles.graph}>
                     <div className={styles.graphName}>{analysis.speaker}</div>
-                    <div>{talkRatio[index]} %</div>
-                    <div className={styles.graphData} style={{ width: `${(talkRatio[index]/talkRatio.reduce((a,b) => a+b,0))*100}%` }}></div>
                   </div>
-                ))}
+                  <div className={styles.graph}>
+                    <div className={styles.graphData} style={{ width: `${(talkRatio[index]/talkRatio.reduce((a,b) => a+b,0))*100}%` }}></div><div>{talkRatio[index]} %</div>
+                  </div>
+                </>))}
             </div>
           </div>
         )}
@@ -148,13 +150,14 @@ const Interaction = ({ calls }) => {
               <div className={styles.talkRatioInfoSub}>Percentages of call in which team member spoke</div>
             </div>
             <div className={styles.barGraph}>
-              {analysis[0].map((analysis,index) => (
+              {analysis[0].map((analysis,index) => (<>
                     <div className={styles.graph}>
                       <div className={styles.graphName}>{analysis.speaker}</div>
-                      <div>{longestMonologue[index]} secs</div>
-                      <div className={styles.graphData} style={{ width: `${(longestMonologue[index]/longestMonologue.reduce((a,b) => a+b,0))*100}%` }}></div>
                     </div>
-                  ))}
+                    <div className={styles.graph}>
+                        <div className={styles.graphData} style={{ width: `${(longestMonologue[index]/longestMonologue.reduce((a,b) => a+b,0))*100}%` }}></div><div>{longestMonologue[index].toPrecision(2)} secs</div>
+                    </div>
+                  </>))}
             </div>
           </div>
         )}
@@ -165,13 +168,14 @@ const Interaction = ({ calls }) => {
               <div className={styles.talkRatioInfoSub}>Percentages of call in which team member spoke</div>
             </div>
             <div className={styles.barGraph}>
-             {analysis[0].map((analysis,index) => (
+             {analysis[0].map((analysis,index) => (<>
                     <div className={styles.graph}>
                       <div className={styles.graphName}>{analysis.speaker}</div>
-                      <div>{longestCustomerStory[index]} secs</div>
-                      <div className={styles.graphData} style={{ width: `${(longestCustomerStory[index]/longestCustomerStory.reduce((a,b) => a+b,0))*100}%` }}></div>
                     </div>
-                  ))}
+                    <div className={styles.graph}>
+                      <div className={styles.graphData} style={{ width: `${(longestCustomerStory[index]/longestCustomerStory.reduce((a,b) => a+b,0))*100}%` }}></div><div>{longestCustomerStory[index].toPrecision(2)} secs</div>
+                    </div>
+                  </>))}
             </div>
           </div>
         )}
@@ -197,13 +201,14 @@ const Interaction = ({ calls }) => {
               <div className={styles.talkRatioInfoSub}>Percentages of call in which team member spoke</div>
             </div>
             <div className={styles.barGraph}>
-                {analysis[0].map((analysis,index) => (
+                {analysis[0].map((analysis,index) => (<>
                     <div className={styles.graph}>
                       <div className={styles.graphName}>{analysis.speaker}</div>
-                      <div>{patience[index]} secs</div>
-                      <div className={styles.graphData} style={{ width: `${(patience[index]/patience.reduce((a,b) => a+b,0))*100}%` }}></div>
                     </div>
-                  ))}
+                    <div className={styles.graph}>
+                      <div className={styles.graphData} style={{ width: `${(patience[index]/patience.reduce((a,b) => a+b,0))*100}%` }}></div><div>{patience[index].toPrecision(2)} secs</div>
+                    </div>
+                  </>))}
             </div>
           </div>
         )}
