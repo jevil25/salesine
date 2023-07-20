@@ -19,11 +19,13 @@ const Team = () => {
     teamScore: false,
     teamCoaching: false,
   });
+  const [flag,setFlag] = useState(false);
   const [loading, setLoading] = useState(true);
   const [team, setTeam] = useState([]);
   const [calls, setCalls] = useState([]);
   const [invalid, setInvalid] = useState(false);
   const [trackers, setTrackers] = useState([]);
+  const [user, setUser] = useState({});
 
   useEffect(() => {
     fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/getTeamDetails`, {
@@ -43,6 +45,7 @@ const Team = () => {
         setTeam(data.team);
         setCalls(data.calls);
         setTrackers(data.calls.map((call) => call.file[0].trackerData));
+        setFlag(false);
       }
       if(data.status === false){
         setLoading(false);
@@ -50,6 +53,27 @@ const Team = () => {
       }
     })
   },[loading])
+
+  useEffect(() => {
+    fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/getUserDetails`,{
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        email: localStorage.getItem('email')
+      })
+    }).then(res => res.json())
+    .then(data => {
+      console.log(data)
+      if(data.status===true){
+        setUser(data.user)
+      }
+    }
+    ).catch(err => {
+      console.log(err)
+    })
+  }, [])
 
   return (
     <div className={styles.teamApp}>
@@ -95,7 +119,7 @@ const Team = () => {
                 >
                   Interaction
                 </div>
-                <div
+                {/* <div
                   className={styles.headNav}
                   style={{ color: navActive.teamTopics ? '#3F51B5' : '#333333' }}
                   onClick={() =>
@@ -111,7 +135,7 @@ const Team = () => {
                   }
                 >
                   Topics
-                </div>
+                </div> */}
                 <div
                   className={styles.headNav}
                   style={{ color: navActive.teamTrackers ? '#3F51B5' : '#333333' }}
@@ -187,10 +211,13 @@ const Team = () => {
             {navActive.teamActivity && (
               <div className={styles.bodyActivity}>
                 <div className={styles.navName}>Activity</div>
+                {team.length === 0 ? (<></>):
                 <TeamsActivity
                   team={team}
                   calls={calls}
-                />
+                  flag={flag}
+                  setFlag={setFlag}
+                />}
               </div>
             )}
             {navActive.teamInteraction && (
@@ -201,12 +228,12 @@ const Team = () => {
                 />
               </div>
             )}
-            {navActive.teamTopics && (
+            {/* {navActive.teamTopics && (
               <div className={styles.bodyTopics}>
                 <div className={styles.navName}>Topics</div>
                 <Topic />
               </div>
-            )}
+            )} */}
             {navActive.teamTrackers && (
               <div className={styles.bodyTrackers}>
                 {trackers.length === 0 ? (
@@ -214,6 +241,7 @@ const Team = () => {
                 ) : (
                 <Trackers 
                   trackers={trackers}
+                  user={user}
                 />
                 )}
               </div>

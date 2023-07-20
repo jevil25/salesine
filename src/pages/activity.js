@@ -37,6 +37,9 @@ const Activity = () => {
   });
   return (
     <div>
+      <Navbar
+        type="activity"
+        />
       <Company />
     </div>
   );

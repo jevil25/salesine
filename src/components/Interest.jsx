@@ -42,7 +42,7 @@ const Interest = ({ trackers,meetHost }) => {
             <div className={styles.interestSearch}>
                 <input type="text" placeholder='Search for Keywords.' />
             </div>
-            <div className={styles.actionItems}>
+            {/* <div className={styles.actionItems}>
                 <div className={styles.actionItemHeading}>ACTION ITEMS</div>
                 <div className={styles.actionItemSubHeading}>
                     <div className={styles.subText}>ABC Company action-items</div>
@@ -58,7 +58,7 @@ const Interest = ({ trackers,meetHost }) => {
                     <div className={styles.subText}>Asked by Others</div>
                 </div>
                 <div className={styles.interestDivider}></div>
-            </div>
+            </div> */}
             {/* <div className={styles.actionItems}>
                 <div className={styles.actionItemHeading}>SMART TRACKERS</div>
                 <div className={styles.actionItemSubHeading}>
