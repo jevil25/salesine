@@ -19,22 +19,23 @@ const Activity = () => {
     setUserId(router.query.userId);
     setDealId(router.query.dealId);
     async function getDeal() {
+      console.log("in deal funcn")
       const deal = await fetch(`${BACK_END_URL}/dealActivity`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: {
-          userId,
-          dealId,
-        },
+        body: JSON.stringify({
+          dealId:dealId,
+          userId:userId
+        }),
       }).then((res) => res.json());
-
-      return deal
+      console.log(deal)
     }
-    const deal = getDeal();
-    console.log(deal)
-  });
+    // const deal = getDeal();
+    // console.log(deal)
+    getDeal()
+  },[]);
   return (
     <div>
       <Navbar
