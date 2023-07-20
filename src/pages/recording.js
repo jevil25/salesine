@@ -118,6 +118,7 @@ const recording = () => {
   const [trimId, setTrimId] = useState("");
   const [linkModal, setLinkModal] = useState(false);
   const [summary, setSummary] = useState("");
+  const [trackers, setTrackers] = useState([]);
   const router = useRouter();
   if (typeof window !== "undefined") {
     if (localStorage.getItem("token") === null) {
@@ -156,6 +157,7 @@ const recording = () => {
       setRecording_drive_link(meet_data.file[0].videoId);
       setFileId(meet_data.file[0].id);
       setSummary(meet_data.file[0].summary);
+      setTrackers(meet_data.file[0].trackerData);
       setAnalysis(meet_data.analysis);
       setMeetId(meet_data.meetid);
       setMeetHostId(meet_data.meetHostId);
@@ -205,6 +207,7 @@ const recording = () => {
     setId(meet_data.id);
     setRecording_drive_link(meet_data.file[0].videoId);
     setSummary(meet_data.file[0].summary);
+    setTrackers(meet_data.file[0].trackerData);
     setAnalysis(meet_data.analysis);
     setMeetId(meet_data.meetid);
     setComments(() => {
@@ -381,7 +384,7 @@ const recording = () => {
               stats={analysis}
               meetHostId={meetHostId}
             />}
-            {isNav.openInterest && <Interest />}
+            {isNav.openInterest && <Interest trackers={trackers} meetHost={meetHostId} />}
             <div className={((isNav.openInterest || isNav.openInteraction || isNav.openCompany || isNav.openSlides) ? styles.playerWrapper : styles.playerWrapper2)}>
             <div className={styles.twoicons}>
               <div className={styles.first} onClick={() => setShare(true)}>
