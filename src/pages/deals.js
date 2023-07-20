@@ -56,6 +56,7 @@ const Deals = () => {
   const [crmstatus, setCrmstatus] = useState(false);
   const [user, setUser] = useState({});
   const [loading, setLoading] = useState(true);
+  const [userId,setUserId] = useState("")
   const BACK_END_URL =
     process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:4000";
   const graphinfo = {
@@ -102,6 +103,7 @@ const Deals = () => {
         let crminfo;
         if (data.message == "API already fetched today") {
           crminfo = data.data[0].data.data;
+          setUserId(data.userId)
         } else {
           crminfo = data.data.data;
         }
@@ -122,7 +124,8 @@ const Deals = () => {
     console.log(deal_id);
     router.push({
       pathname: "/activity",
-      query: { deal_id: deal_id },
+      query: { deal_id: deal_id,
+      userId:userId},
     });
   }
   const formatDate = moment().format("LL");
