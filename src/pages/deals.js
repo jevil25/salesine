@@ -98,7 +98,15 @@ const Deals = () => {
         // console.log("yooo");
         setLoading(false);
       } else {
-        const crminfo = data.data.data
+        console.log(data)
+        let crminfo;
+        if(data.message == "API already fetched today"){
+          crminfo = data.data[0].data.data
+        }
+        else{
+          crminfo = data.data.data
+        }
+        console.log("this is crminfo")
         console.log(crminfo);
         setcrmData(crminfo);
         setCrmstatus(true);
