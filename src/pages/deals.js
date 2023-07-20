@@ -98,7 +98,15 @@ const Deals = () => {
         // console.log("yooo");
         setLoading(false);
       } else {
-        const crminfo = data.data.data
+        console.log(data)
+        let crminfo;
+        if(data.message == "API already fetched today"){
+          crminfo = data.data[0].data.data
+        }
+        else{
+          crminfo = data.data.data
+        }
+        console.log("this is crminfo")
         console.log(crminfo);
         setcrmData(crminfo);
         setCrmstatus(true);
@@ -120,16 +128,16 @@ const Deals = () => {
       <div className={styles.dealsWrapper}>
         <div className={styles.dealsWrapperComponent1}>
           <div className={styles.dealsWrapperComponent1stats}>
-            <div className={styles.statsName}>Total Deals</div>
-            <div className={styles.statsCount}>{user.activeDeals + user.closedDeals}</div>
+            <div className={styles.statsName}>Total Deals</div>66
+            {/* <div className={styles.statsCount}>{user.activeDeals + user.closedDeals}</div> */}
           </div>
           <div className={styles.dealsWrapperComponent1stats}>
-            <div className={styles.statsName}>Closed Deals</div>
-            <div className={styles.statsCount}>{user.closedDeals}</div>
+            <div className={styles.statsName}>Closed Deals</div>20
+            {/* <div className={styles.statsCount}>{user.closedDeals}</div> */}
           </div>
           <div className={styles.dealsWrapperComponent1stats}>
-            <div className={styles.statsName}>Active Deals</div>
-            <div className={styles.statsCount}>{user.activeDeals}</div>
+            <div className={styles.statsName}>Active Deals</div>77
+            {/* <div className={styles.statsCount}>{user.activeDeals}</div> */}
           </div>
         </div>
         <div className={styles.dealsWrapperComponent2}>
