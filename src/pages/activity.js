@@ -1,6 +1,7 @@
 import React from 'react';
 import styles from '../styles/Activity.module.css';
 import Navbar from '../components/Navbar';
+import Company from '../components/Company'
 import moment from 'moment';
 
 const Activity = () => {
@@ -91,6 +92,7 @@ const Activity = () => {
           </div>
         </div>
       </div>
+      <Company/>
     </div>
   );
 };

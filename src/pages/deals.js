@@ -74,7 +74,7 @@ const Deals = () => {
         ],
       },
     },
-  }
+  };
 
   useEffect(() => {
     setLoading(true);
@@ -90,7 +90,7 @@ const Deals = () => {
           email,
           flag: "listopp",
         }),
-      }).then((res) => res.json())
+      }).then((res) => res.json());
       // console.log(data);
       // setcrmData(data.data.data)
       // console.log(crmData)
@@ -98,15 +98,14 @@ const Deals = () => {
         // console.log("yooo");
         setLoading(false);
       } else {
-        console.log(data)
+        console.log(data);
         let crminfo;
-        if(data.message == "API already fetched today"){
-          crminfo = data.data[0].data.data
+        if (data.message == "API already fetched today") {
+          crminfo = data.data[0].data.data;
+        } else {
+          crminfo = data.data.data;
         }
-        else{
-          crminfo = data.data.data
-        }
-        console.log("this is crminfo")
+        console.log("this is crminfo");
         console.log(crminfo);
         setcrmData(crminfo);
         setCrmstatus(true);
@@ -117,153 +116,158 @@ const Deals = () => {
     getopp();
   }, []);
 
-  const handleClick = () => router.push('/settings')
+  const handleClick = () => router.push("/settings");
 
+  function activitypage(deal_id){
+    console.log(deal_id);
+    router.push({
+      pathname: "/activity",
+      query: { deal_id: deal_id },
+    });
+  }
   const formatDate = moment().format("LL");
-  return (<>
-    <LoadingOverlay visible={loading} />
-    <div className={styles.dealsApp}>
-      <Navbar type="deals" />
+  return (
+    <>
+      <LoadingOverlay visible={loading} />
+      <div className={styles.dealsApp}>
+        <Navbar type="deals" />
 
-      <div className={styles.dealsWrapper}>
-        <div className={styles.dealsWrapperComponent1}>
+        <div className={styles.dealsWrapper}>
+          {/* <div className={styles.dealsWrapperComponent1}>
           <div className={styles.dealsWrapperComponent1stats}>
             <div className={styles.statsName}>Total Deals</div>66
-            {/* <div className={styles.statsCount}>{user.activeDeals + user.closedDeals}</div> */}
+            <div className={styles.statsCount}>{user.activeDeals + user.closedDeals}</div>
           </div>
           <div className={styles.dealsWrapperComponent1stats}>
             <div className={styles.statsName}>Closed Deals</div>20
-            {/* <div className={styles.statsCount}>{user.closedDeals}</div> */}
+            <div className={styles.statsCount}>{user.closedDeals}</div>
           </div>
           <div className={styles.dealsWrapperComponent1stats}>
             <div className={styles.statsName}>Active Deals</div>77
-            {/* <div className={styles.statsCount}>{user.activeDeals}</div> */}
+            <div className={styles.statsCount}>{user.activeDeals}</div>
           </div>
-        </div>
-        <div className={styles.dealsWrapperComponent2}>
-          <div className={styles.dealsWrapperComonent2Filter}>
-            <div className={styles.date}>{formatDate}</div>
-          </div>
-          <div className={styles.dealsWrapperComonent2Parameter}>
-            <div className={styles.parameter} style={{ flex: 2 }}>
-              <div className={styles.parameterName}>Name(Client)</div>
+        </div> */}
+          <div className={styles.dealsWrapperComponent2}>
+            <div className={styles.dealsWrapperComonent2Filter}>
+              <div className={styles.date}>{formatDate}</div>
             </div>
-            <div className={styles.parameter} style={{ flex: 4 }}>
-              <img src={activity} alt="" />
-              <div className={styles.parameterName}>Activity</div>
+            <div className={styles.dealsWrapperComonent2Parameter}>
+              <div className={styles.parameter} style={{ flex: 2 }}>
+                <div className={styles.parameterName}>Name(Client)</div>
+              </div>
+              <div className={styles.parameter} style={{ flex: 4 }}>
+                <img src={activity} alt="" />
+                <div className={styles.parameterName}>Activity</div>
+              </div>
+              <div className={styles.parameter} style={{ flex: 1 }}>
+                <div className={styles.parameterName}>Next Call</div>
+              </div>
+              <div className={styles.parameter} style={{ flex: 1 }}>
+                <div className={styles.parameterName}>Amount</div>
+              </div>
+              <div className={styles.parameter} style={{ flex: 1 }}>
+                <div className={styles.parameterName}>Status</div>
+              </div>
+              <div className={styles.parameter} style={{ flex: 1 }}>
+                <div className={styles.parameterName}>Close Date</div>
+              </div>
+              <div className={styles.parameter} style={{ flex: 1 }}>
+                <div className={styles.parameterName}>Owner</div>
+              </div>
+              <div className={styles.parameter} style={{ flex: 2 }}>
+                <div className={styles.parameterName}>Send to Team</div>
+              </div>
             </div>
-            <div className={styles.parameter} style={{ flex: 1 }}>
-              <div className={styles.parameterName}>Next Call</div>
-            </div>
-            <div className={styles.parameter} style={{ flex: 1 }}>
-              <div className={styles.parameterName}>Amount</div>
-            </div>
-            <div className={styles.parameter} style={{ flex: 1 }}>
-              <div className={styles.parameterName}>Status</div>
-            </div>
-            <div className={styles.parameter} style={{ flex: 1 }}>
-              <div className={styles.parameterName}>Close Date</div>
-            </div>
-            <div className={styles.parameter} style={{ flex: 1 }}>
-              <div className={styles.parameterName}>Owner</div>
-            </div>
-            <div className={styles.parameter} style={{ flex: 2 }}>
-              <div className={styles.parameterName}>Send to Team</div>
-            </div>
-          </div>
-          <div className={styles.dealsWrapperComonent2Details}>
-            {crmstatus ? (
-              crmData.map((val) => (
-                <div className={styles.dataWrapper}>
-                  <div
-                    className={styles.nameData}
-                    style={{ flex: 2, justifyContent: "space-evenly" }}
-                  >
-                    <img src={val.img} alt="" />
-                    <div className={styles.Dataname}>{val.title}</div>
-                  </div>
-                  <div className={styles.nameData} style={{ flex: 4 }}>
-                    <div className={styles.areaChart}>
-                      <Line
-                        data={graphinfo.activity.data}
-                        options={options}
-                        height="40px"
-                      />
+            <div className={styles.dealsWrapperComonent2Details}>
+              {crmstatus ? (
+                crmData.map((val) => (
+                  <div className={styles.dataWrapper} key={val.id}>
+                    <div
+                      className={styles.nameData}
+                      style={{ flex: 2, justifyContent: "space-evenly" }}
+                    >
+                      <img src={val.img} alt="" />
+                      <div className={styles.Dataname}>{val.title}</div>
                     </div>
-                  </div>
-                  <div className={styles.nameData} style={{ flex: 1 }}>
-                    <div className={styles.Dataname}>
-                    {/* {val.nextCall} */}
-                    Tomorrow
+                    <div className={styles.nameData} style={{ flex: 4 }}>
+                      <Button onClick={()=>activitypage(val.id)}>Check Activity</Button>
                     </div>
-                  </div>
-                  <div className={styles.nameData} style={{ flex: 1 }}>
-                    <div className={styles.Dataname}>{val.monetary_amount
-}</div>
-                  </div>
-                  <div className={styles.nameData} style={{ flex: 1 }}>
-                    <div className={styles.Dataname}>{val.pipeline_stage_id
-}</div>
-                  </div>
-                  <div className={styles.nameData} style={{ flex: 1 }}>
-                    <div className={styles.Dataname}>{val.close_date}</div>
-                  </div>
-                  <div className={styles.nameData} style={{ flex: 1 }}>
-                    <div className={styles.Dataname}>{val.owner_id}</div>
-                  </div>
-                  <div className={styles.nameData} style={{ flex: 2 }}>
-                    <div className={styles.buttonWrapper}>
-                      <div className={styles.sendButton}>
-                        <div className={styles.sendButtonName}>Send to</div>
-                        <img
-                          src="https://img.icons8.com/material-sharp/14/000000/sort-down.png"
-                          alt=""
-                          style={{ cursor: "pointer" }}
-                        />
+                    <div className={styles.nameData} style={{ flex: 1 }}>
+                      <div className={styles.Dataname}>
+                        {/* {val.nextCall} */}
+                        Tomorrow
+                      </div>
+                    </div>
+                    <div className={styles.nameData} style={{ flex: 1 }}>
+                      <div className={styles.Dataname}>
+                        {val.monetary_amount}
+                      </div>
+                    </div>
+                    <div className={styles.nameData} style={{ flex: 1 }}>
+                      <div className={styles.Dataname}>
+                        {val.pipeline_stage_id}
+                      </div>
+                    </div>
+                    <div className={styles.nameData} style={{ flex: 1 }}>
+                      <div className={styles.Dataname}>{val.close_date}</div>
+                    </div>
+                    <div className={styles.nameData} style={{ flex: 1 }}>
+                      <div className={styles.Dataname}>{val.owner_id}</div>
+                    </div>
+                    <div className={styles.nameData} style={{ flex: 2 }}>
+                      <div className={styles.buttonWrapper}>
+                        <div className={styles.sendButton}>
+                          <div className={styles.sendButtonName}>Send to</div>
+                          <img
+                            src="https://img.icons8.com/material-sharp/14/000000/sort-down.png"
+                            alt=""
+                            style={{ cursor: "pointer" }}
+                          />
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
-              ))
-            ) : (
-              <Paper
-                style={{ display: "flex", justifyContent: "center" }}
-                withBorder
-                shadow="md"
-                p={30}
-                mt={30}
-                radius="md"
-              >
-                <div
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "space-around",
-                    maxWidth: "50vw",
-                    columnGap: "7vw",
-                  }}
+                ))
+              ) : (
+                <Paper
+                  style={{ display: "flex", justifyContent: "center" }}
+                  withBorder
+                  shadow="md"
+                  p={30}
+                  mt={30}
+                  radius="md"
                 >
-                  <Text style={{ whiteSpace: "nowrap" }} align="center">
-                    Integrate your desired CRM with Salesine to access this page
-                  </Text>
-                  <Button
-                    fullWidth
-                    mt="sm"
-                    size="sm"
-                    color="indigo"
-                    style={{ width: "10vw" }}
-                    onClick={handleClick}
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "space-around",
+                      maxWidth: "50vw",
+                      columnGap: "7vw",
+                    }}
                   >
-                    Settings
-                  </Button>
-                </div>
-              </Paper>
-            )}
+                    <Text style={{ whiteSpace: "nowrap" }} align="center">
+                      Integrate your desired CRM with Salesine to access this
+                      page
+                    </Text>
+                    <Button
+                      fullWidth
+                      mt="sm"
+                      size="sm"
+                      color="indigo"
+                      style={{ width: "10vw" }}
+                      onClick={handleClick}
+                    >
+                      Settings
+                    </Button>
+                  </div>
+                </Paper>
+              )}
+            </div>
           </div>
         </div>
       </div>
-    </div>
-  </>
+    </>
   );
 };
 
