@@ -6,6 +6,9 @@ import moment from "moment";
 const Activity = () => {
   return (
     <div>
+      <Navbar
+        type="activity"
+        />
       <Company />
     </div>
   );

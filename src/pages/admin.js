@@ -3,7 +3,7 @@ import Navbar from '../components/Navbar'
 import styles from '../styles/Index.module.css'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
-import { Table, Checkbox, Button, MultiSelect, Group } from '@mantine/core';
+import { Table, Checkbox, Button, MultiSelect, Group, Modal, Input } from '@mantine/core';
 import { isWindowDefined } from 'swr/_internal'
 import AddMember from '../components/AddMember'
 import EditMember from '../components/EditMember'
@@ -19,6 +19,7 @@ const Admin = () => {
   const [orgName, setOrgName] = useState('');
   const [orgEmail, setOrgEmail] = useState('');
   const [orgRole, setOrgRole] = useState('');
+  const [addTrackerModal, setAddTrackerModal] = useState(false);
 
 
   const BACK_END_URL = process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:4000" ;
@@ -189,6 +190,56 @@ const Admin = () => {
     })
     }, [searchValue])
 
+    
+    useEffect(() => {
+      fetch(`${BACK_END_URL}/admin/getTracker`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ email: localStorage.getItem('email') })
+      })
+      .then(res => res.json())
+      .then(data => {
+        console.log(data)
+        if (data.status === false) {
+          console.log(data.message)
+          return;
+        }
+        setTrackers(data.tracker.trackers)
+      })
+    }, [])
+
+    const [trackers, setTrackers] = useState([]);
+    const [trackerName, setTrackerName] = useState('');
+    const [trackersLimit, setTrackersLimit] = useState(false);
+    const [trackersSent, setTrackersSent] = useState([]);
+    const addTrackerToList = () => {
+      //check length is 10
+      if(trackers.length === 10) {
+        setTrackersLimit(true)
+        return;
+      }
+      setTrackers([...trackers, trackerName])
+      console.log(trackers)
+      setTrackerName('')
+    }
+    const addTracker = () => {
+      fetch(`${BACK_END_URL}/admin/addtracker`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ email: localStorage.getItem('email'), trackerName: trackersSent })
+      })
+      .then(res => res.json())
+      .then(data => {
+        console.log(data)
+        setTrackersSent([])
+        setAddTrackerModal(false)
+        location.reload();
+      })
+    }
     return (
         <>
             <Navbar/>
@@ -227,13 +278,49 @@ const Admin = () => {
                   <AddMember 
                     adminEmail={emailId}
                   />
+                  <Button variant='outline' onClick={() => setAddTrackerModal(true)}>
+                    Add Trackers
+                  </Button>
                   <Table striped verticalSpacing="lg">
                     <thead>{ths}</thead>
                     <tbody>{rows}</tbody>
                   </Table>
                 </div>
-                
             </div>
+            {
+              addTrackerModal && (
+                <Modal opened={addTrackerModal} onClose={() => setAddTrackerModal(false)} title="Add Trackers" size="md">
+                  <Input placeholder='Enter Tracker Name' value={trackerName} onChange={e => setTrackerName(e.target.value)} style={{marginBottom:"20px"}} />
+                  {trackersLimit && <div style={{color:"red"}}>You can add only 10 trackers</div>}
+                  <Button onClick={() => addTrackerToList()} style={{marginRight:"20px"}}>Add</Button>
+                  {trackers.map((tracker) => (
+                      <div style={{display:"flex",flexDirection:"row",gap:"10px",margin:"10px 0px 10px 0px"}}>
+                        <Checkbox
+                          value={tracker}
+                          onChange={(event) => {
+                            const isChecked = event.currentTarget.checked;
+                            const checkboxValue = event.currentTarget.value;
+                            setTrackersSent((prevSelected) => {
+                              if (isChecked) {
+                                // Add the value to the selected array if it's checked
+                                return [...prevSelected, checkboxValue];
+                              } else {
+                                // Remove the value from the selected array if it's unchecked
+                                return prevSelected.filter((value) => value !== checkboxValue);
+                              }
+                            });
+                          }
+                        }
+                        />
+                        {tracker}
+                      </div>
+                    ))}
+                    <Button onClick={() => addTracker()}>
+                      Done
+                    </Button>
+                </Modal>
+              )
+            }
         </>
     )
 }
