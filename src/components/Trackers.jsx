@@ -1,53 +1,78 @@
-import React, { Component } from 'react';
-import { Doughnut } from 'react-chartjs-2';
+import React, { useEffect, useRef } from 'react';
 import ellipse from '../../public/assets/Ellipse.png';
 import styles from '../styles/Trackers.module.css';
+import {Pie} from 'react-chartjs-2';
+import { Chart, ArcElement } from 'chart.js'
 
-const data = {
-  labels: ['One', 'rest'],
-  borderWidth: 1,
-  datasets: [
-    {
-      label: '# %',
-      data: [12.5, 87.5],
-      backgroundColor: ['#3F51B5', '#C4C4C4'],
-      borderWidth: 1,
-    },
-  ],
-};
+const Trackers = ({ trackers }) => {
 
-class Trackers extends Component {
-  render() {
+  // const [data, setData] = React.useState({});
+
+  trackers = trackers.filter((tracker) => tracker !== null);
+  console.log(trackers);
+  //get keys from trackers array having objects and some many have different keys check for unique keys
+  const keys = trackers.map((tracker) => Object.keys(tracker));
+  //flatten the array
+  const uniqueKeys = [...new Set(keys.flat())];
+  console.log(uniqueKeys);
+
+  //find percentage of each key beginning in the trackers array
+  const percentage = uniqueKeys.map((key) => {
+    //filter the trackers array for each key
+    const filteredTrackers = trackers.filter((tracker) => Object.keys(tracker).includes(key));
+    //get the length of the filtered array
+    const length = filteredTrackers.length;
+    //get the percentage
+    const percent = (length / trackers.length) * 100;
+    //return the percentage
+    return percent;
+  });
+
+  Chart.register(ArcElement);
+  const data = []
+
+  //make a data array with the percentage
+  percentage.forEach((percent, index) => {
+    data[index] = {
+      labels: ['used','not used'],
+      datasets: [{
+        data: [percent,100-percent],
+        backgroundColor: [
+          '#3F51B5',
+          '#36A2EB',
+        ],
+        hoverBackgroundColor: [
+          '#3F51B5',
+          '#36A2EB',
+        ]
+      }]
+    }
+  });
+  console.log(data);
+
+
+  console.log(percentage);
     return (
       <div className={styles.trackersWrapper}>
         <div className={styles.trackersWrapperPart1}>
           <div className={styles.trackers1Header}>
             <div className={styles.trackers1HeaderHeading}>Trackers</div>
-            <div className={styles.trackers1HeaderSub}>Percentage of calls where each tracker was detected (based on 17 calls)</div>
+            <div className={styles.trackers1HeaderSub}>Percentage of calls where each tracker was detected (based on {trackers.length} calls)</div>
           </div>
           <div className={styles.trackers1Body}>
-            <div className={styles.trackers1BodyPart}>
-              <div className={styles.bodyPartName}>Objections- Demo</div>
-              <div className={styles.bodyPartPie}>
-                <Doughnut
-                  data={data}
-                  options={{
-                    maintainAspectRatio: false,
-                    cutout: '75%',
-                    plugins: {
-                      legend: {
-                        display: true,
-                        position: 'center',
-                      },
-                    },
-                  }}
-                  width='120px'
-                  height='120px'
-                />
-              </div>
-              <div className={styles.percent}>12.5%</div>
-            </div>
-            {/* Repeat the same pattern for the remaining body parts */}
+            {uniqueKeys.map((key, index) => {
+              return (<div className={styles.trackers1BodyPart}>
+                        <div className={styles.bodyPartName}>{key} {percentage[index]}%</div>
+                        <div className={styles.bodyPartPie}>
+                          <Pie
+                            data={data[index]}
+                            width={230}
+                            height={230}
+                            options={{ maintainAspectRatio: false }}
+                          />
+                        </div>
+                      </div>)
+              })}
           </div>
         </div>
         <div className={styles.trackersWrapperPart2}>
@@ -88,7 +113,6 @@ class Trackers extends Component {
         </div>
       </div>
     );
-  }
 }
 
 export default Trackers;

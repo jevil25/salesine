@@ -23,6 +23,7 @@ const Team = () => {
   const [team, setTeam] = useState([]);
   const [calls, setCalls] = useState([]);
   const [invalid, setInvalid] = useState(false);
+  const [trackers, setTrackers] = useState([]);
 
   useEffect(() => {
     fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/getTeamDetails`, {
@@ -41,6 +42,7 @@ const Team = () => {
         setLoading(false);
         setTeam(data.team);
         setCalls(data.calls);
+        setTrackers(data.calls.map((call) => call.file[0].trackerData));
       }
       if(data.status === false){
         setLoading(false);
@@ -127,7 +129,7 @@ const Team = () => {
                 >
                   Trackers
                 </div>
-                <div
+                {/* <div
                   className={styles.headNav}
                   style={{ color: navActive.teamSmart ? '#3F51B5' : '#333333' }}
                   onClick={() =>
@@ -177,7 +179,7 @@ const Team = () => {
                   }
                 >
                   Coaching Received
-                </div>
+                </div> */}
               </div>
             </div>
           </div>
@@ -207,10 +209,16 @@ const Team = () => {
             )}
             {navActive.teamTrackers && (
               <div className={styles.bodyTrackers}>
-                <Trackers />
+                {trackers.length === 0 ? (
+                  <div className={styles.noTrackers}>No Trackers Available</div>
+                ) : (
+                <Trackers 
+                  trackers={trackers}
+                />
+                )}
               </div>
             )}
-            {navActive.teamSmart && (
+            {/* {navActive.teamSmart && (
               <div className={styles.bodyTrackers}>
                 <div className={styles.navName}>Smart Trackers</div>
               </div>
@@ -225,7 +233,7 @@ const Team = () => {
                 <div className={styles.navName}>Team Coaching</div>
                 <Coaching />
               </div>
-            )}
+            )} */}
           </div>
         </div>
       ):
