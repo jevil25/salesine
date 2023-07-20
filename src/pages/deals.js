@@ -120,16 +120,16 @@ const Deals = () => {
       <div className={styles.dealsWrapper}>
         <div className={styles.dealsWrapperComponent1}>
           <div className={styles.dealsWrapperComponent1stats}>
-            <div className={styles.statsName}>Total Deals</div>
-            <div className={styles.statsCount}>{user.activeDeals + user.closedDeals}</div>
+            <div className={styles.statsName}>Total Deals</div>66
+            {/* <div className={styles.statsCount}>{user.activeDeals + user.closedDeals}</div> */}
           </div>
           <div className={styles.dealsWrapperComponent1stats}>
-            <div className={styles.statsName}>Closed Deals</div>
-            <div className={styles.statsCount}>{user.closedDeals}</div>
+            <div className={styles.statsName}>Closed Deals</div>20
+            {/* <div className={styles.statsCount}>{user.closedDeals}</div> */}
           </div>
           <div className={styles.dealsWrapperComponent1stats}>
-            <div className={styles.statsName}>Active Deals</div>
-            <div className={styles.statsCount}>{user.activeDeals}</div>
+            <div className={styles.statsName}>Active Deals</div>77
+            {/* <div className={styles.statsCount}>{user.activeDeals}</div> */}
           </div>
         </div>
         <div className={styles.dealsWrapperComponent2}>
