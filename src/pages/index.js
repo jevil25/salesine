@@ -69,6 +69,8 @@ const Home = () => {
                             console.log(err);
                         }
                     );
+            }else{
+                setLoading(false);
             }
         }
     }, [typeof window])
