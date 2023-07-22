@@ -29,6 +29,7 @@ export default function advance_register() {
   const [calendar,showCalendar] = useState(true);
   const [password,showPassword] = useState(true);
   const [voice,showVoice] = useState(true);
+  const [appdownload,showAppdownload] = useState(true)
 
   useEffect(() => {
     if(!router.isReady) return;
@@ -162,8 +163,6 @@ export default function advance_register() {
         </Title>
 
         <Paper withBorder shadow="md" p={30} mt={30} radius="md">
-          {/* {invalid && <Text color="red" align="center">Invalid credentials</Text>} */}
-          {/* {serverError && <Text color="red" align="center">Server error</Text>} */}
           <TextInput
             label="Old Password"
             name="email"
@@ -184,15 +183,7 @@ export default function advance_register() {
             mt="md"
           />
           <br />
-          {/* <Checkbox
-                label="Keep me logged in"
-                name="keep-logged-in"
-                // onChange={(e) => setRemember(e.target.checked)}
-              /> */}
           <Group position="apart" mt="lg">
-            {/* <Anchor component="button" size="sm">
-                  Forgot password?
-                </Anchor> */}
           </Group>
           <Button
             fullWidth
@@ -260,6 +251,18 @@ export default function advance_register() {
         </Container>
           </>
           }
+
+          {appdownload && <Container>
+            <Title
+          align="center"
+          sx={(theme) => ({
+            fontFamily: `Greycliff CF, ${theme.fontFamily}`,
+            fontWeight: 900,
+          })}
+          >
+          Download our Companion Desktop App
+        </Title>
+          </Container>}
           <Container id="voiceregistration" size={800} my={80} style={{"display":"flex","flexDirection":"column","justifyContent":"center","alignItems":"center"}}>
             <Text>Click on Skip to do this later in settings page</Text>
             <Button variant="gradient" onClick={e => router.push("/")} >Skip</Button>
