@@ -200,7 +200,7 @@ export default function AuthenticationTitle({ url, authUrl }) {
                Grant Access to Google Calendar
              </Title>
              <br />
-             <Image src="../../assets/googleCalendar.png" height="100px" width="100px" style={{marginLeft: '43%'}}/>
+             <img src="../../assets/googleCalendar.png" height="100px" width="100px" style={{marginLeft: '43%'}}/>
              <br /><br /> 
              <Button fullWidth mt="xl" size="md" onClick={pushHome} color="indigo">
                Proceed

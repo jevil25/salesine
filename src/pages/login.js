@@ -50,12 +50,13 @@ export default function AuthenticationTitle() {
           setServerError(true);
           return;
         }
-        if (data.message === "Invalid credentials") {
+        else if (data.message === "Invalid credentials") {
           setInvalid(true);
           return;
+        }else if (data.message === "Company is inactive") {
+          setInactive(true);
+          return;
         }
-        setInvalid(false);
-        setServerError(false);
         if (data.user.token) {
           localStorage.setItem("token", data.user.token);
           localStorage.setItem("email", data.user.email);

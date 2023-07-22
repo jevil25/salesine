@@ -119,6 +119,17 @@ const All = () => {
   const joinHandler = () => {
     window.location.href = url;
   };
+
+  const formatTime = (time) => {
+    //in the format 2021-06-24T12:00
+    let date = time.split("T")[0];
+    let time1 = time.split("T")[1];
+    let hour = time1.split(":")[0];
+    let min = time1.split(":")[1];
+    let res = hour + ":" + min;
+    //retunr both date and time
+    return res+" on "+date;
+  };
   
 
   return (
@@ -184,9 +195,9 @@ const All = () => {
                 </div>
                 <div className={styles.allInfo}>
                   <div className={styles.allHeading}>{recording.topic}</div>
-                  <div className={styles.allSubInfo}>{recording.startTime}</div>
+                  <div className={styles.allSubInfo}>{formatTime(recording.startTime)}</div>
                   <div className={styles.allSubInfo}>
-                    {recording.duration}
+                    {recording.duration} mins
                   </div>
                 </div>
                 {recording.file.length > 0 ?

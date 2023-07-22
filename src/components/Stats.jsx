@@ -30,7 +30,7 @@ const Stats = ({ stats,meetHostId }) => {
   }, [meetHostId])
 
   //TODO: filter stats for current user when model ready
-  const speaker_0 = stats.filter((stat) => stat.speaker === "speaker_1");
+  const speaker_0 = stats.filter((stat) => stat.speaker === meetHostId);
   console.log(speaker_0);
 
   function talkRatioCheck(){

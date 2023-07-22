@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
 import styles from '../styles/Interaction.module.css';
+import { useEffect } from 'react';
 
 const Interaction = ({ calls }) => {
+  console.log(calls);
+  const [speakerNamesArray, setSpeakerNamesArray] = useState([]);
   console.log(calls);
   const [interactionname, setInteractionName] = useState({
     talkRatio: true,
@@ -17,33 +20,106 @@ const Interaction = ({ calls }) => {
     </div>
   </div>)
 
+  // Function to calculate the average for the same speaker
+function calculateAverageForSameSpeaker(arrayOfArrays) {
+  //arrayOfArrays is an array of arrays like [[speaker1, value1], [speaker2, value2], [speaker1, value3], [speaker3, value4]
+  const speakerMap = new Map(); // To store speaker ID as the key and an array of values as the value
+
+  //get the unique speakers
+  let uniqueSpeakers = [...new Map(arrayOfArrays.map((array) => array.map((array) => array[0])))];
+  //get the speakers from pos 0
+  uniqueSpeakers = uniqueSpeakers.map((array) => array[0]);
+  
+  const averages = [];
+  //find the values for each speaker if multiple values are present for same speaker then take average create a array [speaker, average]
+  uniqueSpeakers.forEach((speaker) => {
+    //find the values for same speaker
+    const values = arrayOfArrays.map((array) => array[0][0]===speaker ? array[0][1] : 0);
+    // console.log(values);
+    const filteredValues = values.filter((value) => value !== 0);
+    // console.log(filteredValues);
+    const average = filteredValues.reduce((a,b) => a+b,0)/filteredValues.length;
+    //make a array of speaker and average
+    const speakerAverage = [speaker,average];
+    //add to map
+    averages.push(speakerAverage);
+  });
+  console.log(averages);
+  return averages;
+}
+
   //extract analysis from calls and analysis array not empty
   var analysis = calls.map((call) => {if (call.analysis.length > 0) return call.analysis});
   //remove undefined values from analysis
   analysis = analysis.filter((call) => call !== undefined);
-
-  //extract values and take average
-  var talkRatio = analysis.map((call) => call.map((analysis) => analysis.talkRatio.value));
-  //for each same index in different arrays of talkRatio, take average
-  talkRatio = talkRatio.reduce((acc, val) => acc.map((v, i) => (v + val[i]) / 2));
+  //for each meet of analysis, only keep speakers with speaker length>5
+  analysis = analysis.map((call) => call.filter((analysis) => analysis.speaker.length > 5));
+  console.log(analysis);
+  //extract values and take average where speaker are same 
+  var talkRatio = analysis.map((call) => call.map((analysis) => [analysis.speaker,analysis.talkRatio.value]));
   console.log(talkRatio);
-  const teamTalkRatio = talkRatio.reduce((acc, val) => acc + val)/talkRatio.length;
+  const speakerAverages = calculateAverageForSameSpeaker(talkRatio);
+  console.log(speakerAverages);
+  //get the team talk ratio from [speaker, average] array
+  const teamTalkRatio = speakerAverages.reduce((sum, [, value]) => sum + value/speakerAverages.length, 0);
+  console.log(teamTalkRatio);
 
   //do same for patience, logestMonologue, longestCustomerStory
-  var patience = analysis.map((call) => call.map((analysis) => analysis.patience.value));
-  patience = patience.reduce((acc, val) => acc.map((v, i) => (v + val[i]) / 2));
-  const teamPatience = patience.reduce((acc, val) => acc + val)/patience.length;
-  //console.log(patience);
+  var patience = analysis.map((call) => call.map((analysis) => [analysis.speaker,analysis.patience.value]));
+  // console.log(patience)
+  const patienceAverages = calculateAverageForSameSpeaker(patience);
+  console.log(patienceAverages);
+  const teamPatience = patienceAverages.reduce((sum, [, value]) => sum + value/patienceAverages.length, 0);
+  console.log(teamPatience);
 
-  var longestMonologue = analysis.map((call) => call.map((analysis) => analysis.longestMonologue.value));
-  longestMonologue = longestMonologue.reduce((acc, val) => acc.map((v, i) => (v + val[i]) / 2));
-  const teamMonologue = longestMonologue.reduce((acc, val) => acc + val)/longestMonologue.length;
-  // console.log(longestMonologue);
+  var longestMonologue = analysis.map((call) => call.map((analysis) => [analysis.speaker,analysis.longestMonologue.value]));
+  // console.log(longestMonologue)
+  const longestMonologueAverages = calculateAverageForSameSpeaker(longestMonologue);
+  console.log(longestMonologueAverages);
+  const teamMonologue = longestMonologueAverages.reduce((sum, [, value]) => sum + value/longestMonologueAverages.length, 0);
+  console.log(teamMonologue);
 
-  var longestCustomerStory = analysis.map((call) => call.map((analysis) => analysis.longestCustomerStory.value));
-  longestCustomerStory = longestCustomerStory.reduce((acc, val) => acc.map((v, i) => (v + val[i]) / 2));
-  const teamStory = longestCustomerStory.reduce((acc, val) => acc + val)/longestCustomerStory.length;
-  // console.log(longestCustomerStory);
+  var longestCustomerStory = analysis.map((call) => call.map((analysis) => [analysis.speaker,analysis.longestCustomerStory.value]));
+  const longestCustomerStoryAverages = calculateAverageForSameSpeaker(longestCustomerStory);
+  console.log(longestCustomerStoryAverages);
+  const teamStory = longestCustomerStoryAverages.reduce((sum, [, value]) => sum + value/longestCustomerStoryAverages.length, 0);
+  console.log(teamStory);
+
+  async function getUser(id) {
+    try {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/getUserDetailsById`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          id: id
+        })
+      });
+      const data = await res.json();
+  
+      if (data.status === true) {
+        return data.user.name;
+      } else {
+        return null; // Return null if the status is false or any other error condition
+      }
+    } catch (err) {
+      console.log(err);
+      return null; // Return null in case of any error
+    }
+  }
+  useEffect(() => {
+    async function getSpeakerNames() {
+    // Assuming speakerAverages is an array of speaker IDs
+    await Promise.all(speakerAverages.map(async (speaker) => {
+      const name = await getUser(speaker[0]);
+      if (name !== null) {
+        setSpeakerNamesArray(speakerNamesArray => [...speakerNamesArray, name]);
+      }
+    })); 
+  }
+  getSpeakerNames();
+  }, [longestMonologueAverages]);
 
   return (
     <div className={styles.interactionWrapper}>
@@ -61,7 +137,7 @@ const Interaction = ({ calls }) => {
           }
         >
           <div style={{ width: '100%' }}>Talk Ratio</div>
-          <div style={{ fontWeight: '400', width: '100%' }}>{teamTalkRatio.toPrecision(2)}%</div>
+          <div style={{ fontWeight: '400', width: '100%' }}>{teamTalkRatio.toFixed(2)}%</div>
         </div>
         <div
           className={interactionname.longMono ? styles.changei : styles.interactionWrapperHeadName}
@@ -76,7 +152,7 @@ const Interaction = ({ calls }) => {
           }
         >
           <div>LONGEST MONOLOGUE</div>
-          <div style={{ fontWeight: '400' }}>{teamMonologue.toPrecision(2)} secs</div>
+          <div style={{ fontWeight: '400' }}>{teamMonologue.toFixed(2)} secs</div>
         </div>
         <div
           className={interactionname.longStory ? styles.changei : styles.interactionWrapperHeadName}
@@ -91,7 +167,7 @@ const Interaction = ({ calls }) => {
           }
         >
           <div>LONGEST CUSTOMER STORY</div>
-          <div style={{ fontWeight: '400' }}>{teamStory.toPrecision(2)} secs</div>
+          <div style={{ fontWeight: '400' }}>{teamStory.toFixed(2)} secs</div>
         </div>
         <div
           className={interactionname.interactivity ? styles.changei : styles.interactionWrapperHeadName}
@@ -121,7 +197,7 @@ const Interaction = ({ calls }) => {
           }
         >
           <div>PATIENCE</div>
-          <div style={{ fontWeight: '400' }}>{teamPatience.toPrecision(2)}sec</div>
+          <div style={{ fontWeight: '400' }}>{teamPatience.toFixed(2)}sec</div>
         </div>
       </div>
       <div className={styles.interactionWrapperData}>
@@ -132,12 +208,12 @@ const Interaction = ({ calls }) => {
               <div className={styles.talkRatioInfoSub}>Percentages of call in which team member spoke</div>
             </div>
             <div className={styles.barGraph}>
-                {analysis[0].map((analysis,index) => (<>
+                {speakerAverages.map((analysis,index) => (<>
                   <div className={styles.graph}>
-                    <div className={styles.graphName}>{analysis.speaker}</div>
+                    <div className={styles.graphName}>{speakerNamesArray[index]}</div>
                   </div>
                   <div className={styles.graph}>
-                    <div className={styles.graphData} style={{ width: `${(talkRatio[index]/talkRatio.reduce((a,b) => a+b,0))*100}%` }}></div><div>{talkRatio[index]} %</div>
+                    <div className={styles.graphData} style={{ width: `${(analysis[1]/speakerAverages.reduce((sum, [, value]) => sum + value, 0))*100}%` }}></div><div>{analysis[1]} %</div>
                   </div>
                 </>))}
             </div>
@@ -150,14 +226,15 @@ const Interaction = ({ calls }) => {
               <div className={styles.talkRatioInfoSub}>Percentages of call in which team member spoke</div>
             </div>
             <div className={styles.barGraph}>
-              {analysis[0].map((analysis,index) => (<>
-                    <div className={styles.graph}>
-                      <div className={styles.graphName}>{analysis.speaker}</div>
-                    </div>
-                    <div className={styles.graph}>
-                        <div className={styles.graphData} style={{ width: `${(longestMonologue[index]/longestMonologue.reduce((a,b) => a+b,0))*100}%` }}></div><div>{longestMonologue[index].toPrecision(2)} secs</div>
-                    </div>
-                  </>))}
+            {longestMonologueAverages.map((analysis,index) => {
+              return <>      
+                  <div className={styles.graph}>
+                    <div className={styles.graphName}>{speakerNamesArray[index]}</div>
+                  </div>
+                  <div className={styles.graph}>
+                    <div className={styles.graphData} style={{ width: `${(analysis[1]/longestMonologueAverages.reduce((sum, [, value]) => sum + value, 0))*100}%` }}></div><div>{analysis[1]} %</div>
+                  </div>
+                </>})}
             </div>
           </div>
         )}
@@ -168,14 +245,14 @@ const Interaction = ({ calls }) => {
               <div className={styles.talkRatioInfoSub}>Percentages of call in which team member spoke</div>
             </div>
             <div className={styles.barGraph}>
-             {analysis[0].map((analysis,index) => (<>
-                    <div className={styles.graph}>
-                      <div className={styles.graphName}>{analysis.speaker}</div>
-                    </div>
-                    <div className={styles.graph}>
-                      <div className={styles.graphData} style={{ width: `${(longestCustomerStory[index]/longestCustomerStory.reduce((a,b) => a+b,0))*100}%` }}></div><div>{longestCustomerStory[index].toPrecision(2)} secs</div>
-                    </div>
-                  </>))}
+            {longestCustomerStoryAverages.map((analysis,index) => (<>
+                  <div className={styles.graph}>
+                    <div className={styles.graphName}>{speakerNamesArray[index]}</div>
+                  </div>
+                  <div className={styles.graph}>
+                    <div className={styles.graphData} style={{ width: `${(analysis[1]/longestCustomerStoryAverages.reduce((sum, [, value]) => sum + value, 0))*100}%` }}></div><div>{analysis[1]} %</div>
+                  </div>
+                </>))}
             </div>
           </div>
         )}
@@ -201,14 +278,14 @@ const Interaction = ({ calls }) => {
               <div className={styles.talkRatioInfoSub}>Percentages of call in which team member spoke</div>
             </div>
             <div className={styles.barGraph}>
-                {analysis[0].map((analysis,index) => (<>
-                    <div className={styles.graph}>
-                      <div className={styles.graphName}>{analysis.speaker}</div>
-                    </div>
-                    <div className={styles.graph}>
-                      <div className={styles.graphData} style={{ width: `${(patience[index]/patience.reduce((a,b) => a+b,0))*100}%` }}></div><div>{patience[index].toPrecision(2)} secs</div>
-                    </div>
-                  </>))}
+            {patienceAverages.map((analysis,index) => (<>
+                  <div className={styles.graph}>
+                    <div className={styles.graphName}>{speakerNamesArray[index]}</div>
+                  </div>
+                  <div className={styles.graph}>
+                    <div className={styles.graphData} style={{ width: `${(analysis[1]/patienceAverages.reduce((sum, [, value]) => sum + value, 0))*100}%` }}></div><div>{analysis[1]} %</div>
+                  </div>
+                </>))}
             </div>
           </div>
         )}
