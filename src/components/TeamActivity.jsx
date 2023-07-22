@@ -11,24 +11,65 @@ const TeamsActivity = ({ team,calls }) => {
     totalDuration: false,
   });
 
-  useEffect(() => {
-    if(!team.cdpercentage){
-      for(let i=0;i<team.length;i++){
-        //generate random percentage from 20 to 100
-        team[i].cdpercentage = Math.floor(Math.random() * (100 - 20 + 1) + 20);
-        console.log(team[i].cdpercentage)
-        //generate random percentage from 0 to calls.length
-        team[i].wvpercentage = Math.floor(Math.random() * (calls.length - 0 + 1) + 0);
-        //generate random percentage from 20 to 100
-        team[i].wdpercentage = Math.floor(Math.random() * (100 - 20 + 1) + 20);
-        //generate random percentage from 0 to calls.length
-        team[i].tvpercentage = Math.floor(Math.random() * (calls.length - 0 + 1) + 0);
-        //generate random percentage from 20 to 100
-        team[i].tdpercentage = Math.floor(Math.random() * (100 - 20 + 1) + 20);
-      }
-      setFlag(true)
+  //get duration and startTime from calls array
+  const callDetails = calls.map((call) => ({
+    duration: call.duration,
+    startTime: call.startTime,
+    meetHostId: call.meetHostId,
+  }));
+
+  function abs(num) {
+    return Math.abs(num);
+  }
+
+  //for same meetHostId, add duration and take average
+  const callDetails1 = callDetails.reduce((acc, curr) => {
+    if (acc[curr.meetHostId]) {
+      acc[curr.meetHostId].duration += abs(curr.duration);
+      acc[curr.meetHostId].count += 1;
+    } else {
+      acc[curr.meetHostId] = {
+        duration: curr.duration,
+        startTime: curr.startTime,
+        count: 1,
+      };
     }
-  }, [flag,team])
+    return acc;
+  }, {});
+  //take average
+  for (let key in callDetails1) {
+    callDetails1[key].duration = callDetails1[key].duration / callDetails1[key].count;
+  }
+  //convert object to array
+  const callDetails2 = Object.entries(callDetails1).map(([key, value]) => ({
+    name: key,
+    duration: value.duration,
+    startTime: value.startTime,
+  }));
+  console.log(callDetails2);
+  function parseDateManually(dateString) {
+    // Split the date and time parts
+    const [datePart, timePart] = dateString.split('T');
+  
+    // Split the date part into day, month, and year components
+    const [day, month, year] = datePart.split('-');
+  
+    // Split the time part into hours, minutes, and seconds components
+    const [hours, minutes, seconds] = timePart.split(':');
+  
+    // Create a Date object with the components
+    const dateObject = new Date(year, month - 1, day, hours, minutes, seconds);
+    return dateObject;
+  }
+  //filter calls based on week
+  const week = callDetails2.filter((call) => {
+    const date = parseDateManually(call.startTime);
+    const today = new Date();
+    const oneWeekAgo = new Date(today.getFullYear(), today.getMonth(), today.getDate() - 7);
+    console.log(date>oneWeekAgo);
+    return date > oneWeekAgo;
+  });
+  console.log(week);
 
   return (
     <div className={styles.activityWrapper}>
@@ -114,12 +155,12 @@ const TeamsActivity = ({ team,calls }) => {
             <div className={styles.callDurationGraph}>
               <div className={styles.graphLabel}>Team Members</div>
               <div className={styles.barGraph}>
-                {team.map((member) => (<>
+                {callDetails2.map((member) => (<>
                   <div className={styles.graph}>
                     <div className={styles.graphName}>{member.name}</div>
                   </div>
                   <div className={styles.graph}>
-                    <div className={`${styles.graphData}`} style={{"width":`${3*member.cdpercentage}px`}}></div>{member.cdpercentage}%
+                    <div className={`${styles.graphData}`} style={{"width":`${3*member.cdpercentage}px`}}></div>{member.duration.toFixed(2)} mins
                   </div>
                   </>))}
               </div>

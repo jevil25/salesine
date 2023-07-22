@@ -215,8 +215,6 @@ const Team = () => {
                 <TeamsActivity
                   team={team}
                   calls={calls}
-                  flag={flag}
-                  setFlag={setFlag}
                 />}
               </div>
             )}
