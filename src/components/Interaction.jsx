@@ -44,7 +44,35 @@ function calculateAverageForSameSpeaker(arrayOfArrays) {
     //add to map
     averages.push(speakerAverage);
   });
-  console.log(averages);
+  // console.log(averages);
+  return averages;
+}
+
+function calculateAverageForSameSpeakerInteractivity(arrayOfArrays) {
+  //arrayOfArrays is an array of arrays like [[speaker1, value1], [speaker2, value2], [speaker1, value3], [speaker3, value4]
+  const speakerMap = new Map(); // To store speaker ID as the key and an array of values as the value
+
+  //get the unique speakers
+  let uniqueSpeakers = [...new Map(arrayOfArrays.map((array) => array.map((array) => array[0])))];
+  //get the speakers from pos 0
+  uniqueSpeakers = uniqueSpeakers.map((array) => array[0]);
+  
+  const averages = [];
+  //find the values for each speaker if multiple values are present for same speaker then take average create a array [speaker, average]
+  uniqueSpeakers.forEach((speaker) => {
+    //find the values for same speaker
+    const values = arrayOfArrays.map((array) => array[0][0]===speaker ? array[0][1] : 0);
+    // console.log(values);
+    const filteredValues = values.filter((value) => value !== 0);
+    // console.log(filteredValues);
+    //push first value
+    const average = filteredValues[filteredValues.length-1];
+    //convert average to time
+    const speakerAverage = [speaker,average];
+    //add to map
+    averages.push(speakerAverage);
+  });
+  // console.log(averages);
   return averages;
 }
 
@@ -54,36 +82,41 @@ function calculateAverageForSameSpeaker(arrayOfArrays) {
   analysis = analysis.filter((call) => call !== undefined);
   //for each meet of analysis, only keep speakers with speaker length>5
   analysis = analysis.map((call) => call.filter((analysis) => analysis.speaker.length > 5));
-  console.log(analysis);
+  // console.log(analysis);
   //extract values and take average where speaker are same 
   var talkRatio = analysis.map((call) => call.map((analysis) => [analysis.speaker,analysis.talkRatio.value]));
-  console.log(talkRatio);
+  // console.log(talkRatio);
   const speakerAverages = calculateAverageForSameSpeaker(talkRatio);
-  console.log(speakerAverages);
+  // console.log(speakerAverages);
   //get the team talk ratio from [speaker, average] array
   const teamTalkRatio = speakerAverages.reduce((sum, [, value]) => sum + value/speakerAverages.length, 0);
-  console.log(teamTalkRatio);
+  // console.log(teamTalkRatio);
 
   //do same for patience, logestMonologue, longestCustomerStory
   var patience = analysis.map((call) => call.map((analysis) => [analysis.speaker,analysis.patience.value]));
   // console.log(patience)
   const patienceAverages = calculateAverageForSameSpeaker(patience);
-  console.log(patienceAverages);
+  // console.log(patienceAverages);
   const teamPatience = patienceAverages.reduce((sum, [, value]) => sum + value/patienceAverages.length, 0);
-  console.log(teamPatience);
+  // console.log(teamPatience);
 
   var longestMonologue = analysis.map((call) => call.map((analysis) => [analysis.speaker,analysis.longestMonologue.value]));
   // console.log(longestMonologue)
   const longestMonologueAverages = calculateAverageForSameSpeaker(longestMonologue);
-  console.log(longestMonologueAverages);
+  // console.log(longestMonologueAverages);
   const teamMonologue = longestMonologueAverages.reduce((sum, [, value]) => sum + value/longestMonologueAverages.length, 0);
-  console.log(teamMonologue);
+  // console.log(teamMonologue);
 
   var longestCustomerStory = analysis.map((call) => call.map((analysis) => [analysis.speaker,analysis.longestCustomerStory.value]));
   const longestCustomerStoryAverages = calculateAverageForSameSpeaker(longestCustomerStory);
-  console.log(longestCustomerStoryAverages);
+  // console.log(longestCustomerStoryAverages);
   const teamStory = longestCustomerStoryAverages.reduce((sum, [, value]) => sum + value/longestCustomerStoryAverages.length, 0);
-  console.log(teamStory);
+  // console.log(teamStory);
+  var interactivity = analysis.map((call) => call.map((analysis) => [analysis.speaker,analysis.Interactivity.value]));
+  const interactivityAverages = calculateAverageForSameSpeakerInteractivity(interactivity);
+  // console.log(interactivityAverages);
+
+
 
   async function getUser(id) {
     try {
@@ -263,11 +296,14 @@ function calculateAverageForSameSpeaker(arrayOfArrays) {
               <div className={styles.talkRatioInfoSub}>Percentages of call in which team member spoke</div>
             </div>
             <div className={styles.barGraph}>
-              <div className={styles.graph}>
-                <div className={styles.graphName}>Name</div>
-                <div className={styles.graphData} style={{ width: '50%' }}></div>
-              </div>
-              {/* Rest of the graph elements */}
+            {interactivityAverages.map((analysis,index) => (<>
+                  <div className={styles.graph}>
+                    <div className={styles.graphName}>{speakerNamesArray[index]}</div>
+                  </div>
+                  <div className={styles.graph}>
+                    <div className={styles.graphData} style={{ width: `${parseInt(100*((parseInt(analysis[1].split(":")[0]))/interactivityAverages.reduce((sum, [, value]) => sum + parseInt(value.split(":")[0]), 0)))}%` }}></div><div>{analysis[1]}</div>
+                  </div>
+                </>))}
             </div>
           </div>
         )}
