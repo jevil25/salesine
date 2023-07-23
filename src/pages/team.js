@@ -38,13 +38,13 @@ const Team = () => {
       })
     }).then((res) => res.json())  
     .then((data) => {
-      console.log(data);
+      console.log(data.calls[4].file[0].trackerData);
       if(data.status === true){
         setInvalid(false);
         setLoading(false);
         setTeam(data.team);
         setCalls(data.calls);
-        setTrackers(data.calls.map((call) => call.file[0].trackerData));
+        setTrackers(data.calls.map((call) => call.file[0]?.trackerData !== undefined ? call.file[0].trackerData : null));
         setFlag(false);
       }
       if(data.status === false){

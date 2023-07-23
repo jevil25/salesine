@@ -60,7 +60,7 @@ const Trackers = ({ trackers,user }) => {
           <div className={styles.trackers1Body}>
             {uniqueKeys.map((key, index) => {
               return (<div className={styles.trackers1BodyPart}>
-                        <div className={styles.bodyPartName}>{key} {percentage[index]}%</div>
+                        <div className={styles.bodyPartName}>{key} {percentage[index].toFixed(2)}%</div>
                         <div className={styles.bodyPartPie}>
                           <Pie
                             data={data[index]}

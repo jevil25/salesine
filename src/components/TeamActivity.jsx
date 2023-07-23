@@ -3,6 +3,7 @@ import styles from '../styles/TeamActivity.module.css';
 
 const TeamsActivity = ({ team,calls }) => {
   const [flag,setFlag] = useState(false);
+  const [nameId,setNameId] = useState({});
   const [activityName, setActivityName] = useState({
     callDuration: true,
     weeklyVolume: false,
@@ -21,32 +22,68 @@ const TeamsActivity = ({ team,calls }) => {
   function abs(num) {
     return Math.abs(num);
   }
-
+  function getCall(callDetails){
   //for same meetHostId, add duration and take average
   const callDetails1 = callDetails.reduce((acc, curr) => {
-    if (acc[curr.meetHostId]) {
-      acc[curr.meetHostId].duration += abs(curr.duration);
-      acc[curr.meetHostId].count += 1;
-    } else {
-      acc[curr.meetHostId] = {
-        duration: curr.duration,
-        startTime: curr.startTime,
-        count: 1,
-      };
+      if (acc[curr.meetHostId]) {
+        acc[curr.meetHostId].duration += abs(curr.duration);
+        acc[curr.meetHostId].count += 1;
+      } else {
+        acc[curr.meetHostId] = {
+          duration: curr.duration,
+          startTime: curr.startTime,
+          count: 1,
+        };
+      }
+      return acc;
+    }, {});
+    //make array of count and id
+    const count = Object.entries(callDetails1).map(([key, value]) => ({
+      count: value.count,
+      id: key,
+    }));
+    //take average
+    for (let key in callDetails1) {
+      callDetails1[key].duration = callDetails1[key].duration / callDetails1[key].count;
     }
-    return acc;
-  }, {});
-  //take average
-  for (let key in callDetails1) {
-    callDetails1[key].duration = callDetails1[key].duration / callDetails1[key].count;
+    //convert object to array
+    const callDetails2 = Object.entries(callDetails1).map(([key, value]) => ({
+      name: key,
+      duration: value.duration,
+      startTime: value.startTime,
+    }));
+    console.log(callDetails2);
+    return [callDetails2,count];
   }
-  //convert object to array
-  const callDetails2 = Object.entries(callDetails1).map(([key, value]) => ({
-    name: key,
-    duration: value.duration,
-    startTime: value.startTime,
-  }));
-  console.log(callDetails2);
+  const [callDetails2,callDetailsCount] = getCall(callDetails);
+  //get user name of name from callDetails2
+  useEffect(() => {
+    if(!flag)
+      callDetails2.map((member) => {
+        fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/getUserDetailsById`,{
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            id: member.name
+          })
+        }).then(res => res.json())
+        .then(data => {
+          if(data.status===true){
+            setNameId((prevState) => ({
+              ...prevState,
+              [member.name]: data.user.name
+            }))
+            setFlag(true);
+          }
+        }
+        ).catch(err => {
+          console.log(err)
+        })
+    })
+  }, [callDetails2])
+  console.log(nameId);
   function parseDateManually(dateString) {
     // Split the date and time parts
     const [datePart, timePart] = dateString.split('T');
@@ -59,17 +96,40 @@ const TeamsActivity = ({ team,calls }) => {
   
     // Create a Date object with the components
     const dateObject = new Date(year, month - 1, day, hours, minutes, seconds);
+    console.log(dateObject);
     return dateObject;
   }
   //filter calls based on week
-  const week = callDetails2.filter((call) => {
+  const week = calls.filter((call) => {
     const date = parseDateManually(call.startTime);
     const today = new Date();
     const oneWeekAgo = new Date(today.getFullYear(), today.getMonth(), today.getDate() - 7);
     console.log(date>oneWeekAgo);
     return date > oneWeekAgo;
   });
-  console.log(week);
+  // console.log(week);
+  const [weekCalls,weekCallsCount] = getCall(week);
+  console.log(weekCalls);
+
+  // Function to calculate total duration from the array of call details
+function getTotalDuration(callDetails) {
+  let totalDuration = 0;
+
+  for (const call of callDetails) {
+    // Assuming duration is in seconds
+    totalDuration += parseInt(call.duration); 
+  }
+  return totalDuration;
+}
+
+function getTotalCount(callDetails) {
+  let totalCount = 0;
+
+  for (const call of callDetails) {
+    totalCount += parseInt(call.count);
+  }
+  return totalCount;
+}
 
   return (
     <div className={styles.activityWrapper}>
@@ -157,10 +217,10 @@ const TeamsActivity = ({ team,calls }) => {
               <div className={styles.barGraph}>
                 {callDetails2.map((member) => (<>
                   <div className={styles.graph}>
-                    <div className={styles.graphName}>{member.name}</div>
+                    <div className={styles.graphName}>{nameId[member.name]}</div>
                   </div>
                   <div className={styles.graph}>
-                    <div className={`${styles.graphData}`} style={{"width":`${3*member.cdpercentage}px`}}></div>{member.duration.toFixed(2)} mins
+                    <div className={`${styles.graphData}`} style={{"width":`${400*member.duration/getTotalDuration(callDetails2)}px`}}></div>{member.duration.toFixed(2)} mins
                   </div>
                   </>))}
               </div>
@@ -176,12 +236,12 @@ const TeamsActivity = ({ team,calls }) => {
             <div className={styles.callDurationGraph}>
               <div className={styles.graphLabel}>Team Members</div>
               <div className={styles.barGraph}>
-              {team.map((member) => (<>
+              {weekCallsCount.map((member) => (<>
                   <div className={styles.graph}>
-                    <div className={styles.graphName}>{member.name}</div>
+                    <div className={styles.graphName}>{nameId[member.id]}</div>
                   </div>
                   <div className={styles.graph}>
-                  <div className={`${styles.graphData}`} style={{"width":`${100*member.wvpercentage/(calls.length)}px`}}></div>{member.wvpercentage}
+                  <div className={`${styles.graphData}`} style={{"width":`${400*member.count/getTotalCount(weekCallsCount)}px`}}></div>{member.count}
                   </div>
                   </>))}
               </div>
@@ -197,12 +257,12 @@ const TeamsActivity = ({ team,calls }) => {
             <div className={styles.callDurationGraph}>
               <div className={styles.graphLabel}>Team Members</div>
               <div className={styles.barGraph}>
-              {team.map((member) => (<>
+              {weekCalls.map((member) => (<>
                   <div className={styles.graph}>
-                    <div className={styles.graphName}>{member.name}</div>
+                    <div className={styles.graphName}>{nameId[member.name]}</div>
                   </div>
                   <div className={styles.graph}>
-                  <div className={`${styles.graphData}`} style={{"width":`${3*member.wdpercentage}px`}}></div>{member.wdpercentage}%
+                    <div className={`${styles.graphData}`} style={{"width":`${400*member.duration/getTotalDuration(weekCalls)}px`}}></div>{member.duration.toFixed(2)} mins
                   </div>
                   </>))}
               </div>
@@ -218,12 +278,12 @@ const TeamsActivity = ({ team,calls }) => {
             <div className={styles.callDurationGraph}>
               <div className={styles.graphLabel}>Team Members</div>
               <div className={styles.barGraph}>
-              {team.map((member) => (<>
+              {callDetailsCount.map((member) => (<>
                   <div className={styles.graph}>
-                    <div className={styles.graphName}>{member.name}</div>
+                    <div className={styles.graphName}>{nameId[member.id]}</div>
                   </div>
                   <div className={styles.graph}>
-                  <div className={`${styles.graphData}`} style={{"width":`${100*(member.tvpercentage)/(calls.length)}px`}}></div>{member.tvpercentage}
+                  <div className={`${styles.graphData}`} style={{"width":`${400*member.count/getTotalCount(callDetailsCount)}px`}}></div>{member.count}
                   </div>
                   </>))}
               </div>
@@ -239,12 +299,12 @@ const TeamsActivity = ({ team,calls }) => {
             <div className={styles.callDurationGraph}>
               <div className={styles.graphLabel}>Team Members</div>
               <div className={styles.barGraph}>
-              {team.map((member) => (<>
+              {callDetails2.map((member) => (<>
                   <div className={styles.graph}>
-                    <div className={styles.graphName}>{member.name}</div>
+                    <div className={styles.graphName}>{nameId[member.name]}</div>
                   </div>
                   <div className={styles.graph}>
-                  <div className={`${styles.graphData}`} style={{"width":`${3*member.tdpercentage}px`}}></div>{member.tdpercentage}%
+                    <div className={`${styles.graphData}`} style={{"width":`${(parseInt(member.duration)/getTotalDuration(callDetails2))*400}px`}}></div>{member.duration.toFixed(2)} mins
                   </div>
                   </>))}
               </div>

@@ -31,7 +31,6 @@ const Stats = ({ stats,meetHostId }) => {
 
   //TODO: filter stats for current user when model ready
   const speaker_0 = stats.filter((stat) => stat.speaker === meetHostId);
-  console.log(speaker_0);
 
   function talkRatioCheck(){
     const recommended = speaker_0[0].talkRatio.recommend;
@@ -151,7 +150,7 @@ const Stats = ({ stats,meetHostId }) => {
           <Image src={tips} alt="" />
           <p>1 tip for employee.</p>
         </div>
-        {stats.length > 0 ? (<>
+        {speaker_0.length > 0 ? (<>
         <div className={styles.statsContainer}>
           <div className={styles.containerHeading}>Talk Ratio</div>
           <div className={styles.containerHeading}>{speaker_0[0].talkRatio.value}%</div>
