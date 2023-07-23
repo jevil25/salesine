@@ -51,6 +51,7 @@ const Team = () => {
         setLoading(false);
         setInvalid(true);
       }
+      setLoading(false)
     })
   },[loading])
 
@@ -77,7 +78,7 @@ const Team = () => {
 
   return (
     <div className={styles.teamApp}>
-      <LoadingOverlay visible={loading} />
+      <LoadingOverlay visible={loading}/>
       <Navbar type="teams" />
       {!invalid ? (
         <div className={styles.teamWrapper}>
