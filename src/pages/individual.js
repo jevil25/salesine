@@ -228,7 +228,7 @@ const Team = () => {
                 <div className={styles.navName}>Interaction</div>
                 <IndividualInteraction
                     calls={calls}
-                    name={user.name}
+                    user={inuser}
                 />
               </div>
             )}
