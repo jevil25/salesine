@@ -3,7 +3,7 @@ import msg from '../../public/assets/msg.png';
 import styles from '../styles/Coaching.module.css';
 import Image from 'next/image';
 import { Button, Input, Loader, Modal } from '@mantine/core';
-import { set } from 'mongoose';
+import { useRouter } from 'next/router';
 
 export const feedback = [
   { starting: 'July', ending: 'August', num: 2 },
@@ -15,6 +15,7 @@ export const feedback = [
 ];
 
 const Coaching = () => {
+  const router = useRouter();
   const [users, setUsers] = React.useState([]);
   const [meetHost, setMeetHost] = React.useState(false);
   const [feedback, setFeedback] = React.useState(false);
@@ -215,7 +216,10 @@ const Coaching = () => {
             <div className={styles.DivFooter}>
               <div className={styles.coachingFooter}>Open Request</div>
               <div className={styles.coachingLine}></div>
-              <div className={styles.coachingFooter} onClick={e => setCalls()}>View Calls</div>
+              <div className={styles.coachingFooter} onClick={e => {
+                localStorage.setItem("individual", user.email);
+                router.push("/individual");
+              }}>View Calls</div>
               <div className={styles.coachingLine}></div>
               <div className={styles.coachingFooter} onClick={e => getLastFeedback(user)}>Last Feedback</div>
             </div>

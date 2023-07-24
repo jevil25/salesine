@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import styles from '../styles/TeamActivity.module.css';
 
-const TeamsActivity = ({ team,calls }) => {
+const TeamsActivity = ({ calls }) => {
   const [flag,setFlag] = useState(false);
   const [nameId,setNameId] = useState({});
   const [activityName, setActivityName] = useState({
