@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Navbar from '../components/Navbar';
-import Coaching from '../components/Coaching';
+import IndividualCoaching from '../components/IndividualCoaching';
 import IndividualTrackers from '../components/IndividualTrackers';
 import TeamsActivity from '../components/TeamActivity';
 import styles from '../styles/teams.module.css';
@@ -89,7 +89,7 @@ const Team = () => {
         <div className={styles.teamWrapper}>
           <div className={styles.teamWrapperHead}>
             <div className={styles.teamWrapperHead1}>
-              <div className={styles.teamWrapperHeading}>{user.name}'s Dashboard</div>
+              <div className={styles.teamWrapperHeading}>{inuser.name}'s Dashboard</div>
               <div className={styles.teamWrapperNav}>
                 <div
                   className={styles.headNav}
@@ -264,7 +264,9 @@ const Team = () => {
             {navActive.teamCoaching && (
               <div className={styles.bodyCoaching}>
                 <div className={styles.navName}>Coaching</div>
-                <Coaching />
+                <IndividualCoaching 
+                  inuser={inuser}
+                />
               </div>
             )}
           </div>
