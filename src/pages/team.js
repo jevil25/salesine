@@ -38,7 +38,7 @@ const Team = () => {
       })
     }).then((res) => res.json())  
     .then((data) => {
-      console.log(data.calls[4].file[0].trackerData);
+      console.log(data);
       if(data.status === true){
         setInvalid(false);
         setLoading(false);
@@ -187,7 +187,7 @@ const Team = () => {
                   }
                 >
                   Scorecard
-                </div>
+                </div>*/}
                 <div
                   className={styles.headNav}
                   style={{ color: navActive.teamCoaching ? '#3F51B5' : '#333333' }}
@@ -204,7 +204,7 @@ const Team = () => {
                   }
                 >
                   Coaching Received
-                </div> */}
+                </div>
               </div>
             </div>
           </div>
@@ -254,13 +254,13 @@ const Team = () => {
               <div className={styles.bodyScore}>
                 <div className={styles.navName}>ScoreCard</div>
               </div>
-            )}
+            )} */}
             {navActive.teamCoaching && (
               <div className={styles.bodyCoaching}>
                 <div className={styles.navName}>Team Coaching</div>
                 <Coaching />
               </div>
-            )} */}
+            )}
           </div>
         </div>
       ):

@@ -73,14 +73,25 @@ const Navbar = (props) => {
             DEALS
           </Link>
         </li>
-        <li className={styles.links}>
-          <Link
-            href="/team"
-            className={props.type === "teams" ? styles.active : null}
-          >
-            TEAM
-          </Link>
-        </li>
+        {role==="ADMIN" ?
+          <li className={styles.links}>
+            <Link
+              href="/team"
+              className={props.type === "teams" ? styles.active : null}
+            >
+              TEAM
+            </Link>
+          </li>
+          :
+          <li className={styles.links}>
+            <Link
+              href="/individual"
+              className={props.type === "teams" ? styles.active : null}
+            >
+              INDIVIDUAL
+            </Link>
+          </li>
+        }
         {/* <li className={styles.links}>
           <Link
             href="/activity"
