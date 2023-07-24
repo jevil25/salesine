@@ -27,6 +27,7 @@ const Coaching = (inuser) => {
   const [invalidFeedback, setInvalidFeedback] = React.useState(false);
   const [loader, setLoader] = React.useState(false);
   const [refresh, setRefresh] = React.useState(false);
+  const [role, setRole] = React.useState(false);
 
   useEffect(() => {
     fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/getCoaching`, {
@@ -41,6 +42,7 @@ const Coaching = (inuser) => {
     .then((data) => {
       console.log(data);
       setUsers(data.data.users)
+      setRole(localStorage.getItem("role"));
     })
     .catch((err) => {
       console.log(err);
@@ -230,7 +232,7 @@ const Coaching = (inuser) => {
       </div>
       {lastFeedback && (
         <Modal onClose={() => setLastFeedback(false)} opened={lastFeedback} title={"Last Feedback"}>
-          <Button onClick={e => {setLastFeedback(false); setFeedbackModal(true)}} style={{"padding":"10px 10px 10px"}}>Add Feedback</Button>
+          {role=="ADMIN" ? <Button onClick={e => {setLastFeedback(false); setFeedbackModal(true)}} style={{"padding":"10px 10px 10px"}}>Add Feedback</Button> : <></>}
           {
             noFeedback ?
             <div className={styles.feedbackTitle}>No feedbacks yet</div>

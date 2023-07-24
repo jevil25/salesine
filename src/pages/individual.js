@@ -26,7 +26,6 @@ const Team = () => {
   const [calls, setCalls] = useState([]);
   const [invalid, setInvalid] = useState(false);
   const [trackers, setTrackers] = useState([]);
-  const [user, setUser] = useState({});
   const [inuser, setInuser] = useState({});
 
   useEffect(() => {
@@ -59,27 +58,6 @@ const Team = () => {
       setLoading(false)
     })
   },[loading, router.isReady])
-
-  useEffect(() => {
-    fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/getUserDetails`,{
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        email: localStorage.getItem('email')
-      })
-    }).then(res => res.json())
-    .then(data => {
-      console.log(data)
-      if(data.status===true){
-        setUser(data.user)
-      }
-    }
-    ).catch(err => {
-      console.log(err)
-    })
-  }, [])
 
   return (
     <div className={styles.teamApp}>

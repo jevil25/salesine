@@ -87,6 +87,7 @@ const Navbar = (props) => {
             <Link
               href="/individual"
               className={props.type === "teams" ? styles.active : null}
+              onClick={e => {localStorage.setItem("individual", localStorage.getItem("email")); router.push("/individual")}}
             >
               INDIVIDUAL
             </Link>
