@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import styles from '../styles/Interaction.module.css';
 import styles1 from '../styles/Trackers.module.css';
-import ellipse from '../../public/assets/ellipse.png';
+import ellipse from '../../public/assets/Ellipse.png';
+import Image from 'next/image';
 
 function IndividualInteraction({ calls,user }){
     console.log(calls);
@@ -162,7 +163,7 @@ function IndividualInteraction({ calls,user }){
           </div>
           <div className={styles1.trackers2Body}>
             <div className={styles1.trackers2BodyImg}>
-              <img src={ellipse} alt="" />
+              <Image src={ellipse} alt="" />
             </div>
             <div className={styles1.trackers2BodyDetails}>
               <div className={styles1.trackers2BodyDetail}>Name :{user.name}</div>
