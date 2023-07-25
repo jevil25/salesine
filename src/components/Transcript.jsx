@@ -7,6 +7,9 @@ const Transcript = (props) => {
     const [fetching, setFetching] = useState(true)
     useEffect(() => {
         const getSpeakerName = (speaker) => {
+            if(speakerName.length > 0) {
+                return speakerName[0][speaker];
+            }
             try{
                 return fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/getUserDetailsById`, {
                     method: 'POST',
@@ -54,7 +57,7 @@ const Transcript = (props) => {
                             console.log(speakerName)
                             return (
                             <div className={styles.chatt}>
-                                <div className={styles.speakerName}>{`${item.speaker.length>10 ? speakerName[0][item.speaker]:`speaker${item.speaker}`}`}</div>
+                                <div className={styles.speakerName}>{`${item.speaker.length>10 && speakerName.length>0 ? speakerName[0][item.speaker]:`speaker${item.speaker}`}`}</div>
                                 <div className={styles.speakerText}>{item.text}</div>
                             </div>
                             )
