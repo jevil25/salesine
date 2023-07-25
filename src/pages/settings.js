@@ -44,6 +44,8 @@ export default function advance_register() {
   const [passError, setPassError] = useState(false);
   const [passComplete, setPassComplete] = useState(false);
   const [pending, setPending] = useState([]);
+  const downloadUrl = "https://drive.google.com/uc?id=18pywIGzS3fzzW8WxrjOXiUcS1SvwmPMq&export=download" 
+  const fileName="Salesine.exe"
 
   useEffect(() => {
     const email = localStorage.getItem("email");
@@ -214,6 +216,15 @@ export default function advance_register() {
       token: resp.data.data.session_token,
       unifiedApi: 'crm',
     })
+  };
+
+  const handleDownload = () => {
+    const link = document.createElement("a");
+    link.href = downloadUrl;
+    link.download = fileName;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
   };
 
   return (
@@ -496,16 +507,18 @@ export default function advance_register() {
                     <Text style={{ whiteSpace: "nowrap" }} align="center">
                       Download the companion Salesine Desktop App
                     </Text>
+                    {/* <a href={downloadUrl} download={fileName}> */}
                     <Button
                       fullWidth
                       mt="sm"
                       size="sm"
                       color="indigo"
                       style={{ width: "10vw" }}
-                      onClick={integrateCrm}
+                      onClick={handleDownload}
                     >
                       Download
                     </Button>
+                    {/* </a> */}
                   </div>
                 </Paper>
               </Container>
