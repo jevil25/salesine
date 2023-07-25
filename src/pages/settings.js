@@ -197,14 +197,6 @@ export default function advance_register() {
       });
   };
   const integrateCrm = async () => {
-    // let resp = await fetch("https://unify.apideck.com/vault/sessions",{
-    //   method:'POST',
-    //   headers:{
-    //     "Authorization":"Bearer "+APIDECK_API_KEY,
-    //     "x-apideck-app-id":APIDECK_APP_ID,
-    //     "x-apideck-consumer-id":email
-    //   }
-    //   }).then((res)=>res.json())
     console.log("inside integrate function")
 
     let resp = await fetch(`${BACK_END_URL}/crm`,{
@@ -481,6 +473,46 @@ export default function advance_register() {
               </Container>
             </>
           )}
+          {display == "App Download" && (
+            <>
+              <Container id="voiceregistration" size={800} my={80}>
+                <Title
+                  align="center"
+                  sx={(theme) => ({
+                    fontFamily: `Greycliff CF, ${theme.fontFamily}`,
+                    fontWeight: 900,
+                  })}
+                >
+                App Download
+                </Title>
+                <Paper withBorder shadow="md" p={30} mt={30} radius="md">
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "space-around",
+                    }}
+                  >
+                    <Text style={{ whiteSpace: "nowrap" }} align="center">
+                      Download the companion Salesine Desktop App
+                    </Text>
+                    <Button
+                      fullWidth
+                      mt="sm"
+                      size="sm"
+                      color="indigo"
+                      style={{ width: "10vw" }}
+                      onClick={integrateCrm}
+                    >
+                      Download
+                    </Button>
+                  </div>
+                </Paper>
+              </Container>
+            </>
+          )
+
+          }
           {!loading && display === "Account Details" && (
             // display user deatails
             <Container id="userdetails" size={800} my={80}>
