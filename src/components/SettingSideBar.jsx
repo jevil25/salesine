@@ -7,7 +7,8 @@ import {
   IconVolume,
   IconLogout,
   IconPassword,
-  Graph
+  Graph,
+  IconPhoneCall
 } from '@tabler/icons-react';
 import { useRouter } from 'next/router';
 import Styles from "../styles/Settings.module.css"
@@ -81,6 +82,7 @@ export function NavbarSimple({ user,setDisplay,pending }) {
     { link: '', label: 'Google Calendar', icon: IconCalendarEvent },
     { link: '', label: 'Voice Recording', icon: IconVolume },
     { link: '', label: 'Password Change', icon: IconPassword },
+    { link: '', label: 'Upload Calls', icon: IconPhoneCall},
     ]
     ) : (
     data = [
@@ -89,6 +91,7 @@ export function NavbarSimple({ user,setDisplay,pending }) {
         { link: '', label: 'Google Calendar', icon: IconCalendarEvent },
         { link: '', label: 'Voice Recording', icon: IconVolume },
         { link: '', label: 'Password Change', icon: IconPassword },
+        { link: '', label: 'Upload Calls', icon: IconPhoneCall},
         ]
     )}
 

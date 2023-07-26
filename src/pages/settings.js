@@ -11,6 +11,7 @@ import {
   Button,
   LoadingOverlay,
   Slider,
+  Input,
 } from "@mantine/core";
 import { ApideckVault } from "@apideck/vault-js";
 import Link from "next/link";
@@ -44,6 +45,14 @@ export default function advance_register() {
   const [passError, setPassError] = useState(false);
   const [passComplete, setPassComplete] = useState(false);
   const [pending, setPending] = useState([]);
+  const [meetId, setMeetId] = useState("");
+  const [meetPassword, setMeetPassword] = useState("");
+  const [meetDate, setMeetDate] = useState("");
+  const [meetTime, setMeetTime] = useState("");
+  const [meetDuration, setMeetDuration] = useState("");
+  const [topic, setTopic] = useState("");
+  const [msg,setMsg] = useState("")
+  const [send,setSend] = useState(false)
 
   useEffect(() => {
     const email = localStorage.getItem("email");
@@ -223,6 +232,38 @@ export default function advance_register() {
       unifiedApi: 'crm',
     })
   };
+
+  const uploadCall = async () => {
+    if(meetId === "" || meetPassword === "" || meetDate === "" || meetTime === "" || meetDuration === ""){
+      setIvalid(true)
+      return
+    }
+    setIvalid(false)
+    let formData = new FormData()
+    formData.append("meetId",meetId)
+    formData.append("meetPassword",meetPassword)
+    formData.append("meetDate",meetDate)
+    formData.append("meetTime",meetTime)
+    formData.append("meetDuration",meetDuration)
+    formData.append("email",email)
+    formData.append("file",document.querySelector("input[type=file]").files[0])
+    formData.append("topic",topic);
+    setSend(true);
+    setMsg1("Uploading Call.... dont refresh the page or close the tab this may take some time depending on the size of the file")
+    let resp = await fetch(`${BACK_END_URL}/uploadCall`,{
+      method:"POST",
+      body:formData
+    }).then((res)=>res.json()).then((data)=>{
+      console.log(data)
+      if(data.status){
+        setIvalid(true)
+        setMsg("Call Uploaded Successfully")
+      }else{
+        setIvalid(true)
+        setMsg(data.message)
+      }
+    })
+  }
 
   return (
     <>
@@ -514,6 +555,42 @@ export default function advance_register() {
               </Paper>
             </Container>
           )}
+          { display === "Upload Calls" && 
+            (
+              <Container id="uploadcalls" size={800} my={80}>
+                <Title
+                  align="center"
+                  sx={(theme) => ({
+                    fontFamily: `Greycliff CF, ${theme.fontFamily}`,
+                    fontWeight: 900,
+                  })}
+                >
+                  Upload Calls
+                </Title>
+                <Paper withBorder shadow="md" p={30} mt={30} radius="md">
+                  <div style={{display:"flex",flexDirection:"column",gap:"20px"}}>
+                    <Text>Enter Topic</Text>
+                    <Input placeholder="Enter Meet Id" onChange={e => setTopic(e.target.value)} />
+                    <Text>Enter Meet Id</Text>
+                    <Input placeholder="Enter Meet Id" onChange={e => setMeetId(e.target.value)} />
+                    <Text>Enter Meet Password</Text>
+                    <Input placeholder="Enter Meet Password" onChange={e => setMeetPassword(e.target.value)} />
+                    <Text>Enter Meet Date</Text>
+                    <Input placeholder="Enter Meet Date" onChange={e => setMeetDate(e.target.value)} />
+                    <Text>Enter Meet Time</Text>
+                    <Input placeholder="Enter Meet Time" onChange={e => setMeetTime(e.target.value)}  />
+                    <Text>Enter Meet Duration</Text>
+                    <Input placeholder="Enter Meet Duration" onChange={e => setMeetDuration(e.target.value)} />
+                    <Text>Upload Call Video Recording</Text>
+                    <Input type="file" />
+                    {invalid && <Text color="red" align="center">{msg}</Text>}
+                    {send && <Text color="red" align="center">{msg1}</Text>}
+                    <Button color="indigo" onClick={() => {uploadCall()}}>Upload Call</Button>
+                  </div>
+                </Paper>
+              </Container>
+              )
+          }
         </div>
       </div>
     </>
