@@ -53,6 +53,8 @@ export default function advance_register() {
   const [topic, setTopic] = useState("");
   const [msg,setMsg] = useState("")
   const [send,setSend] = useState(false)
+  const downloadUrl = "https://drive.google.com/uc?id=18pywIGzS3fzzW8WxrjOXiUcS1SvwmPMq&export=download" 
+  const fileName="Salesine.exe"
 
   useEffect(() => {
     const email = localStorage.getItem("email");
@@ -206,14 +208,6 @@ export default function advance_register() {
       });
   };
   const integrateCrm = async () => {
-    // let resp = await fetch("https://unify.apideck.com/vault/sessions",{
-    //   method:'POST',
-    //   headers:{
-    //     "Authorization":"Bearer "+APIDECK_API_KEY,
-    //     "x-apideck-app-id":APIDECK_APP_ID,
-    //     "x-apideck-consumer-id":email
-    //   }
-    //   }).then((res)=>res.json())
     console.log("inside integrate function")
 
     let resp = await fetch(`${BACK_END_URL}/crm`,{
@@ -232,38 +226,6 @@ export default function advance_register() {
       unifiedApi: 'crm',
     })
   };
-
-  const uploadCall = async () => {
-    if(meetId === "" || meetPassword === "" || meetDate === "" || meetTime === "" || meetDuration === ""){
-      setIvalid(true)
-      return
-    }
-    setIvalid(false)
-    let formData = new FormData()
-    formData.append("meetId",meetId)
-    formData.append("meetPassword",meetPassword)
-    formData.append("meetDate",meetDate)
-    formData.append("meetTime",meetTime)
-    formData.append("meetDuration",meetDuration)
-    formData.append("email",email)
-    formData.append("file",document.querySelector("input[type=file]").files[0])
-    formData.append("topic",topic);
-    setSend(true);
-    setMsg1("Uploading Call.... dont refresh the page or close the tab this may take some time depending on the size of the file")
-    let resp = await fetch(`${BACK_END_URL}/uploadCall`,{
-      method:"POST",
-      body:formData
-    }).then((res)=>res.json()).then((data)=>{
-      console.log(data)
-      if(data.status){
-        setIvalid(true)
-        setMsg("Call Uploaded Successfully")
-      }else{
-        setIvalid(true)
-        setMsg(data.message)
-      }
-    })
-  }
 
   return (
     <>
@@ -522,6 +484,48 @@ export default function advance_register() {
               </Container>
             </>
           )}
+          {display == "App Download" && (
+            <>
+              <Container id="voiceregistration" size={800} my={80}>
+                <Title
+                  align="center"
+                  sx={(theme) => ({
+                    fontFamily: `Greycliff CF, ${theme.fontFamily}`,
+                    fontWeight: 900,
+                  })}
+                >
+                App Download
+                </Title>
+                <Paper withBorder shadow="md" p={30} mt={30} radius="md">
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "space-around",
+                    }}
+                  >
+                    <Text style={{ whiteSpace: "nowrap" }} align="center">
+                      Download the companion Salesine Desktop App
+                    </Text>
+                    {/* <a href={downloadUrl} download={fileName}> */}
+                    <Button
+                      fullWidth
+                      mt="sm"
+                      size="sm"
+                      color="indigo"
+                      style={{ width: "10vw" }}
+                      onClick={handleDownload}
+                    >
+                      Download
+                    </Button>
+                    {/* </a> */}
+                  </div>
+                </Paper>
+              </Container>
+            </>
+          )
+
+          }
           {!loading && display === "Account Details" && (
             // display user deatails
             <Container id="userdetails" size={800} my={80}>

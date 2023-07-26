@@ -7,8 +7,10 @@ import {
   IconVolume,
   IconLogout,
   IconPassword,
+  IconApps,
   Graph,
-  IconPhoneCall
+  IconPhoneCall,
+  IconReportAnalytics
 } from '@tabler/icons-react';
 import { useRouter } from 'next/router';
 import Styles from "../styles/Settings.module.css"
@@ -78,20 +80,18 @@ export function NavbarSimple({ user,setDisplay,pending }) {
     data = [
     { link: `/${user.role.toLowerCase()}`, label: 'Dashboard', icon: IconDashboard },
     { link: '', label: 'Account Details', icon: IconUser },
-    { link: '', label: 'CRM Integration', icon: IconPassword },
+    { link: '', label: 'CRM Integration', icon: IconReportAnalytics },
     { link: '', label: 'Google Calendar', icon: IconCalendarEvent },
     { link: '', label: 'Voice Recording', icon: IconVolume },
     { link: '', label: 'Password Change', icon: IconPassword },
-    { link: '', label: 'Upload Calls', icon: IconPhoneCall},
     ]
     ) : (
     data = [
         { link: '', label: 'Account Details', icon: IconUser },
-        { link: '', label: 'CRM Integration', icon: IconPassword },
+        { link: '', label: 'CRM Integration', icon: IconReportAnalytics },
         { link: '', label: 'Google Calendar', icon: IconCalendarEvent },
         { link: '', label: 'Voice Recording', icon: IconVolume },
         { link: '', label: 'Password Change', icon: IconPassword },
-        { link: '', label: 'Upload Calls', icon: IconPhoneCall},
         ]
     )}
 

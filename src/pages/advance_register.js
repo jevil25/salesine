@@ -26,48 +26,47 @@ export default function advance_register() {
   const [stream, setStream] = useState(null);
   const [mediaRecorder, setMediaRecorder] = useState(null);
   const [recordedChunks, setRecordedChunks] = useState([]);
-  const [calendar,showCalendar] = useState(true);
-  const [password,showPassword] = useState(true);
-  const [voice,showVoice] = useState(true);
-  const [appdownload,showAppdownload] = useState(true)
+  const [calendar, showCalendar] = useState(true);
+  const [password, showPassword] = useState(true);
+  const [voice, showVoice] = useState(true);
+  const [appdownload, showAppdownload] = useState(true);
 
   useEffect(() => {
-    if(!router.isReady) return;
+    if (!router.isReady) return;
     const id = router.query.id;
     const email = localStorage.getItem("email");
     setEmail(email);
     let voicediv = document.getElementById("voiceregistration");
     let passdiv = document.getElementById("passwordchange");
-    let calendardiv = document.getElementById("googleCalendar")
+    let calendardiv = document.getElementById("googleCalendar");
+    const downloadUrl =
+      "https://drive.google.com/uc?id=18pywIGzS3fzzW8WxrjOXiUcS1SvwmPMq&export=download";
+    const fileName = "Salesine.exe";
     console.log(id);
 
-    if (id === '1') {
-      showVoice(false)
-    } else if (id === '2') {
-      showPassword(false)
-    }
-    else if(id==='3'){
-      showCalendar(false)
-    }
-    else if(id==='4'){
-      showCalendar(false)
-      showVoice(false)
-    }
-    else if(id==='5'){
-      showCalendar(false)
-      showPassword(false)
-    }
-    else if(id==='6'){
-      showVoice(false)
-      showPassword(false)
+    if (id === "1") {
+      showVoice(false);
+    } else if (id === "2") {
+      showPassword(false);
+    } else if (id === "3") {
+      showCalendar(false);
+    } else if (id === "4") {
+      showCalendar(false);
+      showVoice(false);
+    } else if (id === "5") {
+      showCalendar(false);
+      showPassword(false);
+    } else if (id === "6") {
+      showVoice(false);
+      showPassword(false);
     }
   }, [router.isReady]);
 
   useEffect(() => {
-    if(password===false && voice===false && calendar===false){
-      router.push('/')
+    if (password === false && voice === false && calendar === false) {
+      router.push("/");
     }
-  }, [password,voice,calendar])
+  }, [password, voice, calendar]);
 
   async function changepassword() {
     await fetch(`${BACK_END_URL}/changepassword`, {
@@ -97,8 +96,8 @@ export default function advance_register() {
       const mediaRecorder = new MediaRecorder(stream);
       setMediaRecorder(mediaRecorder);
       mediaRecorder.ondataavailable = (e) => {
-        setRecordedChunks((e.data));
-      }
+        setRecordedChunks(e.data);
+      };
       mediaRecorder.start();
     } catch (err) {
       console.log("Error recording voice: " + err);
@@ -110,163 +109,239 @@ export default function advance_register() {
   }, [recordedChunks]);
 
   const stopRecording = async () => {
-    if (stream && mediaRecorder && mediaRecorder.state === 'recording') {
+    if (stream && mediaRecorder && mediaRecorder.state === "recording") {
       stream.getTracks().forEach((track) => track.stop());
       setStream(null);
       mediaRecorder.stop();
       console.log(recordedChunks);
-    }else{
+    } else {
       //get the recording and send it to the backend
       if (recordedChunks.length === 0) return;
       console.log(recordedChunks);
       const formData = new FormData();
-      formData.append('audio_data', recordedChunks);
-      formData.append('email', email);
+      formData.append("audio_data", recordedChunks);
+      formData.append("email", email);
 
-        const res = await fetch(`${BACK_END_URL}/voicerec`, {
-          method: 'POST',
-          body: formData,
-        });
-        const data = await res.json();
-        console.log(data);
-        if (data.success) {
-          showVoice(false);
-        }
+      const res = await fetch(`${BACK_END_URL}/voicerec`, {
+        method: "POST",
+        body: formData,
+      });
+      const data = await res.json();
+      console.log(data);
+      if (data.success) {
+        showVoice(false);
       }
+    }
   };
 
   const googleAuth = async () => {
     fetch(`${BACK_END_URL}/googleAuth`, {
-      method:'GET',
+      method: "GET",
       headers: {
-        'Content-Type': 'application/json'
+        "Content-Type": "application/json",
       },
     })
-    .then(res => res.json())
-    .then(data => {
-      router.push(data.url)
-    })
-  }
+      .then((res) => res.json())
+      .then((data) => {
+        router.push(data.url);
+      });
+  };
+
+  const handleDownload = () => {
+    const link = document.createElement("a");
+    link.href = downloadUrl;
+    link.download = fileName;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
 
   return (
     <>
-    <Navbar />
-      {password && <Container id="passwordchange" size={800} my={80}>
-        <Title
-          align="center"
-          sx={(theme) => ({
-            fontFamily: `Greycliff CF, ${theme.fontFamily}`,
-            fontWeight: 900,
-          })}
-        >
-          Change Password
-        </Title>
-
-        <Paper withBorder shadow="md" p={30} mt={30} radius="md">
-          <TextInput
-            label="Old Password"
-            name="email"
-            value={oldpassword}
-            onChange={(e) => setoldpass(e.target.value)}
-            placeholder="Old Password"
-            size="md"
-            required
-          />
-          <PasswordInput
-            label="New Password"
-            value={newpassword}
-            name="password"
-            onChange={(e) => setnewpass(e.target.value)}
-            placeholder="New password"
-            size="md"
-            required
-            mt="md"
-          />
-          <br />
-          <Group position="apart" mt="lg">
-          </Group>
-          <Button
-            fullWidth
-            mt="xl"
-            size="md"
-            onClick={changepassword}
-            color="indigo"
+      <Navbar />
+      {password && (
+        <Container id="passwordchange" size={800} my={80}>
+          <Title
+            align="center"
+            sx={(theme) => ({
+              fontFamily: `Greycliff CF, ${theme.fontFamily}`,
+              fontWeight: 900,
+            })}
           >
             Change Password
-          </Button>
-        </Paper>
-      </Container>}
+          </Title>
 
-      {voice && <Container id="voiceregistration" size={800} my={80}>
-        <Title
-          align="center"
-          sx={(theme) => ({
-            fontFamily: `Greycliff CF, ${theme.fontFamily}`,
-            fontWeight: 900,
-          })}
-        >
-          Voice Registration
-        </Title>
-
-        <Paper withBorder shadow="md" p={30} mt={30} radius="md">
-          Press the start button and repeat the sentence into your microphone
-          <br />
-          <div
-            style={{
-              backgroundColor: "wheat",
-              marginTop: "20px",
-              padding: "10px",
-            }}
-          >
-            I enjoy listening to music in my free time.What is the weather like
-            today?
-          </div>
-          <Group position="apart" mt="lg"></Group>
-          <Button fullWidth mt="xl" size="md" onClick={getVoice} color="indigo">
-            Start
-          </Button>
-
-          <Button fullWidth mt="xl" size="md" onClick={stopRecording} color="red">
-            Stop Recording
-          </Button>
-          
-        </Paper>
-      </Container>
-}
-      {calendar && <>
-        <Container id="voiceregistration" size={800} my={80}>
-          <Title
-          align="center"
-          sx={(theme) => ({
-            fontFamily: `Greycliff CF, ${theme.fontFamily}`,
-            fontWeight: 900,
-          })}
-          >
-          Google Calender Registration
-        </Title>
-
-          <Paper withBorder shadow="md" p={30} mt={30} radius="md"  style={{"display":"flex","flexDirection":"column","justifyContent":"center","alignItems":"center"}}>
-                    <Button id="googleCalendar" onClick={googleAuth}>Google calendar</Button>
+          <Paper withBorder shadow="md" p={30} mt={30} radius="md">
+            <TextInput
+              label="Old Password"
+              name="email"
+              value={oldpassword}
+              onChange={(e) => setoldpass(e.target.value)}
+              placeholder="Old Password"
+              size="md"
+              required
+            />
+            <PasswordInput
+              label="New Password"
+              value={newpassword}
+              name="password"
+              onChange={(e) => setnewpass(e.target.value)}
+              placeholder="New password"
+              size="md"
+              required
+              mt="md"
+            />
+            <br />
+            <Group position="apart" mt="lg"></Group>
+            <Button
+              fullWidth
+              mt="xl"
+              size="md"
+              onClick={changepassword}
+              color="indigo"
+            >
+              Change Password
+            </Button>
           </Paper>
         </Container>
-          </>
-          }
+      )}
 
-          {appdownload && <Container>
-            <Title
-          align="center"
-          sx={(theme) => ({
-            fontFamily: `Greycliff CF, ${theme.fontFamily}`,
-            fontWeight: 900,
-          })}
+      {voice && (
+        <Container id="voiceregistration" size={800} my={80}>
+          <Title
+            align="center"
+            sx={(theme) => ({
+              fontFamily: `Greycliff CF, ${theme.fontFamily}`,
+              fontWeight: 900,
+            })}
           >
-          Download our Companion Desktop App
-        </Title>
-          </Container>}
-          <Container id="voiceregistration" size={800} my={80} style={{"display":"flex","flexDirection":"column","justifyContent":"center","alignItems":"center"}}>
-            <Text>Click on Skip to do this later in settings page</Text>
-            <Button variant="gradient" onClick={e => router.push("/")} >Skip</Button>
+            Voice Registration
+          </Title>
+
+          <Paper withBorder shadow="md" p={30} mt={30} radius="md">
+            Press the start button and repeat the sentence into your microphone
+            <br />
+            <div
+              style={{
+                backgroundColor: "wheat",
+                marginTop: "20px",
+                padding: "10px",
+              }}
+            >
+              I enjoy listening to music in my free time.What is the weather
+              like today?
+            </div>
+            <Group position="apart" mt="lg"></Group>
+            <Button
+              fullWidth
+              mt="xl"
+              size="md"
+              onClick={getVoice}
+              color="indigo"
+            >
+              Start
+            </Button>
+            <Button
+              fullWidth
+              mt="xl"
+              size="md"
+              onClick={stopRecording}
+              color="red"
+            >
+              Stop Recording
+            </Button>
+          </Paper>
+        </Container>
+      )}
+      {calendar && (
+        <>
+          <Container id="voiceregistration" size={800} my={80}>
+            <Title
+              align="center"
+              sx={(theme) => ({
+                fontFamily: `Greycliff CF, ${theme.fontFamily}`,
+                fontWeight: 900,
+              })}
+            >
+              Google Calender Registration
+            </Title>
+
+            <Paper
+              withBorder
+              shadow="md"
+              p={30}
+              mt={30}
+              radius="md"
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <Button id="googleCalendar" onClick={googleAuth}>
+                Google calendar
+              </Button>
+            </Paper>
           </Container>
+        </>
+      )}
+
+      {appdownload && (
+        <Container>
+          <Title
+            align="center"
+            sx={(theme) => ({
+              fontFamily: `Greycliff CF, ${theme.fontFamily}`,
+              fontWeight: 900,
+            })}
+          >
+            Download our Companion Desktop App
+          </Title>
+          <Paper withBorder shadow="md" p={30} mt={30} radius="md">
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "space-around",
+              }}
+            >
+              <Text style={{ whiteSpace: "nowrap" }} align="center">
+                Download the companion Salesine Desktop App
+              </Text>
+              {/* <a href={downloadUrl} download={fileName}> */}
+              <Button
+                fullWidth
+                mt="sm"
+                size="sm"
+                color="indigo"
+                style={{ width: "10vw" }}
+                onClick={handleDownload}
+              >
+                Download
+              </Button>
+              {/* </a> */}
+            </div>
+          </Paper>
+        </Container>
+      )}
+
+      <Container
+        id="voiceregistration"
+        size={800}
+        my={80}
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <Text>Click on Skip to do this later in settings page</Text>
+        <Button variant="gradient" onClick={(e) => router.push("/")}>
+          Skip
+        </Button>
+      </Container>
     </>
   );
 }
