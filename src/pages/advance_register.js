@@ -39,8 +39,7 @@ export default function advance_register() {
     let voicediv = document.getElementById("voiceregistration");
     let passdiv = document.getElementById("passwordchange");
     let calendardiv = document.getElementById("googleCalendar");
-    const downloadUrl =
-      "https://drive.google.com/uc?id=18pywIGzS3fzzW8WxrjOXiUcS1SvwmPMq&export=download";
+    const downloadUrl = "https://drive.google.com/uc?id=18pywIGzS3fzzW8WxrjOXiUcS1SvwmPMq&export=download";
     const fileName = "Salesine.exe";
     console.log(id);
 
@@ -311,7 +310,7 @@ export default function advance_register() {
             <Text style={{ whiteSpace: "nowrap" }} align="center">
               Download the companion Salesine Desktop App
             </Text>
-            <Link href={downloadUrl} download style={{textDecoration:"none"}}>
+            <Link href={"https://drive.google.com/uc?id=18pywIGzS3fzzW8WxrjOXiUcS1SvwmPMq&export=download"} download style={{textDecoration:"none"}}>
               <Button
                 fullWidth
                 mt="sm"
