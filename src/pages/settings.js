@@ -484,48 +484,6 @@ export default function advance_register() {
               </Container>
             </>
           )}
-          {display == "App Download" && (
-            <>
-              <Container id="voiceregistration" size={800} my={80}>
-                <Title
-                  align="center"
-                  sx={(theme) => ({
-                    fontFamily: `Greycliff CF, ${theme.fontFamily}`,
-                    fontWeight: 900,
-                  })}
-                >
-                App Download
-                </Title>
-                <Paper withBorder shadow="md" p={30} mt={30} radius="md">
-                  <div
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "space-around",
-                    }}
-                  >
-                    <Text style={{ whiteSpace: "nowrap" }} align="center">
-                      Download the companion Salesine Desktop App
-                    </Text>
-                    {/* <a href={downloadUrl} download={fileName}> */}
-                    <Button
-                      fullWidth
-                      mt="sm"
-                      size="sm"
-                      color="indigo"
-                      style={{ width: "10vw" }}
-                      onClick={handleDownload}
-                    >
-                      Download
-                    </Button>
-                    {/* </a> */}
-                  </div>
-                </Paper>
-              </Container>
-            </>
-          )
-
-          }
           {!loading && display === "Account Details" && (
             // display user deatails
             <Container id="userdetails" size={800} my={80}>
@@ -559,6 +517,47 @@ export default function advance_register() {
               </Paper>
             </Container>
           )}
+          {
+            display === "Download App" && (
+              <Container id="userdetails" size={800} my={80}>
+                <Title
+                  align="center"
+                  sx={(theme) => ({
+                    fontFamily: `Greycliff CF, ${theme.fontFamily}`,
+                    fontWeight: 900,
+                  })}
+                >
+                  Download our Companion Desktop App
+                </Title>
+                <Paper withBorder shadow="md" p={30} mt={30} radius="md">
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      flexDirection:"row",
+                      gap:"20px"
+                    }}
+                  >
+                    <Text style={{ whiteSpace: "nowrap" }} align="center">
+                      Download the companion Salesine Desktop App
+                    </Text>
+                    <Link href={downloadUrl} download style={{textDecoration:"none"}}>
+                      <Button
+                        fullWidth
+                        mt="sm"
+                        size="sm"
+                        color="indigo"
+                        style={{ width: "10vw" }}
+                      >
+                        Download
+                      </Button>
+                    </Link>
+                </div>
+              </Paper>
+            </Container>
+            )
+          }
           { display === "Upload Calls" && 
             (
               <Container id="uploadcalls" size={800} my={80}>

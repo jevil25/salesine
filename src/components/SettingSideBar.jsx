@@ -10,7 +10,8 @@ import {
   IconApps,
   Graph,
   IconPhoneCall,
-  IconReportAnalytics
+  IconReportAnalytics,
+  IconVideo
 } from '@tabler/icons-react';
 import { useRouter } from 'next/router';
 import Styles from "../styles/Settings.module.css"
@@ -84,6 +85,8 @@ export function NavbarSimple({ user,setDisplay,pending }) {
     { link: '', label: 'Google Calendar', icon: IconCalendarEvent },
     { link: '', label: 'Voice Recording', icon: IconVolume },
     { link: '', label: 'Password Change', icon: IconPassword },
+    { link: '', label: 'Download App', icon: IconApps },
+    { link: '', label: 'Upload Calls', icon: IconVideo },
     ]
     ) : (
     data = [
@@ -92,6 +95,8 @@ export function NavbarSimple({ user,setDisplay,pending }) {
         { link: '', label: 'Google Calendar', icon: IconCalendarEvent },
         { link: '', label: 'Voice Recording', icon: IconVolume },
         { link: '', label: 'Password Change', icon: IconPassword },
+        { link: '', label: 'Download App', icon: IconApps },
+        { link: '', label: 'Upload Calls', icon: IconVideo },
         ]
     )}
 

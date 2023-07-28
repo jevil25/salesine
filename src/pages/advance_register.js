@@ -288,42 +288,43 @@ export default function advance_register() {
       )}
 
       {appdownload && (
-        <Container>
-          <Title
-            align="center"
-            sx={(theme) => ({
-              fontFamily: `Greycliff CF, ${theme.fontFamily}`,
-              fontWeight: 900,
-            })}
+        <Container id="userdetails" size={800} my={80}>
+        <Title
+          align="center"
+          sx={(theme) => ({
+            fontFamily: `Greycliff CF, ${theme.fontFamily}`,
+            fontWeight: 900,
+          })}
+        >
+          Download our Companion Desktop App
+        </Title>
+        <Paper withBorder shadow="md" p={30} mt={30} radius="md">
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              flexDirection:"row",
+              gap:"20px"
+            }}
           >
-            Download our Companion Desktop App
-          </Title>
-          <Paper withBorder shadow="md" p={30} mt={30} radius="md">
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "space-around",
-              }}
-            >
-              <Text style={{ whiteSpace: "nowrap" }} align="center">
-                Download the companion Salesine Desktop App
-              </Text>
-              {/* <a href={downloadUrl} download={fileName}> */}
+            <Text style={{ whiteSpace: "nowrap" }} align="center">
+              Download the companion Salesine Desktop App
+            </Text>
+            <Link href={downloadUrl} download style={{textDecoration:"none"}}>
               <Button
                 fullWidth
                 mt="sm"
                 size="sm"
                 color="indigo"
                 style={{ width: "10vw" }}
-                onClick={handleDownload}
               >
                 Download
               </Button>
-              {/* </a> */}
-            </div>
-          </Paper>
-        </Container>
+            </Link>
+        </div>
+      </Paper>
+    </Container>
       )}
 
       <Container
