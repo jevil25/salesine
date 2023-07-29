@@ -345,7 +345,7 @@ const recording = () => {
           >
             <p>Interaction stats</p>
           </div>
-          <div
+          {/* <div
             className={styles.topic}
             onClick={() =>
               setIsNav({
@@ -357,7 +357,7 @@ const recording = () => {
             }
           >
             <p>Company</p>
-          </div>
+          </div> */}
           <div
             className={styles.topic}
             onClick={() =>

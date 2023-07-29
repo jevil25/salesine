@@ -20,6 +20,7 @@ import {
   LoadingOverlay,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
+import { IconRecycle } from "@tabler/icons-react";
 
 const All = () => {
   const [calls, setCalls] = useState([]);
@@ -45,6 +46,7 @@ const All = () => {
   });
 
   const [syncCalls, setSyncCalls] = useState([]);
+  const [refresh, setRefresh] = useState(false);
 
   const initiateMeeting = () => {
     const data = axios
@@ -110,7 +112,7 @@ const All = () => {
 
     // populateCalls();
     getRecordings();
-  }, []);
+  }, [refresh]);
   const [name, setName] = useState("");
   const [startTime, setStartTime] = useState("");
   const [duration, setDuration] = useState("");
@@ -130,7 +132,22 @@ const All = () => {
     //retunr both date and time
     return res+" on "+date;
   };
-  
+
+  const handleDelete = (meetid) => {
+    console.log(meetid);
+    fetch(`${BACK_END_URL}/deleteMeet`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ meetid: meetid }),
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        console.log(res);
+        if(res.status){
+          setRefresh(!refresh);
+        }
+      });
+  };
 
   return (
     <div className={styles.allContainer}>
@@ -189,15 +206,15 @@ const All = () => {
           recordings.map((recording) => {
             return (
               <div className={styles.allCall} key={recording.id}>
-                <div>
+                <div style={{width:"50px"}}>
                   {" "}
-                  <Video size={35} />{" "}
+                  <Video size={35}/>{" "}
                 </div>
                 <div className={styles.allInfo}>
                   <div className={styles.allHeading}>{recording.topic}</div>
                   <div className={styles.allSubInfo}>{formatTime(recording.startTime)}</div>
                   <div className={styles.allSubInfo}>
-                    {recording.duration} mins
+                    {Math.abs(recording.duration)} mins
                   </div>
                 </div>
                 {recording.file.length > 0 ?
@@ -251,7 +268,9 @@ const All = () => {
                >
                  Recording
                </Button>
-                </>}
+                </>
+                }
+                <Button color="red" onClick={e => handleDelete(recording.meetid)} >Delete</Button>
               </div>
             );
           })

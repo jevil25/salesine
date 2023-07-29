@@ -18,7 +18,7 @@ const Calls = ({ authUrl }) => {
     <>
       <Navbar type = 'calls' />
       <div style={{display: 'flex', width: '100%'}}>
-          <Contacts />
+          {/* <Contacts /> */}
           <All url={authUrl}/>
           <Calling />
       </div>

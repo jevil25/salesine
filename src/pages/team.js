@@ -2,9 +2,8 @@ import React, { useState } from 'react';
 import Navbar from '../components/Navbar';
 import Interaction from '../components/Interaction';
 import Coaching from '../components/Coaching';
-import Trackers from '../components/Trackers';
+import Trackers from '../components/IndividualTrackers';
 import TeamsActivity from '../components/TeamActivity';
-import Topic from '../components/Topic';
 import styles from '../styles/teams.module.css';
 import { useEffect } from 'react';
 import { LoadingOverlay } from '@mantine/core';
@@ -241,6 +240,7 @@ const Team = () => {
                 <Trackers 
                   trackers={trackers}
                   user={user}
+                  calls={calls}
                 />
                 )}
               </div>
