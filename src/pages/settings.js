@@ -21,6 +21,7 @@ import { ro } from "@faker-js/faker";
 import Navbar from "../components/Navbar";
 import { NavbarSimple } from "../components/SettingSideBar";
 import styles from "../styles/Settings.module.css";
+import { Modal } from "@mantine/core";
 
 export default function advance_register() {
   const router = useRouter();
@@ -226,6 +227,57 @@ export default function advance_register() {
       unifiedApi: 'crm',
     })
   };
+
+  useEffect(() => {
+    fetch(`${BACK_END_URL}/admin/getTracker`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ email: localStorage.getItem('email') })
+    })
+    .then(res => res.json())
+    .then(data => {
+      console.log(data)
+      if (data.status === false) {
+        console.log(data.message)
+        return;
+      }
+      setTrackers(data.tracker.trackers)
+    })
+  }, [])
+
+  const [trackers, setTrackers] = useState([]);
+  const [trackerName, setTrackerName] = useState('');
+  const [trackersLimit, setTrackersLimit] = useState(false);
+  const [trackersSent, setTrackersSent] = useState([]);
+  const [addTrackerModal, setAddTrackerModal] = useState(false);
+  const addTrackerToList = () => {
+    //check length is 10
+    if(trackers.length === 10) {
+      setTrackersLimit(true)
+      return;
+    }
+    setTrackers([...trackers, trackerName])
+    console.log(trackers)
+    setTrackerName('')
+  }
+  const addTracker = () => {
+    fetch(`${BACK_END_URL}/admin/addtracker`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ email: localStorage.getItem('email'), trackerName: trackersSent })
+    })
+    .then(res => res.json())
+    .then(data => {
+      console.log(data)
+      setTrackersSent([])
+      setAddTrackerModal(false)
+      location.reload();
+    })
+  }
 
   return (
     <>
@@ -481,6 +533,13 @@ export default function advance_register() {
                     </Button>
                   </div>
                 </Paper>
+                <Paper withBorder shadow="md" p={30} mt={30} radius="md">
+                <div style={{textAlign:"center"}}>
+                  <Button variant='outline' onClick={() => setAddTrackerModal(true)}>
+                    Add Trackers
+                  </Button>
+                </div>
+                </Paper>
               </Container>
             </>
           )}
@@ -578,11 +637,11 @@ export default function advance_register() {
                     <Input placeholder="Enter Meet Id" onChange={e => setMeetId(e.target.value)} />
                     <Text>Enter Meet Password</Text>
                     <Input placeholder="Enter Meet Password" onChange={e => setMeetPassword(e.target.value)} />
-                    <Text>Enter Meet Date</Text>
+                    <Text>Enter Meet Date(DD-MM-YYYY)</Text>
                     <Input placeholder="Enter Meet Date" onChange={e => setMeetDate(e.target.value)} />
-                    <Text>Enter Meet Time</Text>
+                    <Text>Enter Meet Time(24hour format 00:00 to 23:59)</Text>
                     <Input placeholder="Enter Meet Time" onChange={e => setMeetTime(e.target.value)}  />
-                    <Text>Enter Meet Duration</Text>
+                    <Text>Enter Meet Duration(In mins)</Text>
                     <Input placeholder="Enter Meet Duration" onChange={e => setMeetDuration(e.target.value)} />
                     <Text>Upload Call Video Recording</Text>
                     <Input type="file" />
@@ -596,6 +655,38 @@ export default function advance_register() {
           }
         </div>
       </div>
+      {
+              addTrackerModal && (
+                <Modal opened={addTrackerModal} onClose={() => setAddTrackerModal(false)} title="Add Trackers" size="md">
+                  <Input placeholder='Enter Tracker Name' value={trackerName} onChange={e => setTrackerName(e.target.value)} style={{marginBottom:"20px"}} />
+                  {trackersLimit && <div style={{color:"red"}}>You can add only 10 trackers</div>}
+                  <Button onClick={() => addTrackerToList()} style={{marginRight:"20px"}}>Add</Button>
+                  {trackers.map((tracker) => (
+                      <div style={{display:"flex",flexDirection:"row",gap:"10px",margin:"10px 0px 10px 0px"}}>
+                        <Checkbox
+                          value={tracker}
+                          onChange={(event) => {
+                            const isChecked = event.currentTarget.checked;
+                            const checkboxValue = event.currentTarget.value;
+                            setTrackersSent((prevSelected) => {
+                              if (isChecked) {
+                                // Add the value to the selected array if it's checked
+                                return [...prevSelected, checkboxValue];
+                              } else {
+                                // Remove the value from the selected array if it's unchecked
+                                return prevSelected.filter((value) => value !== checkboxValue);
+                              }
+                            });
+                          }
+                        }
+                        />
+                        {tracker}
+                      </div>
+                    ))}
+                    <Button onClick={() => addTracker()}>
+                      Done
+                    </Button>
+                </Modal>)}
     </>
   );
 }

@@ -119,6 +119,8 @@ const Deals = () => {
   }, []);
 
   const handleClick = () => router.push("/settings");
+  const linkMeet = (deal_id) => {
+  }
 
   function activitypage(deal_id){
     console.log(deal_id);
@@ -155,30 +157,30 @@ const Deals = () => {
               <div className={styles.date}>{formatDate}</div>
             </div>
             <div className={styles.dealsWrapperComonent2Parameter}>
-              <div className={styles.parameter} style={{ flex: 2 }}>
+              <div className={styles.parameter}>
                 <div className={styles.parameterName}>Name(Client)</div>
               </div>
-              <div className={styles.parameter} style={{ flex: 4 }}>
+              <div className={styles.parameter}>
                 <img src={activity} alt="" />
                 <div className={styles.parameterName}>Activity</div>
               </div>
-              <div className={styles.parameter} style={{ flex: 1 }}>
+              <div className={styles.parameter}>
                 <div className={styles.parameterName}>Next Call</div>
               </div>
-              <div className={styles.parameter} style={{ flex: 1 }}>
+              <div className={styles.parameter}>
                 <div className={styles.parameterName}>Amount</div>
               </div>
-              <div className={styles.parameter} style={{ flex: 1 }}>
+              <div className={styles.parameter}>
                 <div className={styles.parameterName}>Status</div>
               </div>
-              <div className={styles.parameter} style={{ flex: 1 }}>
+              <div className={styles.parameter}>
                 <div className={styles.parameterName}>Close Date</div>
               </div>
-              <div className={styles.parameter} style={{ flex: 1 }}>
+              <div className={styles.parameter}>
                 <div className={styles.parameterName}>Owner</div>
               </div>
-              <div className={styles.parameter} style={{ flex: 2 }}>
-                <div className={styles.parameterName}>Send to Team</div>
+              <div className={styles.parameter}>
+                <div className={styles.parameterName}>Deal to Meet</div>
               </div>
             </div>
             <div className={styles.dealsWrapperComonent2Details}>
@@ -192,39 +194,40 @@ const Deals = () => {
                       <img src={val.img} alt="" />
                       <div className={styles.Dataname}>{val.title}</div>
                     </div>
-                    <div className={styles.nameData} style={{ flex: 4 }}>
+                    <div className={styles.nameData}>
                       <Button onClick={()=>activitypage(val.id)}>Check Activity</Button>
                     </div>
-                    <div className={styles.nameData} style={{ flex: 1 }}>
+                    <div className={styles.nameData}>
                       <div className={styles.Dataname}>
                         {/* {val.nextCall} */}
                         Tomorrow
                       </div>
                     </div>
-                    <div className={styles.nameData} style={{ flex: 1 }}>
+                    <div className={styles.nameData}>
                       <div className={styles.Dataname}>
                         {val.monetary_amount}
                       </div>
                     </div>
-                    <div className={styles.nameData} style={{ flex: 1 }}>
+                    <div className={styles.nameData}>
                       <div className={styles.Dataname}>
                         {val.pipeline_stage_id}
                       </div>
                     </div>
-                    <div className={styles.nameData} style={{ flex: 1 }}>
+                    <div className={styles.nameData}>
                       <div className={styles.Dataname}>{val.close_date}</div>
                     </div>
-                    <div className={styles.nameData} style={{ flex: 1 }}>
+                    <div className={styles.nameData}>
                       <div className={styles.Dataname}>{val.owner_id}</div>
                     </div>
-                    <div className={styles.nameData} style={{ flex: 2 }}>
+                    <div className={styles.nameData}>
                       <div className={styles.buttonWrapper}>
                         <div className={styles.sendButton}>
-                          <div className={styles.sendButtonName}>Send to</div>
+                          <div className={styles.sendButtonName}>Meet</div>
                           <img
                             src="https://img.icons8.com/material-sharp/14/000000/sort-down.png"
                             alt=""
                             style={{ cursor: "pointer" }}
+                            onCanPlay={(e) => {linkMeet(val.id)}}
                           />
                         </div>
                       </div>

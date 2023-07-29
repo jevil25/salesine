@@ -89,13 +89,15 @@
     font-weight: 600;
     background: radial-gradient(57.66% 4271.63% at 49% 50%, #333333 0%, #424347 48.44%, #333333 100%);
     box-shadow: inset 0px 4px 4px rgba(0, 0, 0, 0.25);
+    justify-content: space-evenly;
 }
 
 .parameter {
     display: flex;
     gap: 10px;
     align-items: center;
-    justify-content: center
+    justify-content: center;
+    flex-basis: 12.5%;
 }
 
 .parameterName {
@@ -119,14 +121,11 @@
     border-bottom: 1px solid black;
 }
 
-.dealsWrapperComonent2Details :hover {
-    background: #E5EFFF;
-}
-
 .nameData {
     display: flex;
     align-items: center;
     justify-content: center;
+    flex-basis: 12.5%;
 }
 
 .sendButton {
