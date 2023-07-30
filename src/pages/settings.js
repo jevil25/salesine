@@ -279,6 +279,38 @@ export default function advance_register() {
     })
   }
 
+  const uploadCall = async () => {
+    if(meetId === "" || meetPassword === "" || meetDate === "" || meetTime === "" || meetDuration === ""){
+      setIvalid(true)
+      return
+    }
+    setIvalid(false)
+    let formData = new FormData()
+    formData.append("meetId",meetId)
+    formData.append("meetPassword",meetPassword)
+    formData.append("meetDate",meetDate)
+    formData.append("meetTime",meetTime)
+    formData.append("meetDuration",meetDuration)
+    formData.append("email",email)
+    formData.append("file",document.querySelector("input[type=file]").files[0])
+    formData.append("topic",topic);
+    setSend(true);
+    setMsg1("Uploading Call.... dont refresh the page or close the tab this may take some time depending on the size of the file")
+    let resp = await fetch(`${BACK_END_URL}/uploadCall`,{
+      method:"POST",
+      body:formData
+    }).then((res)=>res.json()).then((data)=>{
+      console.log(data)
+      if(data.status){
+        setIvalid(true)
+        setMsg("Call Uploaded Successfully")
+      }else{
+        setIvalid(true)
+        setMsg(data.message)
+      }
+    })
+  }
+
   return (
     <>
       <Navbar type="settings" />
