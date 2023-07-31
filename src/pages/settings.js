@@ -565,6 +565,21 @@ export default function advance_register() {
                     </Button>
                   </div>
                 </Paper>
+              </Container>
+            </>
+          )}
+          {display === "Trackers" && (
+            <>
+              <Container id="voiceregistration" size={800} my={80}>
+                <Title
+                  align="center"
+                  sx={(theme) => ({
+                    fontFamily: `Greycliff CF, ${theme.fontFamily}`,
+                    fontWeight: 900,
+                  })}
+                >
+                  Trackers
+                </Title>
                 <Paper withBorder shadow="md" p={30} mt={30} radius="md">
                 <div style={{textAlign:"center"}}>
                   <Button variant='outline' onClick={() => setAddTrackerModal(true)}>

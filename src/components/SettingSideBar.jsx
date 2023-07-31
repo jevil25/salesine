@@ -11,7 +11,8 @@ import {
   Graph,
   IconPhoneCall,
   IconReportAnalytics,
-  IconVideo
+  IconVideo,
+  IconTrack
 } from '@tabler/icons-react';
 import { useRouter } from 'next/router';
 import Styles from "../styles/Settings.module.css"
@@ -81,6 +82,7 @@ export function NavbarSimple({ user,setDisplay,pending }) {
     data = [
     { link: `/${user.role.toLowerCase()}`, label: 'Dashboard', icon: IconDashboard },
     { link: '', label: 'Account Details', icon: IconUser },
+    { link: '', label: 'Trackers', icon: IconTrack },
     { link: '', label: 'CRM Integration', icon: IconReportAnalytics },
     { link: '', label: 'Google Calendar', icon: IconCalendarEvent },
     { link: '', label: 'Voice Recording', icon: IconVolume },
@@ -91,6 +93,7 @@ export function NavbarSimple({ user,setDisplay,pending }) {
     ) : (
     data = [
         { link: '', label: 'Account Details', icon: IconUser },
+        { link: '', label: 'Trackers', icon: IconTrack },
         { link: '', label: 'CRM Integration', icon: IconReportAnalytics },
         { link: '', label: 'Google Calendar', icon: IconCalendarEvent },
         { link: '', label: 'Voice Recording', icon: IconVolume },

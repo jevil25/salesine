@@ -132,11 +132,19 @@
     background-color: aliceblue;
 }
 
+.barGraph:hover{
+    background-color: rgb(227, 239, 249);
+}
+
 .graph{
     display: flex;
     width: 900px;
     gap :20px;
     align-content: center;
+}
+
+.graph:hover{
+    cursor: pointer;
 }
 
 .graphData{

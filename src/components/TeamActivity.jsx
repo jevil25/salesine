@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import styles from '../styles/TeamActivity.module.css';
+import { useRouter } from 'next/router';
 
 const TeamsActivity = ({ calls }) => {
   const [flag,setFlag] = useState(false);
   const [nameId,setNameId] = useState({});
+  const router = useRouter();
   const [activityName, setActivityName] = useState({
     callDuration: true,
     weeklyVolume: false,
@@ -56,6 +58,7 @@ const TeamsActivity = ({ calls }) => {
     return [callDetails2,count];
   }
   const [callDetails2,callDetailsCount] = getCall(callDetails);
+  const [email,setEmail] = useState({});
   //get user name of name from callDetails2
   useEffect(() => {
     if(!flag)
@@ -75,6 +78,10 @@ const TeamsActivity = ({ calls }) => {
               ...prevState,
               [member.name]: data.user.name
             }))
+            setEmail((prevState) => ({
+              ...prevState,
+              [member.name]: data.user.email
+              }))
             setFlag(true);
           }
         }
@@ -83,7 +90,7 @@ const TeamsActivity = ({ calls }) => {
         })
     })
   }, [callDetails2])
-  console.log(nameId);
+  console.log(email);
   function parseDateManually(dateString) {
     // Split the date and time parts
     const [datePart, timePart] = dateString.split('T');
@@ -216,10 +223,16 @@ function getTotalCount(callDetails) {
               <div className={styles.graphLabel}>Team Members</div>
               <div className={styles.barGraph}>
                 {callDetails2.map((member) => (<>
-                  <div className={styles.graph}>
+                  <div className={styles.graph} onClick={e => {
+                    localStorage.setItem("individual", email[member.name]);
+                    router.push("/individual");
+                  }}>
                     <div className={styles.graphName}>{nameId[member.name]}</div>
                   </div>
-                  <div className={styles.graph}>
+                  <div className={styles.graph} onClick={e => {
+                    localStorage.setItem("individual", email[member.name]);
+                    router.push("/individual");
+                  }}>
                     <div className={`${styles.graphData}`} style={{"width":`${400*member.duration/getTotalDuration(callDetails2)}px`}}></div>{member.duration.toFixed(2)} mins
                   </div>
                   </>))}
@@ -237,10 +250,16 @@ function getTotalCount(callDetails) {
               <div className={styles.graphLabel}>Team Members</div>
               <div className={styles.barGraph}>
               {weekCallsCount.map((member) => (<>
-                  <div className={styles.graph}>
+                <div className={styles.graph} onClick={e => {
+                    localStorage.setItem("individual", email[member.name]);
+                    router.push("/individual");
+                  }}>
                     <div className={styles.graphName}>{nameId[member.id]}</div>
                   </div>
-                  <div className={styles.graph}>
+                  <div className={styles.graph} onClick={e => {
+                    localStorage.setItem("individual", email[member.name]);
+                    router.push("/individual");
+                  }}>
                   <div className={`${styles.graphData}`} style={{"width":`${400*member.count/getTotalCount(weekCallsCount)}px`}}></div>{member.count}
                   </div>
                   </>))}
@@ -258,10 +277,16 @@ function getTotalCount(callDetails) {
               <div className={styles.graphLabel}>Team Members</div>
               <div className={styles.barGraph}>
               {weekCalls.map((member) => (<>
-                  <div className={styles.graph}>
+                <div className={styles.graph} onClick={e => {
+                    localStorage.setItem("individual", email[member.name]);
+                    router.push("/individual");
+                  }}>
                     <div className={styles.graphName}>{nameId[member.name]}</div>
                   </div>
-                  <div className={styles.graph}>
+                  <div className={styles.graph} onClick={e => {
+                    localStorage.setItem("individual", email[member.name]);
+                    router.push("/individual");
+                  }}>
                     <div className={`${styles.graphData}`} style={{"width":`${400*member.duration/getTotalDuration(weekCalls)}px`}}></div>{member.duration.toFixed(2)} mins
                   </div>
                   </>))}
@@ -279,10 +304,16 @@ function getTotalCount(callDetails) {
               <div className={styles.graphLabel}>Team Members</div>
               <div className={styles.barGraph}>
               {callDetailsCount.map((member) => (<>
-                  <div className={styles.graph}>
+                <div className={styles.graph} onClick={e => {
+                    localStorage.setItem("individual", email[member.name]);
+                    router.push("/individual");
+                  }}>
                     <div className={styles.graphName}>{nameId[member.id]}</div>
                   </div>
-                  <div className={styles.graph}>
+                  <div className={styles.graph} onClick={e => {
+                    localStorage.setItem("individual", email[member.name]);
+                    router.push("/individual");
+                  }}>
                   <div className={`${styles.graphData}`} style={{"width":`${400*member.count/getTotalCount(callDetailsCount)}px`}}></div>{member.count}
                   </div>
                   </>))}
@@ -300,10 +331,16 @@ function getTotalCount(callDetails) {
               <div className={styles.graphLabel}>Team Members</div>
               <div className={styles.barGraph}>
               {callDetails2.map((member) => (<>
-                  <div className={styles.graph}>
+                <div className={styles.graph} onClick={e => {
+                    localStorage.setItem("individual", email[member.name]);
+                    router.push("/individual");
+                  }}>
                     <div className={styles.graphName}>{nameId[member.name]}</div>
                   </div>
-                  <div className={styles.graph}>
+                  <div className={styles.graph} onClick={e => {
+                    localStorage.setItem("individual", email[member.name]);
+                    router.push("/individual");
+                  }}>
                     <div className={`${styles.graphData}`} style={{"width":`${(parseInt(member.duration)/getTotalDuration(callDetails2))*400}px`}}></div>{member.duration.toFixed(2)} mins
                   </div>
                   </>))}

@@ -89,6 +89,11 @@
     margin: 40px;
     gap: 15px;
     background-color: aliceblue;
+    border-radius: 20px;
+}
+
+.barGraph:hover{
+    background-color: rgb(227, 239, 249);
 }
 
 .graph{
@@ -96,6 +101,10 @@
     width: 900px;
     gap :20px;
     align-content: center;
+}
+
+.graph:hover{
+    cursor: pointer;
 }
 
 .graphData{

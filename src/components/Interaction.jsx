@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import styles from '../styles/Interaction.module.css';
 import { useEffect } from 'react';
+import { useRouter } from 'next/router';
 
 const Interaction = ({ calls }) => {
+  const router = useRouter();
   console.log(calls);
   const [speakerNamesArray, setSpeakerNamesArray] = useState([]);
   console.log(calls);
@@ -116,7 +118,7 @@ function calculateAverageForSameSpeakerInteractivity(arrayOfArrays) {
   const interactivityAverages = calculateAverageForSameSpeakerInteractivity(interactivity);
   // console.log(interactivityAverages);
 
-
+  const [email, setEmail] = useState({});
 
   async function getUser(id) {
     try {
@@ -132,6 +134,10 @@ function calculateAverageForSameSpeakerInteractivity(arrayOfArrays) {
       const data = await res.json();
   
       if (data.status === true) {
+        setEmail((prevState) => ({
+          ...prevState,
+          [data.user.name]: data.user.email
+          }))
         return data.user.name;
       } else {
         return null; // Return null if the status is false or any other error condition
@@ -242,10 +248,16 @@ function calculateAverageForSameSpeakerInteractivity(arrayOfArrays) {
             </div>
             <div className={styles.barGraph}>
                 {speakerAverages.map((analysis,index) => (<>
-                  <div className={styles.graph}>
+                  <div className={styles.graph} onClick={e => {
+                    localStorage.setItem("individual", email[speakerNamesArray[index]]);
+                    router.push("/individual");
+                  }}>
                     <div className={styles.graphName}>{speakerNamesArray[index]}</div>
                   </div>
-                  <div className={styles.graph}>
+                  <div className={styles.graph} onClick={e => {
+                    localStorage.setItem("individual", email[speakerNamesArray[index]]);
+                    router.push("/individual");
+                  }}>
                     <div className={styles.graphData} style={{ width: `${(analysis[1]/speakerAverages.reduce((sum, [, value]) => sum + value, 0))*100}%` }}></div><div>{analysis[1]} %</div>
                   </div>
                 </>))}
@@ -261,10 +273,16 @@ function calculateAverageForSameSpeakerInteractivity(arrayOfArrays) {
             <div className={styles.barGraph}>
             {longestMonologueAverages.map((analysis,index) => {
               return <>      
-                  <div className={styles.graph}>
+                  <div className={styles.graph} onClick={e => {
+                    localStorage.setItem("individual", email[speakerNamesArray[index]]);
+                    router.push("/individual");
+                  }}>
                     <div className={styles.graphName}>{speakerNamesArray[index]}</div>
                   </div>
-                  <div className={styles.graph}>
+                  <div className={styles.graph} onClick={e => {
+                    localStorage.setItem("individual", email[speakerNamesArray[index]]);
+                    router.push("/individual");
+                  }}>
                     <div className={styles.graphData} style={{ width: `${(analysis[1]/longestMonologueAverages.reduce((sum, [, value]) => sum + value, 0))*100}%` }}></div><div>{analysis[1]} %</div>
                   </div>
                 </>})}
@@ -279,10 +297,16 @@ function calculateAverageForSameSpeakerInteractivity(arrayOfArrays) {
             </div>
             <div className={styles.barGraph}>
             {longestCustomerStoryAverages.map((analysis,index) => (<>
-                  <div className={styles.graph}>
+                  <div className={styles.graph} onClick={e => {
+                    localStorage.setItem("individual", email[speakerNamesArray[index]]);
+                    router.push("/individual");
+                  }}>
                     <div className={styles.graphName}>{speakerNamesArray[index]}</div>
                   </div>
-                  <div className={styles.graph}>
+                  <div className={styles.graph} onClick={e => {
+                    localStorage.setItem("individual", email[speakerNamesArray[index]]);
+                    router.push("/individual");
+                  }}>
                     <div className={styles.graphData} style={{ width: `${(analysis[1]/longestCustomerStoryAverages.reduce((sum, [, value]) => sum + value, 0))*100}%` }}></div><div>{analysis[1]} %</div>
                   </div>
                 </>))}
@@ -297,10 +321,16 @@ function calculateAverageForSameSpeakerInteractivity(arrayOfArrays) {
             </div>
             <div className={styles.barGraph}>
             {interactivityAverages.map((analysis,index) => (<>
-                  <div className={styles.graph}>
+                  <div className={styles.graph} onClick={e => {
+                    localStorage.setItem("individual", email[speakerNamesArray[index]]);
+                    router.push("/individual");
+                  }}>
                     <div className={styles.graphName}>{speakerNamesArray[index]}</div>
                   </div>
-                  <div className={styles.graph}>
+                  <div className={styles.graph} onClick={e => {
+                    localStorage.setItem("individual", email[speakerNamesArray[index]]);
+                    router.push("/individual");
+                  }}>
                     <div className={styles.graphData} style={{ width: `${parseInt(100*((parseInt(analysis[1].split(":")[0]))/interactivityAverages.reduce((sum, [, value]) => sum + parseInt(value.split(":")[0]), 0)))}%` }}></div><div>{analysis[1]}</div>
                   </div>
                 </>))}
@@ -315,10 +345,16 @@ function calculateAverageForSameSpeakerInteractivity(arrayOfArrays) {
             </div>
             <div className={styles.barGraph}>
             {patienceAverages.map((analysis,index) => (<>
-                  <div className={styles.graph}>
+                  <div className={styles.graph} onClick={e => {
+                    localStorage.setItem("individual", email[speakerNamesArray[index]]);
+                    router.push("/individual");
+                  }}>
                     <div className={styles.graphName}>{speakerNamesArray[index]}</div>
                   </div>
-                  <div className={styles.graph}>
+                  <div className={styles.graph} onClick={e => {
+                    localStorage.setItem("individual", email[speakerNamesArray[index]]);
+                    router.push("/individual");
+                  }}>
                     <div className={styles.graphData} style={{ width: `${(analysis[1]/patienceAverages.reduce((sum, [, value]) => sum + value, 0))*100}%` }}></div><div>{analysis[1]} %</div>
                   </div>
                 </>))}
