@@ -140,6 +140,29 @@ const Coaching = (inuser) => {
     setFeedback(feedback[index]);
   }
 
+  const getFeedback = (user) => {
+    const feedback = user.feedback;
+    if(feedback.length === 0) {
+      return "No feedback This Month";
+    }
+    //from all feedback updateAt get the most recent one
+    let max = 0;
+    let index = 0;
+    for(let i = 0; i < feedback.length; i++) {
+      let date = new Date(feedback[i].updatedAt);
+      // console.log(date);
+      if(date.getTime() > max) {
+        max = date.getTime();
+        index = i;
+      }
+    }
+    //check if the feedback is not empty
+    if(feedback[index].feedback === "") {
+      return "No feedback This Month";
+    }
+    return feedback[index].feedback;
+  }
+
   const getThisMonthMeetLength = (meeting) => {
     let count = 0;
     let today = new Date();
@@ -206,9 +229,7 @@ const Coaching = (inuser) => {
                 <div className={styles.DivFeedbackInfoStarting}>{getMonth(user.meeting[0].startTime)}</div>
                 <div className={styles.DivFeedbackInfoLines}>
                   <div className={styles.msgimg}>
-                    {[...Array(getThisMonthMeetLength(user.meeting))].map((n, index) => (
-                      <Image src={msg} key={index} alt="" />
-                    ))}
+                    {getFeedback(user)}
                   </div>
                   <div className={styles.DivLine}></div>
                 </div>
