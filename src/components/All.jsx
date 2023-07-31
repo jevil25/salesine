@@ -93,7 +93,7 @@ const All = () => {
       console.log(recordings)
       return recordings.recordings;
     });
-    setRecordings(recordings);
+    setRecordings(recordings.reverse());
     setLoading(false);
     };
 
