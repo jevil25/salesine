@@ -223,14 +223,14 @@ const Coaching = () => {
                 <div className={styles.DivFeedbackHeadNum}>{numberOfLastMonthFeedback(user.feedback)}</div>
               </div>
               <div className={styles.DivFeedbackInfo}>
-                <div className={styles.DivFeedbackInfoStarting}>{getMonth(user.meeting[0].startTime)}</div>
+                <div className={styles.DivFeedbackInfoStarting}>{user.meeting.length>0?getMonth(user.meeting[0].startTime):""}</div>
                 <div className={styles.DivFeedbackInfoLines}>
                   <div className={styles.msgimg}>
                     {getFeedback(user)}
                   </div>
                   <div className={styles.DivLine}></div>
                 </div>
-                <div className={styles.DivFeedbackInfoEnding}>{getMonth(user.meeting[user.meeting.length-1].startTime)}</div>
+                <div className={styles.DivFeedbackInfoEnding}>{user.meeting.length>0?getMonth(user.meeting[user.meeting.length-1].startTime):""}</div>
               </div>
             </div>
             <div className={styles.DivLine}></div>

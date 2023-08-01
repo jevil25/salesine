@@ -14,13 +14,12 @@ import {
   Modal,
   useMantineTheme,
   Button,
-  Skeleton,
-  TextInput,
+  MenuDropdown,
   Input,
   LoadingOverlay,
+  Select,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
-import { IconRecycle } from "@tabler/icons-react";
 
 const All = () => {
   const [calls, setCalls] = useState([]);
@@ -149,6 +148,33 @@ const All = () => {
       });
   };
 
+  const [addModal, setAddModal] = useState(false);
+  const [meetId, setMeetId] = useState("");
+  const [role, setRole] = useState("");
+  const [msg, setMsg] = useState("");
+  const handleAdd = (meetid) => {
+    setAddModal(true);
+    setMeetId(meetid);
+  }
+
+  const submitMember = () => {
+    fetch(`${BACK_END_URL}/addMeetMember`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ meetid: meetId, name: name, role: role }),
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        console.log(res);
+        if(res.status){
+          setRefresh(!refresh);
+          setAddModal(false);
+        }else{
+          setMsg("Could not add member");
+        }
+      });
+  };
+
   return (
     <div className={styles.allContainer}>
       <div className={styles.allContainerHeading}>
@@ -271,6 +297,7 @@ const All = () => {
                 </>
                 }
                 <Button color="red" onClick={e => handleDelete(recording.meetid)} >Delete</Button>
+                <Button color="indigo" onClick={(e) => {handleAdd(recording.meetid)} } >Add Participants</Button>
               </div>
             );
           })
@@ -278,6 +305,42 @@ const All = () => {
           loading ? <LoadingOverlay visible={loading} /> : <div className={styles.noCalls}>No Calls</div>
         )}
       </div>
+      {
+      addModal ? (
+        <Modal opened={addModal} onClose={() => setAddModal(false)}>
+          <Modal.Title style={{textAlign:"center","margin":"10px"}}>Add Participants</Modal.Title>
+          <Modal.Body>
+            <Input
+              placeholder="Enter Name"
+              onChange={(e) => {
+                setName(e.target.value);
+              }}
+              required
+              style={{ marginBottom: "10px" }}
+            />
+            <Select
+              label="Select Role"
+              placeholder="Select Role"
+              data={[
+                { value: "president", label: "President" },
+                { value: "secretary", label: "Secretary" },
+                { value: "Vice President", label: "Vice President" },
+                { value: "Cheif Officer", label: "Cheif Officer" },
+              ]}
+              searchable={false}
+              style={{ marginBottom: "10px" }}
+              onChange={(e) => {
+                setRole(e);
+              }}
+            />
+            {msg ? <div style={{color:"red"}}>{msg}</div> : null}
+            <Button onClick={submitMember} color="indigo">
+              Add
+            </Button>
+          </Modal.Body>
+        </Modal>
+      ) : null
+    }
     </div>
   );
 };

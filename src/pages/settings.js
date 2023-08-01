@@ -279,16 +279,20 @@ export default function advance_register() {
     })
   }
 
+  const [msg1,setMsg1] = useState("")
   const uploadCall = async () => {
-    if(meetId === "" || meetPassword === "" || meetDate === "" || meetTime === "" || meetDuration === ""){
-      setIvalid(true)
-      return
-    }
+    // if(meetId === "" || meetPassword === "" || meetDate === "" || meetTime === "" || meetDuration === ""){
+    //   setIvalid(true)
+    //   return
+    // }
     setIvalid(false)
+    // date is in format YYYY-MM-DD chnage it to DD-MM-YYYY
+    let date = meetDate.split("-")
+    let newDate = date[2]+"-"+date[1]+"-"+date[0]
     let formData = new FormData()
     formData.append("meetId",meetId)
     formData.append("meetPassword",meetPassword)
-    formData.append("meetDate",meetDate)
+    formData.append("meetDate",newDate)
     formData.append("meetTime",meetTime)
     formData.append("meetDuration",meetDuration)
     formData.append("email",email)
@@ -685,9 +689,9 @@ export default function advance_register() {
                     <Text>Enter Meet Password</Text>
                     <Input placeholder="Enter Meet Password" onChange={e => setMeetPassword(e.target.value)} />
                     <Text>Enter Meet Date(DD-MM-YYYY)</Text>
-                    <Input placeholder="Enter Meet Date" onChange={e => setMeetDate(e.target.value)} />
+                    <Input type="date" placeholder="Enter Meet Date" onChange={e => setMeetDate(e.target.value)} />
                     <Text>Enter Meet Time(24hour format 00:00 to 23:59)</Text>
-                    <Input placeholder="Enter Meet Time" onChange={e => setMeetTime(e.target.value)}  />
+                    <Input type="time" placeholder="Enter Meet Time" onChange={e => setMeetTime(e.target.value)}  />
                     <Text>Enter Meet Duration(In mins)</Text>
                     <Input placeholder="Enter Meet Duration" onChange={e => setMeetDuration(e.target.value)} />
                     <Text>Upload Call Video Recording</Text>
