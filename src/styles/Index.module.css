@@ -349,4 +349,12 @@
       align-items: center;
       gap: 10px;
    }
+   .heading{
+     display: none;
+   }
+   .rows{
+    display: flex;
+    flex-direction: column;
+    gap:5px;
+   }
 }

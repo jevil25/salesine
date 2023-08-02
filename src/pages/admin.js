@@ -97,7 +97,7 @@ const Admin = () => {
   },[isWindowDefined])
 
   const ths = (
-    <tr>
+    <tr className={styles.heading}>
       <th></th>
       <th>Name of Team Member</th>
       <th>Email ID</th>
@@ -109,7 +109,7 @@ const Admin = () => {
   );
 
   const rows = org.length !== 0 ? org.map((element) => (
-    <tr key={element.email}>
+    <tr key={element.email} class={styles.rows}>
       <td>
         <Checkbox
           value={element.email}
