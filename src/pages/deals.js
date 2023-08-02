@@ -222,13 +222,18 @@ const Deals = () => {
                     <div className={styles.nameData}>
                       <div className={styles.buttonWrapper}>
                         <div className={styles.sendButton}>
-                          <div className={styles.sendButtonName}>Meet</div>
+                        <select name="meetinput" id="meetinput" style={{border:"none"}}>
+                          <option value="m1">meet 1</option>
+                          <option value="m2">meet 2</option>
+                          <option value="m3">meet 3</option>
+                        </select>
+                          {/* <div className={styles.sendButtonName}>Meet</div>
                           <img
                             src="https://img.icons8.com/material-sharp/14/000000/sort-down.png"
                             alt=""
                             style={{ cursor: "pointer" }}
                             onCanPlay={(e) => {linkMeet(val.id)}}
-                          />
+                          /> */}
                         </div>
                       </div>
                     </div>
