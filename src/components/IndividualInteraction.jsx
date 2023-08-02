@@ -74,7 +74,7 @@ function IndividualInteraction({ calls,user }){
   </div>)
 
   return (
-    <div className={styles.interactionWrapper} style={{display:"flex",flexDirection:"row"}}>
+    <div className={styles.indiInteractionWrapper}>
       <div className={styles.interactionWrapperHeadIndividual}>
         <div
           className={styles.interactionWrapperHeadNameindi}

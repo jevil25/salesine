@@ -153,6 +153,13 @@
     height: 15px;
 }
 
+.indiInteractionWrapper{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 1280px;
+}
+
 @media screen and (max-width:768px) {
     .interactionWrapperHead{
         flex-direction: row;
@@ -202,5 +209,38 @@
     }
     .graph{
         width:90vw;
+    }
+    .indiInteractionWrapper{
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        max-width: 1280px;
+    }
+    .interactionWrapperHeadIndividual{
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        width: 100%;
+        gap: 20px;
+        padding: 20px;
+        border-radius: 20px;
+        background-color: white;
+    }
+    .interactionWrapperHeadNameindi{
+        display: flex;
+        flex-direction: column;
+        width: 80vw;
+        gap: 20px;
+        height: 150px;
+        justify-content: center;
+        text-align: center;
+        align-items: center;
+        font-family: 'Arial';
+        font-style: normal;
+        font-weight: 700;
+        font-size: 16px;
+        box-shadow: 2px 2px 2px 2px rgba(43, 43, 43, 0.5);
+        border-radius: 10px;
+        cursor: pointer;
     }
 }

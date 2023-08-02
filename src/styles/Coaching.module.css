@@ -146,3 +146,21 @@
     height: 100%;
     background: black;
 }
+.coachingWrapperDivIndi{
+    position: relative;
+    left:100px;
+    background: linear-gradient(103.79deg, #F9FBFF 4.45%, #CADDFB 97.69%);
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 15px;
+}
+
+@media screen and (max-width:768px) {
+    .coachingWrapperBody{
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+    }
+    .coachingWrapperDivIndi{
+        left:0px;
+    }
+}

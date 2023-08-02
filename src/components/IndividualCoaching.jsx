@@ -217,7 +217,7 @@ const Coaching = (inuser) => {
       <div className={styles.coachingWrapperBody}>
         {users.map((user, i) => (
         inuser.inuser.id === user.id ?
-          <div className={styles.coachingWrapperDiv} key={i} style={{position:"relative",left:"100px"}}>
+          <div className={styles.coachingWrapperDivIndi} key={i} >
             <div className={styles.DivTitle}>{user.name}</div>
             <div className={styles.DivLine}></div>
             <div className={styles.DivFeedback}>
