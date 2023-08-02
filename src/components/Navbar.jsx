@@ -192,12 +192,12 @@ const Navbar = (props) => {
                   SETTINGS
                 </Link>
               </li>
-              {/* <div className={styles.navLinks}> */}
-              {/* {loggedIn ? role==="SUPERADMIN" ? <li><Link href="/superadmin">DASHBOARD</Link></li> : <li><Link href="/account">MY ACCOUNT</Link></li> : <li><Link href="/login" className="">Login</Link></li>} */}
-              {/* </div> */}
-              <div className={styles.navLinks}>
-                {loggedIn ? (
-                  <></>
+              {loggedIn ? (
+                  <li>
+                    <Button onClick={logout}>
+                      Logout
+                    </Button>
+                  </li>
                 ) : (
                   <li>
                     <Link href="/login" className="">
@@ -205,7 +205,9 @@ const Navbar = (props) => {
                     </Link>
                   </li>
                 )}
-              </div>
+              {/* <div className={styles.navLinks}> */}
+              {/* {loggedIn ? role==="SUPERADMIN" ? <li><Link href="/superadmin">DASHBOARD</Link></li> : <li><Link href="/account">MY ACCOUNT</Link></li> : <li><Link href="/login" className="">Login</Link></li>} */}
+              {/* </div> */}
             </ul>
           </div>
         )}
