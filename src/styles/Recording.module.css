@@ -482,3 +482,190 @@
   padding-right: 10px;
   padding-bottom: 5px;
 }
+
+@media screen and (max-width:768px) {
+    /* make the page responsive */
+    .recordingWrapper {
+      flex-direction: column;
+      align-items: center;
+      gap:20px;
+      margin: 10px 0px;
+    }
+    .playerWrapper {
+      padding-left: 0px;
+      padding-right: 0px;
+    }
+    .playerWrapper2 {
+      padding-left: 0px;
+      padding-right: 0px;
+    }
+    .headerWrapper {
+      flex-direction: column;
+      height: max-content;
+    }
+    .topics {
+      gap: 20px;
+      margin-top: 20px;
+    }
+    .topic {
+      width: 100%;
+      justify-content: center;
+      align-items: center;
+      height: 10vh;
+    }
+    .part1 {
+      display: none;
+    }
+    .divider {
+      display: none;
+    }
+    .part2 {
+      flex-direction: row;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 5px;
+    }
+    .length{
+      display: none;
+    }
+    .upper {
+      flex-direction: column;
+      gap: 20px;
+    }
+    .buttons {
+      flex-direction: column;
+      gap: 20px;
+    }
+    .share {
+      width: 100%;
+      height: 100%;
+      position: fixed;
+      top: 0;
+      background: rgba(255, 255, 255, 0.58);
+      z-index: 1000;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+    }
+    .shareBlock {
+      display: flex;
+      flex-direction: column;
+    }
+    .shareHeader {
+      display: flex;
+      background: #3F51B5;
+      color: #FFFFFF;
+      align-items: center;
+      border-radius: 5px 5px 0px 0px;
+      padding: 10px;
+      width: 100%;
+    }
+    .shareHead {
+      width: 60%;
+      display: flex;
+      justify-content: flex-end;
+    }
+    .addMessage {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+    .messageContainer {
+      border: 2px solid #E5EFFF;
+      border-radius: 3px;
+      height: 50px;
+      padding: 0px 5px;
+    }
+    .messageContainer textarea {
+      outline: none;
+      border: none;
+      resize: none;
+      width: 100%;
+      height: 90%;
+    }
+    .shareBody {
+      display: flex;
+      flex-direction: column;
+      padding: 20px;
+      background: #FFFFFF;
+      border-radius: 0px 0px 5px 5px;
+    }
+    .tagBody {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    .tagPlacer {
+      gap: 10px;
+      display: flex;
+      flex-wrap: wrap;
+    }
+    .tagItem {
+      display: flex;
+      gap: 5px;
+      align-items: center;
+      border: 2px solid #E5EFFF;
+      border-radius: 3px;
+    }
+    .tagItem img {
+      cursor: pointer;
+    }
+    .tagInputConrainer {
+      display: flex;
+      flex-direction: column;
+      width: 200px;
+      border: 2px solid #E5EFFF;
+      border-radius: 3px;
+      gap: 10px;
+      padding: 2px 5px;
+    }
+    .tagInputConrainer input {
+      border: none;
+      outline: none;
+    }
+    .trimContainer {
+      display: flex;
+      flex-direction: column;
+    }
+    .trimHeader {
+      display: flex;
+      width: 100%;
+    }
+    .trimHead {
+      width: 50%;
+      display: flex;
+      justify-content: flex-start;
+    }
+    .trimFilter {
+      width: 50%;
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      font-size: 12px;
+    }
+    .trimType {
+      color: #3F51B5;
+    }
+    .trimTime {
+      border: 1px solid #E5EFFF;
+      padding: 0px 2px;
+    }
+    .trimBody {
+      display: flex;
+      border: 2px solid #E5EFFF;
+      border-radius: 3px;
+      padding: 5px 10px;
+    }
+    .shareFooter {
+      display: flex;
+      flex-direction: column;
+      margin-top: 10px;
+    }
+    .shareFooterPart1 {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+}
