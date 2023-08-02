@@ -9,6 +9,9 @@
   position: sticky;
   top:0;
   z-index: 999;
+  padding-left: 3rem;
+  padding-right: 3rem;
+  gap: 4rem;
 }
 
 .navLogo{
@@ -143,6 +146,11 @@
   border-bottom: 1px solid #e6e6e6;
 }
 
+.search{
+  display: flex;
+  flex-direction: column;
+  width: 10rem;
+}
 
 @media only screen and (max-width: 650px) {
   .navbarContainer{
@@ -164,5 +172,12 @@
   .navSmall img{
       position: absolute;
       right: 0;
+  }
+  .search{
+    display: none;
+  }
+  .navbarContainer{
+    padding-left: 1rem;
+    padding-right: 1rem;
   }
 }

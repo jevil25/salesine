@@ -34,16 +34,6 @@ const Navbar = (props) => {
   return (
     <div
       className={styles.navbarContainer}
-      style={{
-        display: "flex",
-        flexDirection: "row",
-        justifyContent: "space-evenly",
-        alignItems: "center",
-        gap: "4rem",
-        paddingLeft: "3rem",
-        paddingRight: "3rem",
-        zIndex: "100",
-      }}
     >
       <div className={styles.navLogo}>
         <Image onClick={e => router.push("/")} src={logo2} alt="logo" />
@@ -184,14 +174,6 @@ const Navbar = (props) => {
                   className={props.type === "teams" ? styles.active : null}
                 >
                   TEAM
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/activity"
-                  className={props.type === "activity" ? styles.active : null}
-                >
-                  ACTIVITY
                 </Link>
               </li>
               <li>

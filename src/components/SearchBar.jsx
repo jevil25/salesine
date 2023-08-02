@@ -30,7 +30,7 @@ function SearchBar() {
     }, [searchTerm])
 
   return (
-    <div style={{"display":"flex","flexDirection":"column","width":"10rem"}}>
+    <div className={styles.search}>
       <input
         type="text"
         value={searchTerm}
