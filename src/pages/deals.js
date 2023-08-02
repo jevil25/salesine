@@ -5,8 +5,6 @@ import { useRouter } from "next/router";
 import styles from "../styles/deals.module.css";
 import Navbar from "../components/Navbar";
 import activity from "../../public/assets/activity.png";
-import sample from "../../public/assets/sample.png";
-import { Line } from "react-chartjs-2";
 import { faker } from "@faker-js/faker";
 import moment from "moment/moment";
 import {

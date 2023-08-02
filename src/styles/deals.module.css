@@ -109,7 +109,6 @@
 .dealsWrapperComonent2Details {
     display: flex;
     flex-direction: column;
-    max-height: 425px;
     overflow: auto;
     margin-bottom: 5px;
 }
@@ -148,9 +147,10 @@
 
 @media only screen and (max-width:650px) {
     .dealsWrapperComponent1{
-        width: 89%;
+        width: 89vw;
         gap: 10px;
         padding: 0px 20px;
+        flex-direction: column;
     }
     .dealsWrapperComponent1stats{
         flex-direction: column;
@@ -162,9 +162,11 @@
         overflow-x: auto;
     }
     .dealsWrapperComonent2Filter{
-        width: 727px;
+        width: 100vw;
         gap: 20px;
         padding: 0px 10px;
+        justify-content: center;
+        align-items: center;
     }
     
     .dealsWrapperComonent2Filter1{
@@ -175,10 +177,20 @@
         width: max-content;
         gap: 20px;
         padding: 0px 10px;
+        display: none;
     }
     .dealsWrapperComonent2Details{
         width: max-content;
         gap: 20px;
         padding: 0px 10px;
+        height: 100vh;
+    }
+    .dataWrapper{
+        flex-direction: column;
+        gap: 10px;
+        padding: 10px 0px;
+        width: 100vw;
+        justify-content: center;
+        align-items: center;
     }
 }
