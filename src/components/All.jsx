@@ -3,7 +3,6 @@ import { Video } from "tabler-icons-react";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { useRouter } from "next/router";
-import ReactPlayer from "react-player";
 import { useRef } from "react";
 import {
   Card,

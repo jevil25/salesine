@@ -1,9 +1,8 @@
 import All from '../components/All'
 import Calling from '../components/Calling'
 import Navbar from '../components/Navbar'
-import Contacts from '../components/Contact'
 import {useRouter} from 'next/router'
-import { useEffect } from 'react'
+import styles from '../styles/Calls.module.css'
 
 
 const Calls = ({ authUrl }) => {
@@ -17,7 +16,7 @@ const Calls = ({ authUrl }) => {
   return (
     <>
       <Navbar type = 'calls' />
-      <div style={{display: 'flex', width: '100%'}}>
+      <div className={styles.calls}>
           {/* <Contacts /> */}
           <All url={authUrl}/>
           <Calling />
