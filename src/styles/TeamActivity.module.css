@@ -112,3 +112,50 @@
     border-radius: 20px;
     height: 15px;
 }
+
+@media screen and (max-width:768px) {
+    .activityWrapperHead{
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+    .activityWrapperHeadName{
+        width: 100%;
+        height: 100px;
+        padding-left: 10px;
+        font-size: 20px;
+    }
+    .change{
+        width: 100%;
+        height: 30px;
+        padding-left: 10px;
+        font-size: 20px;
+        color:#3F51B5;
+        border: none;
+        font-size: smaller;
+    }
+    .callDurationInfo{
+        width: 100%;
+        margin-top: 10px;
+    }
+    .callDurationInfoHead{
+        font-size: 20px;
+    }
+    .activityWrapperHeadName{
+        border:none;
+        background: none;
+        font-size: smaller;
+        height: 30px;
+    }
+    .activityWrapperCallDuration{
+        flex-direction: column;
+    }
+    .barGraph{
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        gap: 10px;
+        background-color: aliceblue;
+        border-radius: 20px;
+        width: 80vw;
+    }
+}

@@ -152,3 +152,55 @@
     border-radius: 20px;
     height: 15px;
 }
+
+@media screen and (max-width:768px) {
+    .interactionWrapperHead{
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-items: center;
+        align-items: center;
+    }
+    .interactionWrapperHeadName{
+        width: 100%;
+        height: 100px;
+        padding-left: 10px;
+        font-size: 20px;
+    }
+    .changei{
+        width: 100vw;
+        height: 30px;
+        padding-left: 10px;
+        font-size: 20px;
+        color:#3F51B5;
+        border: none;
+        font-size: smaller;
+        flex-direction: row;
+        gap: 10px;
+        justify-content: center;
+        align-items: center;
+    }
+    .interactionWrapperHeadName{
+        border:none;
+        background: none;
+        font-size: smaller;
+        height: 30px;
+        flex-direction: row;
+        gap: 10px;
+    }
+    .barGraph{
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        gap: 10px;
+        background-color: aliceblue;
+        border-radius: 20px;
+        width: 80vw;
+    }
+    .interactionWrapperCallDuration{
+        width: 100vw;
+        padding-right: 15px;
+    }
+    .graph{
+        width:90vw;
+    }
+}
