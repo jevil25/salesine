@@ -22,6 +22,7 @@ import Navbar from "../components/Navbar";
 import { NavbarSimple } from "../components/SettingSideBar";
 import styles from "../styles/Settings.module.css";
 import { Modal } from "@mantine/core";
+import { CLIENT_STATIC_FILES_RUNTIME_REACT_REFRESH } from "next/dist/shared/lib/constants";
 
 export default function advance_register() {
   const router = useRouter();
@@ -54,6 +55,7 @@ export default function advance_register() {
   const [topic, setTopic] = useState("");
   const [msg,setMsg] = useState("")
   const [send,setSend] = useState(false)
+  const [refresh,setRefrsh] = useState(false)
   const downloadUrl = "https://drive.google.com/uc?id=18pywIGzS3fzzW8WxrjOXiUcS1SvwmPMq&export=download" 
   const fileName="Salesine.exe"
 
@@ -245,7 +247,7 @@ export default function advance_register() {
       }
       setTrackers(data.tracker.trackers)
     })
-  }, [])
+  }, [refresh])
 
   const [trackers, setTrackers] = useState([]);
   const [trackerName, setTrackerName] = useState('');
@@ -276,6 +278,25 @@ export default function advance_register() {
       setTrackersSent([])
       setAddTrackerModal(false)
       location.reload();
+    })
+  }
+
+  const [addTrackerMsg, setAddTrackerMsg] = useState(false);
+  const trac = ["Money","Planning","Budget","Time","Sales","Marketing","Product","Service","Deal","Team"];
+  const addDefaultTrackers = () => {
+    fetch(`${BACK_END_URL}/admin/addtracker`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ email: localStorage.getItem('email'), trackerName: trac })
+    })
+    .then(res => res.json())
+    .then(data => {
+      setTrackersSent([])
+      setAddTrackerModal(false)
+      setAddTrackerMsg(true);
+      setRefrsh(!refresh)
     })
   }
 
@@ -319,7 +340,7 @@ export default function advance_register() {
     <>
       <Navbar type="settings" />
       <LoadingOverlay visible={loading} />
-      <div style={{ display: "flex", flexDirection: "row" }}>
+      <div className={styles.settings}>
         <NavbarSimple user={user} setDisplay={setDisplay} pending={pending} />
         <div className={styles.settingsRight}>
           {invalid && (
@@ -548,11 +569,7 @@ export default function advance_register() {
                 </Title>
                 <Paper withBorder shadow="md" p={30} mt={30} radius="md">
                   <div
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "space-around",
-                    }}
+                    className={styles.crm}
                   >
                     <Text style={{ whiteSpace: "nowrap" }} align="center">
                       Integrate your desired CRM with Salesine
@@ -562,7 +579,6 @@ export default function advance_register() {
                       mt="sm"
                       size="sm"
                       color="indigo"
-                      style={{ width: "10vw" }}
                       onClick={integrateCrm}
                     >
                       Integrate
@@ -589,6 +605,13 @@ export default function advance_register() {
                   <Button variant='outline' onClick={() => setAddTrackerModal(true)}>
                     Add Trackers
                   </Button>
+                  <div className={styles.trackers}>
+                    {trac.map((tracker) => (
+                      <li>{tracker}</li>
+                    ))}
+                    <Button color="green" onClick={() => addDefaultTrackers()}>Add This Template</Button>
+                  </div>
+                  {addTrackerMsg && <div style={{color:"green"}}>Trackers Added Successfully</div>}
                 </div>
                 </Paper>
               </Container>
@@ -641,13 +664,7 @@ export default function advance_register() {
                 </Title>
                 <Paper withBorder shadow="md" p={30} mt={30} radius="md">
                   <div
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      flexDirection:"row",
-                      gap:"20px"
-                    }}
+                    className={styles.crm}
                   >
                     <Text style={{ whiteSpace: "nowrap" }} align="center">
                       Download the companion Salesine Desktop App
@@ -658,7 +675,6 @@ export default function advance_register() {
                         mt="sm"
                         size="sm"
                         color="indigo"
-                        style={{ width: "10vw" }}
                       >
                         Download
                       </Button>
