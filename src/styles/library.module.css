@@ -151,6 +151,7 @@
 
 .AllFolders {
     display: flex;
+    flex-direction: row;
     flex-wrap: wrap;
     gap: 20px;
 }
@@ -249,4 +250,45 @@
 
 .select{
     z-index: 1000;
+}
+
+@media screen and (max-width: 768px) {
+    .libraryWrapper {
+        flex-direction: column;
+    }
+    .libraryHeader {
+        flex-basis: 100%;
+    }
+    .libraryBodyy {
+        flex-basis: 100%;
+    }
+    .libraryBodyHeader {
+        flex-direction: column;
+        gap: 10px;
+    }
+    .libraryBodyFolders {
+        padding: 0rem 2rem;
+    }
+    .modalBody{
+        padding: 10px;
+    }
+    .modalBodyFolders{
+        gap: 10px;
+    }
+    .modalBodyHeader{
+        flex-direction: column;
+        gap: 10px;
+    }
+    .modalBodyHead{
+        font-size: 16px;
+    }
+    .modalFolders{
+        flex-direction: column;
+    }
+    .modalFolders div{
+        flex-basis: 100%;
+    }
+    .title{
+        font-size: 1rem;
+    }
 }

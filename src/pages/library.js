@@ -298,14 +298,14 @@ const updateType = (id) => {
                 <div className={styles.noOfFolders}>{datas.length} folders</div>
                 <div className={styles.AllFolders}>
                   {datas.map((data,i) => (<>
-                    <ReactStars
-                    count={1}
-                    size={24}
-                    color2={'#ffd700'} 
-                    value={data.favorite ? 1 : 0}
-                    onChange={e => updateFav(data.id)}
-                    />
                     <div className={styles.folders} onClick={e => openFolder(data.id)}>
+                      <ReactStars
+                        count={1}
+                        size={24}
+                        color2={'#ffd700'} 
+                        value={data.favorite ? 1 : 0}
+                        onChange={e => updateFav(data.id)}
+                      />
                       <div className={styles.folderLine}></div>
                       <div className={styles.folder}>
                         <img src={folder} alt="" />
