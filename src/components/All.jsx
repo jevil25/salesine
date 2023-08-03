@@ -119,9 +119,9 @@ const All = () => {
           flag: "listopp",
         }),
       }).then((res) => res.json());
-
-      let deals_arr = deals.data[0].data.data;
-      console.log(deals_arr);
+      // console.log(deals);
+      let deals_arr = deals.data[0].data;
+      // console.log(deals_arr);
       setDealsarr(deals_arr);
     };
 
@@ -192,15 +192,13 @@ const All = () => {
       });
   };
 
-  const handleSelectChange = async (dealId,meetId) => {
+  const handleSelectChange = (dealId,meetId) => {
     console.log(dealId,meetId);
-    let deal_meet_link = await fetch(`${BACK_END_URL}/meetSelect`,{
+    let deal_meet_link = fetch(`${BACK_END_URL}/meetSelect`,{
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email:localStorage.getItem("email"),dealId,meetId}),
-    }).then((res)=>res.json());
-    console.log(deal_meet_link)
-
+      body: JSON.stringify({ dealId: dealId,meetId:meetId, email: localStorage.getItem("email") }),
+    }).then((res)=>res.json()).then((res)=> console.log(res));
   }
 
   return (
@@ -360,13 +358,15 @@ const All = () => {
                   onChange={(event) => handleSelectChange(event.target.value,recording.id)}
                 >
                 <option value="">Add a meet</option>
-                  {dealsArr.map((deal) => {
+                  { dealsArr.length>0 ? dealsArr.map((deal) => {
                     return (
                       <option key={deal.id} value={deal.id} rec_id={recording.id}>
                         {deal.title}
                       </option>
                     );
-                  })}
+                  })
+                  :null
+                }
                 </select>
               </div>
             );
