@@ -29,7 +29,7 @@ const All = () => {
   const [opened, { open, close }] = useDisclosure(false);
   const [recordings, setRecordings] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [dealsArr,setDealsarr] = useState([])
+  const [dealsArr, setDealsarr] = useState([]);
   const BACK_END_URL =
     process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:4000";
   // console.log("this is props var");
@@ -120,15 +120,9 @@ const All = () => {
         }),
       }).then((res) => res.json());
 
-      let deals_arr = deals.data[0].data.data
+      let deals_arr = deals.data[0].data.data;
       console.log(deals_arr);
       setDealsarr(deals_arr);
-      deals_arr.map((deal)=>{
-        return (
-          `<option value=${deal.id}>${deal.title}</option>`
-        )
-      })
-
     };
 
     // populateCalls();
@@ -198,6 +192,17 @@ const All = () => {
       });
   };
 
+  const handleSelectChange = async (dealId,meetId) => {
+    console.log(dealId,meetId);
+    let deal_meet_link = await fetch(`${BACK_END_URL}/meetSelect`,{
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email:localStorage.getItem("email"),dealId,meetId}),
+    }).then((res)=>res.json());
+    console.log(deal_meet_link)
+
+  }
+
   return (
     <div className={styles.allContainer}>
       <div className={styles.allContainerHeading}>
@@ -254,7 +259,7 @@ const All = () => {
         {recordings.length > 0 ? (
           recordings.map((recording) => {
             return (
-              <div className={styles.allCall} key={recording.id}>
+              <div className={styles.allCall} value={recording.id}  key={recording.id}>
                 <div style={{ width: "50px" }}>
                   {" "}
                   <Video size={35} />{" "}
@@ -352,11 +357,16 @@ const All = () => {
                   name="meetinput"
                   id="meetinput"
                   style={{ border: "none" }}
+                  onChange={(event) => handleSelectChange(event.target.value,recording.id)}
                 >
-                  {/* <option value="m1">meet 1</option>
-                  <option value="m2">meet 2</option>
-                  <option value="m3">meet 3</option> */}
-                  {dealsArr}
+                <option value="">Add a meet</option>
+                  {dealsArr.map((deal) => {
+                    return (
+                      <option key={deal.id} value={deal.id} rec_id={recording.id}>
+                        {deal.title}
+                      </option>
+                    );
+                  })}
                 </select>
               </div>
             );
