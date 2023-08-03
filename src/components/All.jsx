@@ -27,9 +27,11 @@ const All = () => {
   const [btn, setBtn] = useState(false);
   const theme = useMantineTheme();
   const [opened, { open, close }] = useDisclosure(false);
-  const [recordings,setRecordings] = useState([])
+  const [recordings, setRecordings] = useState([]);
   const [loading, setLoading] = useState(true);
-  const BACK_END_URL = process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:4000" ;
+  const [dealsArr,setDealsarr] = useState([])
+  const BACK_END_URL =
+    process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:4000";
   // console.log("this is props var");
   // console.log(props);
   const router = useRouter();
@@ -71,28 +73,28 @@ const All = () => {
 
   useEffect(() => {
     const getRecordings = async () => {
-      let calenderUpdate = await fetch(`${BACK_END_URL}/calender`,{
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email: localStorage.getItem("email") }),
+      let calenderUpdate = await fetch(`${BACK_END_URL}/calender`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: localStorage.getItem("email") }),
       })
-    .then((res) => res.json())
-    .then((calenderUpdate) => {
-      console.log(calenderUpdate)
-      return calenderUpdate;
-    });
-      let recordings = await fetch(`${BACK_END_URL}/recordings`,{
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email: localStorage.getItem("email") }),
+        .then((res) => res.json())
+        .then((calenderUpdate) => {
+          console.log(calenderUpdate);
+          return calenderUpdate;
+        });
+      let recordings = await fetch(`${BACK_END_URL}/recordings`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: localStorage.getItem("email") }),
       })
-    .then((res) => res.json())
-    .then((recordings) => {
-      console.log(recordings)
-      return recordings.recordings;
-    });
-    setRecordings(recordings.reverse());
-    setLoading(false);
+        .then((res) => res.json())
+        .then((recordings) => {
+          console.log(recordings);
+          return recordings.recordings;
+        });
+      setRecordings(recordings.reverse());
+      setLoading(false);
     };
 
     const populateCalls = () => {
@@ -108,8 +110,30 @@ const All = () => {
         });
     };
 
+    const getOpportunities = async () => {
+      let deals = await fetch(`${BACK_END_URL}/crm`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email: localStorage.getItem("email"),
+          flag: "listopp",
+        }),
+      }).then((res) => res.json());
+
+      let deals_arr = deals.data[0].data.data
+      console.log(deals_arr);
+      setDealsarr(deals_arr);
+      deals_arr.map((deal)=>{
+        return (
+          `<option value=${deal.id}>${deal.title}</option>`
+        )
+      })
+
+    };
+
     // populateCalls();
     getRecordings();
+    getOpportunities();
   }, [refresh]);
   const [name, setName] = useState("");
   const [startTime, setStartTime] = useState("");
@@ -128,7 +152,7 @@ const All = () => {
     let min = time1.split(":")[1];
     let res = hour + ":" + min;
     //retunr both date and time
-    return res+" on "+date;
+    return res + " on " + date;
   };
 
   const handleDelete = (meetid) => {
@@ -141,7 +165,7 @@ const All = () => {
       .then((res) => res.json())
       .then((res) => {
         console.log(res);
-        if(res.status){
+        if (res.status) {
           setRefresh(!refresh);
         }
       });
@@ -154,7 +178,7 @@ const All = () => {
   const handleAdd = (meetid) => {
     setAddModal(true);
     setMeetId(meetid);
-  }
+  };
 
   const submitMember = () => {
     fetch(`${BACK_END_URL}/addMeetMember`, {
@@ -165,10 +189,10 @@ const All = () => {
       .then((res) => res.json())
       .then((res) => {
         console.log(res);
-        if(res.status){
+        if (res.status) {
           setRefresh(!refresh);
           setAddModal(false);
-        }else{
+        } else {
           setMsg("Could not add member");
         }
       });
@@ -231,83 +255,123 @@ const All = () => {
           recordings.map((recording) => {
             return (
               <div className={styles.allCall} key={recording.id}>
-                <div style={{width:"50px"}}>
+                <div style={{ width: "50px" }}>
                   {" "}
-                  <Video size={35}/>{" "}
+                  <Video size={35} />{" "}
                 </div>
                 <div className={styles.allInfo}>
                   <div className={styles.allHeading}>{recording.topic}</div>
-                  <div className={styles.allSubInfo}>{formatTime(recording.startTime)}</div>
+                  <div className={styles.allSubInfo}>
+                    {formatTime(recording.startTime)}
+                  </div>
                   <div className={styles.allSubInfo}>
                     {Math.abs(recording.duration)} mins
                   </div>
                 </div>
-                {recording.file.length > 0 ?
-                recording.file[0].videoId ? (<>
-                <Badge color="indigo">
-                  <Text size="sm" weight={500}>
-                    Completed
-                  </Text>
-                </Badge>
-                 <Button
-                 color="indigo"
-                 onClick={() => {
-                   localStorage.setItem("recording", JSON.stringify(recording.meetid));
-                   router.push("/recording");
-                 }}
-               >
-                 Recording
-               </Button>
-               </>
-                ) : (<>
-                <Badge color="red">
-                  <Text size="sm" weight={500}>
-                    Not Completed
-                  </Text>
-                </Badge>
-                 <Button
-                 color="indigo"
-                 onClick={() => {
-                   localStorage.setItem("recording", JSON.stringify(recording.meetid));
-                   router.push("/recording");
-                 }}
-                 disabled = {true}
-               >
-                 Recording
-               </Button>
-               </>
-                )
-                : <>
-                 <Badge color="red">
-                  <Text size="sm" weight={500}>
-                    Not Completed
-                  </Text>
-                </Badge>
-                 <Button
-                 color="indigo"
-                 onClick={() => {
-                   localStorage.setItem("recording", JSON.stringify(recording.meetid));
-                   router.push("/recording");
-                 }}
-                 disabled = {true}
-               >
-                 Recording
-               </Button>
-                </>
-                }
-                <Button color="red" onClick={e => handleDelete(recording.meetid)} >Delete</Button>
-                <Button color="indigo" onClick={(e) => {handleAdd(recording.meetid)} } >Add Participants</Button>
+                {recording.file.length > 0 ? (
+                  recording.file[0].videoId ? (
+                    <>
+                      <Badge color="indigo">
+                        <Text size="sm" weight={500}>
+                          Completed
+                        </Text>
+                      </Badge>
+                      <Button
+                        color="indigo"
+                        onClick={() => {
+                          localStorage.setItem(
+                            "recording",
+                            JSON.stringify(recording.meetid)
+                          );
+                          router.push("/recording");
+                        }}
+                      >
+                        Recording
+                      </Button>
+                    </>
+                  ) : (
+                    <>
+                      <Badge color="red">
+                        <Text size="sm" weight={500}>
+                          Not Completed
+                        </Text>
+                      </Badge>
+                      <Button
+                        color="indigo"
+                        onClick={() => {
+                          localStorage.setItem(
+                            "recording",
+                            JSON.stringify(recording.meetid)
+                          );
+                          router.push("/recording");
+                        }}
+                        disabled={true}
+                      >
+                        Recording
+                      </Button>
+                    </>
+                  )
+                ) : (
+                  <>
+                    <Badge color="red">
+                      <Text size="sm" weight={500}>
+                        Not Completed
+                      </Text>
+                    </Badge>
+                    <Button
+                      color="indigo"
+                      onClick={() => {
+                        localStorage.setItem(
+                          "recording",
+                          JSON.stringify(recording.meetid)
+                        );
+                        router.push("/recording");
+                      }}
+                      disabled={true}
+                    >
+                      Recording
+                    </Button>
+                  </>
+                )}
+
+                <Button
+                  color="red"
+                  onClick={(e) => handleDelete(recording.meetid)}
+                >
+                  Delete
+                </Button>
+                <Button
+                  color="indigo"
+                  onClick={(e) => {
+                    handleAdd(recording.meetid);
+                  }}
+                >
+                  Add Participants
+                </Button>
+                <select
+                  name="meetinput"
+                  id="meetinput"
+                  style={{ border: "none" }}
+                >
+                  {/* <option value="m1">meet 1</option>
+                  <option value="m2">meet 2</option>
+                  <option value="m3">meet 3</option> */}
+                  {dealsArr}
+                </select>
               </div>
             );
           })
+        ) : loading ? (
+          <LoadingOverlay visible={loading} />
         ) : (
-          loading ? <LoadingOverlay visible={loading} /> : <div className={styles.noCalls}>No Calls</div>
+          <div className={styles.noCalls}>No Calls</div>
         )}
       </div>
-      {
-      addModal ? (
+      {addModal ? (
         <Modal opened={addModal} onClose={() => setAddModal(false)}>
-          <Modal.Title style={{textAlign:"center","margin":"10px"}}>Add Participants</Modal.Title>
+          <Modal.Title style={{ textAlign: "center", margin: "10px" }}>
+            Add Participants
+          </Modal.Title>
           <Modal.Body>
             <Input
               placeholder="Enter Name"
@@ -332,14 +396,13 @@ const All = () => {
                 setRole(e);
               }}
             />
-            {msg ? <div style={{color:"red"}}>{msg}</div> : null}
+            {msg ? <div style={{ color: "red" }}>{msg}</div> : null}
             <Button onClick={submitMember} color="indigo">
               Add
             </Button>
           </Modal.Body>
         </Modal>
-      ) : null
-    }
+      ) : null}
     </div>
   );
 };
