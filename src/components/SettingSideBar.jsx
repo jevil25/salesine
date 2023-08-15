@@ -89,6 +89,7 @@ export function NavbarSimple({ user,setDisplay,pending }) {
     { link: '', label: 'Password Change', icon: IconPassword },
     { link: '', label: 'Download App', icon: IconApps },
     { link: '', label: 'Upload Calls', icon: IconVideo },
+    { link: '', label: 'Upload Calls Zoom', icon: IconVideo },
     ]
     ) : (
     data = [
@@ -100,6 +101,7 @@ export function NavbarSimple({ user,setDisplay,pending }) {
         { link: '', label: 'Password Change', icon: IconPassword },
         { link: '', label: 'Download App', icon: IconApps },
         { link: '', label: 'Upload Calls', icon: IconVideo },
+        { link: '', label: 'Upload Calls Zoom', icon: IconVideo },
         ]
     )}
 
