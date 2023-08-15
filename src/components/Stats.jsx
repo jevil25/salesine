@@ -30,7 +30,11 @@ const Stats = ({ stats,meetHostId }) => {
   }, [meetHostId])
 
   //TODO: filter stats for current user when model ready
-  const speaker_0 = stats.filter((stat) => stat.speaker === meetHostId);
+  let speaker_0 = stats.filter((stat) => stat.speaker === meetHostId);
+  console.log(speaker_0);
+  //if speaker_0 is empty, then no stats for this user pick any random user
+  speaker_0 = speaker_0.length === 0 ? [stats[0]] : speaker_0;
+  console.log(speaker_0);
 
   function talkRatioCheck(){
     const recommended = speaker_0[0].talkRatio.recommend;
@@ -40,6 +44,7 @@ const Stats = ({ stats,meetHostId }) => {
     const lowerLimit = recommendedRange[0].split("%")[0];
     //get the upper limit
     const upperLimit = recommendedRange[1].split("%")[0];
+    console.log(lowerLimit,upperLimit);
     //check if the value is within the recommended range
     if(parseFloat(speaker_0[0].talkRatio.value) > parseFloat(lowerLimit) && parseFloat(speaker_0[0].talkRatio.value) < parseFloat(upperLimit)){
       return `Within recommended range, keep it between ${lowerLimit}% and ${upperLimit}%`
