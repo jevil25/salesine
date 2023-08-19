@@ -20,7 +20,7 @@ import {
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 
-const All = () => {
+const All = ({ meetName,trackers }) => {
   const [calls, setCalls] = useState([]);
   const player = useRef();
   const [url, setUrl] = useState("");
@@ -94,6 +94,7 @@ const All = () => {
           return recordings.recordings;
         });
       setRecordings(recordings.reverse());
+      setOriginalRecordings(recordings.reverse());
       setLoading(false);
     };
 
@@ -201,6 +202,34 @@ const All = () => {
     }).then((res)=>res.json()).then((res)=> console.log(res));
   }
 
+  const [originalRecordings, setOriginalRecordings] = useState([]);
+  useEffect(() => {
+    //filter based on name and trackers
+    let temp = originalRecordings;
+    if (meetName) {
+      temp = temp.filter((recording) => {
+        return recording.topic.toLowerCase().includes(meetName.toLowerCase());
+      });
+    }
+    if(trackers){
+      temp = temp.filter((recording) => {
+        if(recording.file.length > 0){
+          if(recording.file[0].trackerData){
+            //tracker is a json object get the keys
+            let trackers_keys = Object.keys(recording.file[0].trackerData);
+            //match and return to temp
+            for(let i=0;i<trackers_keys.length;i++){
+              if(trackers.toLowerCase().includes(trackers_keys[i].toLowerCase())){
+                return true;
+              }
+            }
+          }
+        }
+      });
+    }
+    setRecordings(temp);
+  }, [meetName,trackers]);
+
   return (
     <div className={styles.allContainer}>
       <div className={styles.allContainerHeading}>
@@ -211,8 +240,8 @@ const All = () => {
           Initiate New Meeting
         </Button>
       </div> */}
-      <div className={styles.allSortBy}>
-        <div className={styles.allSortBy1}>Sort By</div>
+      {/* <div className={styles.allSortBy}> */}
+        {/* <div className={styles.allSortBy1}>Sort By</div>
         <div
           className={
             selected.date ? styles.allSort2Selected : styles.allSortBy2
@@ -251,7 +280,7 @@ const All = () => {
           </div>
         </div>
         <div styles={{ marginLeft: "10px" }}></div>
-      </div>
+      </div> */}
 
       <div className={styles.allCalls}>
         {recordings.length > 0 ? (

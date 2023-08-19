@@ -5,7 +5,7 @@ import building from "../../public/assets/building.png";
 import word from "../../public/assets/word.png";
 import Image from "next/image";
 
-const Calling = () => {
+const Calling = ({ name,trackers }) => {
   const [advance, isAdvance] = useState(true);
   const [isOpen, setIsOpen] = useState({
     callParticipants: false,
@@ -26,8 +26,8 @@ const Calling = () => {
           <p>Filter</p>
         </div>
         <div className={styles.callingFilterWrapper}>
-          <div className={styles.filter} style={{ cursor: "pointer" }}>
-            <div
+         {/* <div className={styles.filter} style={{ cursor: "pointer" }}> */}
+          {/*<div
               className={styles.filterName}
               onClick={() =>
                 setIsOpen({
@@ -50,8 +50,8 @@ const Calling = () => {
                   alt=""
                 />
               </div>
-            </div>
-            {isOpen.callParticipants && (
+            </div> */}
+            {/* {isOpen.callParticipants && (
               <div className={styles.filterInput}>
                 <input type="text" placeholder="Search for team members" />
                 <div className={styles.filterInputIcon}>
@@ -62,7 +62,7 @@ const Calling = () => {
                 </div>
               </div>
             )}
-          </div>
+          </div> */}
           <div className={styles.filter} style={{ cursor: "pointer" }}>
             <div
               className={styles.filterName}
@@ -76,7 +76,7 @@ const Calling = () => {
               <div className={styles.nameIcon1}>
                 <Image src={building} width="20px" height="20px" alt="" />
               </div>
-              <div style={{ width: "156px" }}>COMPANY NAME</div>
+              <div style={{ width: "156px" }}>MEET NAME</div>
               <div className={styles.nameIcon2}>
                 <img
                   src={
@@ -90,7 +90,7 @@ const Calling = () => {
             </div>
             {isOpen.companyName && (
               <div className={styles.filterInput}>
-                <input type="text" placeholder="Type for search" />
+                <input type="text" placeholder="Type for search" onChange={e=>name(e.target.value)} />
                 <div className={styles.filterInputIcon}>
                   <img
                     src="https://img.icons8.com/external-tanah-basah-glyph-tanah-basah/25/3F51B5/external-plus-user-interface-tanah-basah-glyph-tanah-basah-2.png"
@@ -100,7 +100,7 @@ const Calling = () => {
               </div>
             )}
           </div>
-          <div className={styles.filter} style={{ cursor: "pointer" }}>
+          {/* <div className={styles.filter} style={{ cursor: "pointer" }}>
             <div
               className={styles.filterName}
               onClick={() =>
@@ -124,8 +124,8 @@ const Calling = () => {
                   alt=""
                 />
               </div>
-            </div>
-            {isOpen.words && (
+            </div> */}
+            {/* {isOpen.words && (
               <div className={styles.filterInput}>
                 <input type="text" placeholder="Search for words" />
                 <div className={styles.filterInputIcon}>
@@ -135,8 +135,8 @@ const Calling = () => {
                   />
                 </div>
               </div>
-            )}
-          </div>
+            )} */}
+          {/* </div> */}
           <div className={styles.filter} style={{ cursor: "pointer" }}>
             <div
               className={styles.filterName}
@@ -167,7 +167,7 @@ const Calling = () => {
             </div>
             {isOpen.trackers && (
               <div className={styles.filterInput}>
-                <input type="text" placeholder="Select" />
+                <input type="text" placeholder="Select" onChange={e=>trackers(e.target.value)}/>
                 <div className={styles.filterInputIcon}>
                   <img
                     src="https://img.icons8.com/external-tanah-basah-glyph-tanah-basah/25/3F51B5/external-plus-user-interface-tanah-basah-glyph-tanah-basah-2.png"
@@ -177,7 +177,7 @@ const Calling = () => {
               </div>
             )}
           </div>
-          {advance && (
+          {/* {advance && (
             <div
               className={styles.filter}
               onClick={() => isAdvance(!advance)}
@@ -383,8 +383,8 @@ const Calling = () => {
                 )}
               </div>
             </>
-          )}
-        </div>
+          )}*/}
+        </div> 
       </div>
     </div>
   );
