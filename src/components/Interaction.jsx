@@ -133,7 +133,7 @@ function calculateAverageForSameSpeakerInteractivity(arrayOfArrays) {
       });
       const data = await res.json();
   
-      if (data.status === true) {
+      if (data.status === true && data.user !== null && data.user.name !== undefined && data.user.name !== null ) {
         setEmail((prevState) => ({
           ...prevState,
           [data.user.name]: data.user.email
