@@ -116,7 +116,7 @@ const AddCompany = () => {
                 value={adminEmail}
                 onChange={(event) => setAdminEmail(event.target.value)}
                 />
-                <label htmlFor="adminPassword">Admin Password</label>
+                <label htmlFor="adminPassworda">Admin Password</label>
                 <input
                 type="text"
                 value={adminPassword}
