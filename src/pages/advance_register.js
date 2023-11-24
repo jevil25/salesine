@@ -128,6 +128,8 @@ export default function advance_register() {
       const data = await res.json();
       console.log(data);
       if (data.success) {
+        console.log("Voice registered");
+        console.log(data.info);
         showVoice(false);
       }
     }
